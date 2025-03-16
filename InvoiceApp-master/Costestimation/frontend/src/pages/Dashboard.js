@@ -1,7 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, matchRoutes } from "react-router-dom";
 import { InvoicePage } from "./InvoicePage";
-import { QuotePage } from "./QuotePage";
+import { QuotePage } from "../pages/QuotePage";
+
 
 export const Dashboard = () => {
   return (
@@ -18,7 +19,7 @@ export const Dashboard = () => {
               <Link to="/invoice">Invoice</Link>
             </li>
             <li className="mt-4 mb-4 bg-light bg-opacity-10 p-2 rounded">
-              <Link to="quote">Quotation</Link>
+              <Link to="/quote">Quotation</Link>
             </li>
           </ul>
         </div>
