@@ -20,8 +20,6 @@
 .content-section {
   width: 100%;
 }
-.top-heading {
-}
 
 .dashboard h3 {
   color: rgb(0, 0, 0);
@@ -93,6 +91,23 @@ body {
   font-size: 20px;
 }
 
+label {
+  white-space: nowrap;
+}
+
+.set-target-wrapper .target-form-wrapper .target-form form input {
+  border-color: #007ea4;
+  border-width: medium;
+}
+
+.set-target-wrapper .target-form-wrapper .target-form form select {
+  border-color: #007ea4;
+  border-width: medium;
+}
+
+.set-target-wrapper .target-form-wrapper .target-form h3 {
+  text-align: center;
+}
 /*1111111111111111111111111111111111111111*/
 /*--------------------------------------------------------------
 >> TABLE OF CONTENTS:
