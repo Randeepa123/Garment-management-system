@@ -3,7 +3,12 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.js
+/.pnp.js
+/package-lock.json
+/package.json
+/README.md
+
+
 
 # testing
 /coverage
