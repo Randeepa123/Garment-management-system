@@ -3,14 +3,28 @@
   font-family: "Poppins", serif;
 }
 
+.sidebar {
+  background-color: #fafafa;
+  width: 250px;
+}
+
+.sidebar img {
+  width: 150px;
+}
 .sidebar-list {
   list-style: none;
-  color: aliceblue;
+  color: rgb(0, 0, 0);
   padding-left: 0;
 }
 
+.content-section {
+  width: 100%;
+}
+.top-heading {
+}
+
 .dashboard h3 {
-  color: aliceblue;
+  color: rgb(0, 0, 0);
 }
 
 .dashboard {
@@ -18,7 +32,7 @@
 }
 
 .dashboard .sidebar-list a {
-  color: rgb(255 255 255);
+  color: rgb(0, 0, 0);
   text-decoration: none;
 }
 
@@ -26,16 +40,8 @@ body {
   background-color: #a94242;
 }
 
-.content-section {
-  padding-left: 130px;
-}
-
-.invoice-items-form {
-  width: 500px;
-}
-
 .invoice-container {
-  width: 800px;
+  width: 100%;
   background: #ffffff;
   padding: 20px;
   border-radius: 5px;
