@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Divider } from "@mui/material";
 import CostEstimationHistory from "../componants/costestimation/ParentComponent/CostEstimationHistory";
 import CreateCostEstimation from "../componants/costestimation/ParentComponent/CreateCostEstimation";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import Axios from "axios";
 
 export const QuotePage = () => {
+
+
   const [activeTab, setActiveTab] = useState("history");
   const [expanded, setExpanded] = useState({ history: false, create: false });
 
   const handleClick = (tab) => {
     setActiveTab(tab);
-    setExpanded((prev) => ({ ...prev, [tab]: !prev[tab] })); 
+    setExpanded((prev) => ({ ...prev, [tab]: !prev[tab] }));
   };
 
   return (
@@ -33,9 +36,8 @@ export const QuotePage = () => {
             fontSize: "15px",
           }}
         >
-
-            <InsertDriveFileIcon  sx={{marginRight:"10px"}}/>
-          View Cost Estimations  
+          <InsertDriveFileIcon sx={{ marginRight: "10px" }} />
+          View Cost Estimations
           {expanded.history ? <ExpandLessIcon /> : <ArrowForwardIosIcon />}
         </Button>
 
@@ -53,22 +55,27 @@ export const QuotePage = () => {
             fontSize: "15px",
           }}
         >
-
-          <ControlPointIcon  sx={{marginRight:"10px"}}/>
-          Create New Cost Estimation 
+          <ControlPointIcon sx={{ marginRight: "10px" }} />
+          Create New Cost Estimation
           {expanded.create ? <ExpandLessIcon /> : <ArrowForwardIosIcon />}
         </Button>
       </Box>
 
-      <Divider sx={{ width: "100vw", lineHeight: "1.2px", bgcolor: "black" , marginBottom:"5px"}} >
-        </Divider>
-      
+      <Divider
+        sx={{
+          width: "100vw",
+          lineHeight: "1.2px",
+          bgcolor: "black",
+          marginBottom: "5px",
+        }}
+      ></Divider>
 
-      <Box sx={{width:"300px"}}>
-        {activeTab === "history" ? 
-        <CostEstimationHistory /> : 
-        
-        <CreateCostEstimation />}
+      <Box sx={{ width: "300px" }}>
+        {activeTab === "history" ? (
+          <CostEstimationHistory />
+        ) : (
+          <CreateCostEstimation />
+        )}
       </Box>
     </Box>
   );

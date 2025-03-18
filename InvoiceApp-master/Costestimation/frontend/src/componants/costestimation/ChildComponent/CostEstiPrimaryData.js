@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Divider } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
-const CostEstiPrimaryData = () => {
+const CostEstiPrimaryData = (props) => {
   const [costData, setCostData] = useState({
-    title: "",
-    materialsCost: 0,
-    laborCost: 0,
-    otherExpenses: 0,
+    costSheetID:"",
+    productName:"",
+    estimatedStartDate:"",
+    estimatedEndDate:"",
   });
 
   const handleInputChange = (e) => {
@@ -55,17 +55,17 @@ const CostEstiPrimaryData = () => {
           >
             <TextField
               label="CostSheet ID"
-              name="title"
-              value={costData.title}
-              onChange={handleInputChange}
+              name="costSheetID"
+              value={costData.CostSheetID}
+              onChange={handleInputChange }
               variant="outlined"
               required
             />
 
             <TextField
               label="Product Name"
-              name="materialsCost"
-              value={costData.materialsCost}
+              name="productName"
+              value={costData.ProductName}
               onChange={handleInputChange}
               variant="outlined"
               required
@@ -73,8 +73,8 @@ const CostEstiPrimaryData = () => {
 
             <TextField
               label="Estimated Start-Date"
-              name="laborCost"
-              value={costData.laborCost}
+              name="estimatedStartDate"
+              value={costData.StartDate}
               onChange={handleInputChange}
               variant="outlined"
               type="Date"
@@ -83,8 +83,8 @@ const CostEstiPrimaryData = () => {
 
             <TextField
               label="Estimated End-Date"
-              name="otherExpenses"
-              value={costData.otherExpenses}
+              name="estimatedEndDate"
+              value={costData.EndDate}
               onChange={handleInputChange}
               variant="outlined"
               type="Date"
