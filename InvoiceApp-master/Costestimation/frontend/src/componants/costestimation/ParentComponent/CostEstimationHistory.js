@@ -20,7 +20,7 @@ const CostEstimationHistory = () => {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Cost Estimation History
+        Cost-Estimation History
       </Typography>
       <Paper sx={{ padding: 2 }}>
         {costHistory.length === 0 ? (

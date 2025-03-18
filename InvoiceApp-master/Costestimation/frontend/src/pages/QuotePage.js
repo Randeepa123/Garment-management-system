@@ -1,41 +1,75 @@
 import React, { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
-import CostEstimationHistory from "../componants/costestimation/CostEstimationHistory";
-import CreateCostEstimation from "../componants/costestimation/CreateCostEstimation";
+import { Box, Button, Divider } from "@mui/material";
+import CostEstimationHistory from "../componants/costestimation/ParentComponent/CostEstimationHistory";
+import CreateCostEstimation from "../componants/costestimation/ParentComponent/CreateCostEstimation";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 export const QuotePage = () => {
-  const [activeTab, setActiveTab] = useState("history"); 
+  const [activeTab, setActiveTab] = useState("history");
+  const [expanded, setExpanded] = useState({ history: false, create: false });
+
+  const handleClick = (tab) => {
+    setActiveTab(tab);
+    setExpanded((prev) => ({ ...prev, [tab]: !prev[tab] })); 
+  };
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+      <Box sx={{ display: "block", justifyContent: "space-between", mb: 2 }}>
         <Button
           variant="contained"
-          onClick={() => setActiveTab("history")}
-          sx={{ minWidth: "200px" }}
+          onClick={() => handleClick("history")}
+          sx={{
+            minWidth: "200px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "20px",
+            width: "1100px",
+            height: "50px",
+            fontSize: "15px",
+          }}
         >
-          View Cost Estimations
+
+            <InsertDriveFileIcon  sx={{marginRight:"10px"}}/>
+          View Cost Estimations  
+          {expanded.history ? <ExpandLessIcon /> : <ArrowForwardIosIcon />}
         </Button>
+
         <Button
           variant="contained"
-          onClick={() => setActiveTab("create")}
-          sx={{ minWidth: "200px" }}
+          onClick={() => handleClick("create")}
+          sx={{
+            minWidth: "200px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "20px",
+            width: "1100px",
+            height: "50px",
+            fontSize: "15px",
+          }}
         >
-          Create New Cost Estimation
+
+          <ControlPointIcon  sx={{marginRight:"10px"}}/>
+          Create New Cost Estimation 
+          {expanded.create ? <ExpandLessIcon /> : <ArrowForwardIosIcon />}
         </Button>
       </Box>
-      <Box>
-       {/*this statements acts like if else ?  and :*/}
+
+      <Divider sx={{ width: "100vw", lineHeight: "1.2px", bgcolor: "black" , marginBottom:"5px"}} >
+        </Divider>
+      
+
+      <Box sx={{width:"300px"}}>
         {activeTab === "history" ? 
-        (
-          <CostEstimationHistory />
-        ) : (
-          <CreateCostEstimation />
-        )}
+        <CostEstimationHistory /> : 
+        
+        <CreateCostEstimation />}
       </Box>
-
-
-
     </Box>
   );
 };
