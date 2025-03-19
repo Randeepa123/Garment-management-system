@@ -20,15 +20,13 @@
 .content-section {
   width: 100%;
 }
-.top-heading {
-}
 
 .dashboard h3 {
   color: rgb(0, 0, 0);
 }
 
 .dashboard {
-  background: aliceblue;
+  background: #f6f6f6;
 }
 
 .dashboard .sidebar-list a {
@@ -93,6 +91,59 @@ body {
   font-size: 20px;
 }
 
+label {
+  white-space: nowrap;
+}
+
+button {
+  white-space: nowrap;
+}
+
+.noWrapping {
+  white-space: nowrap;
+}
+
+.th-with-line-break {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Optional: Center align the text */
+}
+
+.set-target-wrapper .target-form-wrapper .target-form form input {
+  border-color: #007ea4;
+  border-width: small;
+}
+
+.set-target-wrapper .target-form-wrapper .target-form form select {
+  border-color: #007ea4;
+  border-width: small;
+}
+
+.set-target-wrapper .target-form-wrapper .target-form h3 {
+  text-align: center;
+}
+
+.displaylineTargetContainer {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.displaylineTargetContainer .displaylinetarget {
+  background-color: white;
+}
+
+.top-button-row select {
+  border-color: #007ea4;
+  border-width: small;
+}
+
+.target-update table td input {
+  border: none;
+}
+
+.target-card {
+  background-color: white;
+}
 /*1111111111111111111111111111111111111111*/
 /*--------------------------------------------------------------
 >> TABLE OF CONTENTS:
