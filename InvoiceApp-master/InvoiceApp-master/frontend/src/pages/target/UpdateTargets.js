@@ -48,8 +48,8 @@ export const UpdateTargets = () => {
 
   return (
     <div>
-      <TopicBar text="Update Targets" />
-      <div className="d-flex justify-content-between top-button-row py-3 px-5">
+      <TopicBar text="Update Targets" userName="Adithya Hulangamuwa" />
+      <div className="d-flex justify-content-between px-5 py-3 top-button-row">
         <div className="d-flex gap-3">
           <select
             className="form-select form-select-sm rounded"
@@ -83,13 +83,13 @@ export const UpdateTargets = () => {
               aria-describedby="basic-addon1"
             />
           </div>
-          <button type="button" className="btn btn-primary btn-md">
+          <button type="button" className="btn btn-md btn-primary">
             <ArrowOutwardOutlinedIcon />
             Set Target
           </button>
         </div>
       </div>
-      <div className=" target-update table-striped p-4">
+      <div className="table-striped p-4 target-update">
         <table className="table rounded">
           <thead>
             <tr>
@@ -120,7 +120,7 @@ export const UpdateTargets = () => {
         </table>
       </div>
       <div className="row px-5">
-        <div className="col-3 target-card rounded-4 mx-2 p-3">
+        <div className="col-3 p-3 rounded-4 mx-2 target-card">
           <div className="d-flex justify-content-between">
             <div className="d-flex flex-column gap-3">
               <span className="fs-5">Daily Target</span>
@@ -132,8 +132,8 @@ export const UpdateTargets = () => {
               />
             </div>
           </div>
-          <div className="d-flex mt-3 align-items-senter gap-3">
-            <div className="d-flex gap-1 rounded-pill bg-body-secondary  p-2">
+          <div className="d-flex align-items-senter gap-3 mt-3">
+            <div className="d-flex bg-body-secondary p-2 rounded-pill gap-1">
               <CircleIconBox
                 icon={
                   <ArrowUpwardOutlinedIcon
@@ -148,7 +148,7 @@ export const UpdateTargets = () => {
             <span className="align-self-center">From last month</span>
           </div>
         </div>
-        <div className="col target-card rounded-4 mx-2 p-3">
+        <div className="col p-3 rounded-4 mx-2 target-card">
           <PieChart
             series={[
               {
@@ -163,7 +163,7 @@ export const UpdateTargets = () => {
             height={200}
           />
         </div>
-        <div className="col target-card rounded-4 mx-2 ">
+        <div className="col rounded-4 mx-2 target-card">
           <UpdateTargetForm />
         </div>
       </div>

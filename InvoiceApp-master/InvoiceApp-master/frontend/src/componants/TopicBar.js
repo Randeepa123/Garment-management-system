@@ -27,14 +27,14 @@ function CircleIconBox({ icon, color = "white" }) {
 
 export const TopicBar = (props) => {
   return (
-    <div className="d-flex justify-content-between top-heading m-4">
+    <div className="d-flex justify-content-between m-4 top-heading">
       <h2>{props.text}</h2>
       <div className="d-flex gap-3">
         <CircleIconBox icon={<SettingsIcon sx={{ color: "white" }} />} />
         <CircleIconBox icon={<NotificationsIcon sx={{ color: "white" }} />} />
         <Divider orientation="vertical" flexItem sx={{ height: 40 }} />
         <CircleIconBox icon={<Person4Icon sx={{ color: "white" }} />} />
-        <span className=" align-self-center ">Adithya Hulangamuwa</span>
+        <span className="align-self-center">{props.userName}</span>
       </div>
     </div>
   );
