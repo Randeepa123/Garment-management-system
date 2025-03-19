@@ -1,99 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { SetTargetForm } from "../../componants/target/SetTargetForm";
+import { TargetTable } from "../../componants/target/TargetTable";
+import { TargetContex } from "../../contex/TargetContex";
+
 import { TopicBar } from "../../componants/TopicBar";
 
-import CallReceivedOutlinedIcon from "@mui/icons-material/CallReceivedOutlined";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 
 export const SetTargets = () => {
+  const [refresh, setRefresh] = useState(0);
+
   return (
     <div>
       <TopicBar text="Set Targets" />
-      <div className="row set-target-wrapper d-flex w-100 justify-content-between p-5 bg-light">
-        <div className="col-6 target-form-wrapper p-3">
-          <div className="target-form d-flex flex-column justify-content-center">
-            <h3>Set Individual Targets</h3>
-            <form className="d-flex flex-column justify-content-center">
-              <div className="d-flex gap-3 align-items-center m-4">
-                <label for="">Select Operator</label>
-                <select
-                  class="form-select form-select-lg "
-                  aria-label="Large select example"
-                >
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>
-              <div className="d-flex gap-3 align-items-center m-4">
-                <label for="">Operation</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="ex : Pocket"
-                  aria-label="default input example"
-                />
-              </div>
-              <div className="d-flex gap-3 align-items-center m-4">
-                <label for="">Time for 1 operation</label>
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    type="number"
-                    placeholder="ex : 5"
-                    aria-label="default input example"
-                  />
-                  <button class="btn btn-outline-secondary" type="button">
-                    <CallReceivedOutlinedIcon sx={{ color: "#007EA4" }} />
-                    Calculate
-                  </button>
-                </div>
-              </div>
-              <div className="d-flex gap-3 align-items-center m-4">
-                <label for="">Operations for 1hr</label>
-                <input
-                  class="form-control"
-                  type="number"
-                  aria-label="default input example"
-                />
-              </div>
-              <button type="button" class="btn btn-primary btn-lg">
-                <ArrowOutwardOutlinedIcon />
-                Set Target
-              </button>
-            </form>
-          </div>
+      <div className="setTargetContainer px-5">
+        <div className="row set-target-wrapper d-flex w-100 justify-content-between p-5 bg-light rounded shadow ">
+          <TargetContex.Provider value={{ refresh, setRefresh }}>
+            <SetTargetForm />
+            <TargetTable />
+          </TargetContex.Provider>
         </div>
-        <div className="col-6 target-display table-striped p-4">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+      </div>
+      <div className="displaylineTargetContainer py-5">
+        <div className="displaylinetarget p-5 d-flex justify-content-between rounded shadow">
+          <button type="button" className="btn btn-primary btn-md">
+            <ArrowOutwardOutlinedIcon />
+            Set Target
+          </button>
+          <div className="d-flex align-items-center gap-3">
+            <span className="fs-3 fw-semibold align-middle">Line Target: </span>
+            <span>125pcs/Day</span>
+          </div>
+          <div className="d-flex align-items-center gap-3">
+            <span className="fs-3 fw-semibold align-middle">
+              Estimamet Delivary:
+            </span>
+            <span>5 Days 5th May 2025</span>
+          </div>
         </div>
       </div>
     </div>
