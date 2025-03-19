@@ -3,6 +3,47 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Target = require("../models/target");
 
+router.route("/getSheet").get((req, res) => {
+  const SheetNum = req.query.SheetNo;
+
+  Target.findOne({ SheetNo: SheetNum })
+    .populate("Targets.EmployeeId")
+    .then((targetSheet) => {
+      res.json(targetSheet.Targets);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch targets" });
+    });
+});
+
+router.route("/getTargetsByEmployee").get(async (req, res) => {
+  try {
+    const SheetNum = req.query.SheetNo;
+    const operator = req.query.operator; // This is received as a string
+
+    if (!mongoose.Types.ObjectId.isValid(operator)) {
+      return res.status(400).json({ error: "Invalid EmployeeId format" });
+    }
+
+    const targetSheet = await Target.findOne({ SheetNo: SheetNum });
+
+    if (!targetSheet) {
+      return res.status(404).json({ error: "Sheet not found" });
+    }
+
+    // Convert operator to ObjectId for comparison
+    const employeeTargets = targetSheet.Targets.filter(
+      (target) => target.EmployeeId.toString() === operator
+    );
+
+    res.json(employeeTargets);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch targets" });
+  }
+});
+
 router.route("/add").post((req, res) => {
   const SheetNo = req.body.SheetNo;
   const OrderNo = req.body.OrderNo;
@@ -27,12 +68,12 @@ router.route("/add").post((req, res) => {
 router.route("/addTarget").put((req, res) => {
   const EmployeeId = req.body.EmployeeId;
   const Operation = req.body.Operation;
-  const ITarget = req.body.ITarget;
+  const ITarget = req.body.Itarget;
   const SheetNum = req.query.SheetNo;
 
   Target.findOne({ SheetNo: SheetNum }).then((targetSheet) => {
     if (!targetSheet) {
-      return res.status(404).json({ error: "Invoice not found" });
+      return res.status(404).json({ error: "Target Sheet not found" });
     }
 
     targetSheet.Targets.push({
