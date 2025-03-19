@@ -1,0 +1,11 @@
+.main-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    
+    margin-top: 20px;
+}
+
+.OrderProgress{
+   margin-top: 20px;
+}
