@@ -1,21 +1,21 @@
-const express = require("express");
-const router = express.Router();
-/*
-const mongoose = require("mongoose");
-const Target = require("../models/target");*/
-const controller = require("../controllers/targetController");
+const Target = require("../models/target");
+const Employee = require("../models/employee");
 
-router.get("/getSheet", controller.getTargetSheet);
-router.get("/getTargetsByEmployee", controller.getTargetsByEmployee);
-router.post("/add", controller.addTargetSheet);
-router.put("/addTarget", controller.addTarget);
-router.put("/updateTarget", controller.updateTarget);
-router.delete("/deleteTarget", controller.deleteTarget);
-router.get("/getAllOperators", controller.getAllOperators);
+const getAllOperators = (req, res, next) => {
+  Employee.find({ post: "operator" })
+    .then((operators) => {
+      if (operators.length === 0) {
+        return res.json({ foundInvoices: false });
+      }
+      res.json(operators); // Send invoices as the response
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch opertors" });
+    });
+};
 
-/*
-
-router.route("/getSheet").get((req, res) => {
+const getTargetSheet = (req, res, next) => {
   const SheetNum = req.query.SheetNo;
 
   Target.findOne({ SheetNo: SheetNum })
@@ -27,9 +27,9 @@ router.route("/getSheet").get((req, res) => {
       console.error(err);
       res.status(500).json({ error: "Failed to fetch targets" });
     });
-});
+};
 
-router.route("/getTargetsByEmployee").get(async (req, res) => {
+const getTargetsByEmployee = async (req, res, next) => {
   try {
     const SheetNum = req.query.SheetNo;
     const operator = req.query.operator; // This is received as a string
@@ -54,9 +54,9 @@ router.route("/getTargetsByEmployee").get(async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch targets" });
   }
-});
+};
 
-router.route("/add").post((req, res) => {
+const addTargetSheet = (req, res, next) => {
   const SheetNo = req.body.SheetNo;
   const OrderNo = req.body.OrderNo;
 
@@ -75,9 +75,9 @@ router.route("/add").post((req, res) => {
       console.error(err);
       res.status(500).json({ error: "Failed to creat target sheet" });
     });
-});
+};
 
-router.route("/addTarget").put((req, res) => {
+const addTarget = (req, res, next) => {
   const EmployeeId = req.body.EmployeeId;
   const Operation = req.body.Operation;
   const ITarget = req.body.Itarget;
@@ -104,9 +104,9 @@ router.route("/addTarget").put((req, res) => {
         res.status(500).json({ error: "Failed to add individual targets" });
       });
   });
-});
+};
 
-router.route("/updateTarget").put((req, res) => {
+const updateTarget = (req, res, next) => {
   const EmployeeId = req.query.EmployeeId;
   const Operation = req.query.Operation;
   const SheetNum = req.query.SheetNo;
@@ -144,9 +144,9 @@ router.route("/updateTarget").put((req, res) => {
         res.status(500).json({ error: "Failed to update target" });
       });
   });
-});
+};
 
-router.route("/deleteTarget").delete((req, res) => {
+const deleteTarget = (req, res, next) => {
   const objId = req.query.objId;
 
   Target.deleteOne({ "Targets._id": objId })
@@ -160,6 +160,12 @@ router.route("/deleteTarget").delete((req, res) => {
       console.error(err);
       res.status(500).json({ error: "Failed to delete target sheet" });
     });
-});
-*/
-module.exports = router;
+};
+
+exports.getTargetSheet = getTargetSheet;
+exports.getTargetsByEmployee = getTargetsByEmployee;
+exports.addTargetSheet = addTargetSheet;
+exports.addTarget = addTarget;
+exports.updateTarget = updateTarget;
+exports.deleteTarget = deleteTarget;
+exports.getAllOperators = getAllOperators;
