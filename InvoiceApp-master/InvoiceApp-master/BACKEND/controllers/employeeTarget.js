@@ -1,15 +1,6 @@
-const express = require("express");
-const router = express.Router();
-
-/*
-const mongoose = require("mongoose");
 const Employee = require("../models/employee");
-const controller = require("../controllers/employeeTarget");
 
-router.get("/getAllOperators", controller);*/
-
-/*
-router.route("/getAllOperators").get((req, res) => {
+const getAllOperators = (req, res, next) => {
   Employee.find({ post: "operator" })
     .then((operators) => {
       if (operators.length === 0) {
@@ -21,6 +12,6 @@ router.route("/getAllOperators").get((req, res) => {
       console.error(err);
       res.status(500).json({ error: "Failed to fetch opertors" });
     });
-});*/
+};
 
-module.exports = router;
+exports.getAllOperators = getAllOperators;

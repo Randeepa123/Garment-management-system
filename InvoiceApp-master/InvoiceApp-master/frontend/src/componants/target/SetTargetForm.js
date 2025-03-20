@@ -24,7 +24,7 @@ export const SetTargetForm = () => {
       try {
         console.log("Fetching Operators...");
         const response = await axios.get(
-          "http://localhost:8070/employee/getAllOperators"
+          "http://localhost:8070/target/getAllOperators"
         );
         setoperators(response.data);
       } catch (error) {
