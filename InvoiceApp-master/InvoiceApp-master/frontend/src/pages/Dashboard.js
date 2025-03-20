@@ -28,7 +28,7 @@ export const Dashboard = () => {
             </li>
             <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
-              <Link to="quote">Quotation</Link>
+              <Link to="quote">Quotations</Link>
             </li>
             <span className="fw-semibold">Targets</span>
             <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
