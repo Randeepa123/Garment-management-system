@@ -26,12 +26,7 @@ const TargetSchema = new Schema({
       },
       IOuts: [
         {
-          Time: {
-            type: String,
-          },
-          quantity: {
-            type: Number,
-          },
+          type: Number,
         },
       ],
     },
