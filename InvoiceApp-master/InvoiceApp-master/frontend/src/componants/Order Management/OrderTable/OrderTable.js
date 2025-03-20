@@ -1,5 +1,6 @@
 import React from 'react'
-
+import AddOrder from "../../../pages/Order_Management/AddOrder";
+import { Routes, Route,navigate, useNavigate} from 'react-router-dom';
 import { 
   Paper, 
   Box, 
@@ -13,6 +14,7 @@ import {
 import { styled } from '@mui/material/styles';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Router } from 'react-router-dom';
 
 const OrderItem = styled(ListItem)(({ theme }) => ({
   borderBottom: '1px solid #f0f0f0',
@@ -37,7 +39,15 @@ const StatusChip = styled('div')(({ status }) => ({
               status === 'Cancel' ? '#ffebee' : '#fff8e1',
   display: 'inline-block',
 }));
+
+
 function OrderTable() {
+
+  const navigate = useNavigate();
+  const handleAddOrder = () => {
+    console.log("Add Order");
+    navigate("/addOrder");
+  } 
 
   const orderList = [
     { id: '01', type: 'tshirt', date: 'May 18th, 2026', status: 'Pending', orderNumber: 'OTBB8486924' },
@@ -63,6 +73,7 @@ function OrderTable() {
           Orders
         </Typography>
         <IconButton 
+          onClick={handleAddOrder}
           size="large" 
           sx={{ 
             color: '#0288d1',
@@ -104,6 +115,8 @@ function OrderTable() {
         ))}
       </List>
     </Paper>
+
+
   )
 }
 
