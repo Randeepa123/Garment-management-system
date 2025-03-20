@@ -18,7 +18,6 @@ function Order_Mainpage() {
           <OrderTable className='Orders'/>
           <OrderProgress className='OrderProgress'/>
 
-          
         </Container>
         
     </>
