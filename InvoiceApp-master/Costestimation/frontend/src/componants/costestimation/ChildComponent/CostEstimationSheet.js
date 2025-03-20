@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -12,8 +12,23 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData"; // Import the Edit component
 
-const CostEstimationSheet = ({ rows, costData }) => {
+const CostEstimationSheet = ({ rows, allowEdit = false, showSubmit = false }) => {
+  const [selectedBreakdown, setSelectedBreakdown] = useState(null); // Store selected breakdown to pass to Edit component
+  const selectedCostSheet = rows?.[0] || {};
+  const costBreakdowns = selectedCostSheet.costBreakdown || [];
+
+  const handleEditClick = (breakdown) => {
+    setSelectedBreakdown(breakdown); // Set the selected breakdown for editing
+  };
+
+  // Handler for submitting the cost estimation sheet
+  const handleSubmit = () => {
+    // You can add logic here for submitting the entire cost estimation sheet
+    alert("Cost Estimation Sheet Submitted!");
+  };
+
   return (
     <Box
       sx={{
@@ -21,43 +36,42 @@ const CostEstimationSheet = ({ rows, costData }) => {
         flexDirection: "column",
         gap: 2,
         border: "2px solid #000",
-        padding: 2,
-        marginLeft: "20px",
+        padding: 1,
+        marginLeft: "10px",
         backgroundColor: "#f4f6f6",
       }}
     >
       {/* Project Details Section */}
-      <Container maxWidth="lg" sx={{ mt: 4, width: "600px" }}>
+      <Container maxWidth="lg" sx={{ mt: 4, width: "660px" }}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Project Details
         </Typography>
-        {rows?.map((row) => (
-          <Box key={row._id} sx={{ mb: 2 }}>
-            <Typography>
-              <strong>Cost-Sheet ID:</strong> {row.costSheetID || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Product Name:</strong> {row.productName || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Estimated Start Date:</strong>{" "}
-              {row.estimatedStartDate?.slice(0, 10) || "N/A"}
-            </Typography>
-            <Typography>
-              <strong>Estimated End Date:</strong>{" "}
-              {row.estimatedEndDate?.slice(0, 10) || "N/A"}
-            </Typography>
-          </Box>
-        ))}
+        <Box sx={{ mb: 2 }}>
+          <Typography>
+            <strong>Cost-Sheet ID:</strong> {selectedCostSheet.costSheetID || "N/A"}
+          </Typography>
+          <Typography>
+            <strong>Product Name:</strong> {selectedCostSheet.productName || "N/A"}
+          </Typography>
+          <Typography>
+            <strong>Estimated Start Date:</strong>{" "}
+            {selectedCostSheet.estimatedStartDate?.slice(0, 10) || "N/A"}
+          </Typography>
+          <Typography>
+            <strong>Estimated End Date:</strong>{" "}
+            {selectedCostSheet.estimatedEndDate?.slice(0, 10) || "N/A"}
+          </Typography>
+        </Box>
       </Container>
-      <Typography variant="h6" sx={{ marginBottom:"-10px",marginLeft:"19px"}}>
-          Cost-Breakdowns
-        </Typography>
+
+      <Typography variant="h6" sx={{ marginBottom: "-10px", marginLeft: "19px" }}>
+        Cost-Breakdowns
+      </Typography>
 
       {/* Cost Breakdown Section */}
-      <Container maxWidth="lg" sx={{ mt: 4, width: "600px" }}>
-        <TableContainer component={Paper}>
-          <Table>
+      <Container sx={{ mt: 4, width: "700px" }}>
+        <TableContainer component={Paper} sx={{ width: "670px" }}>
+          <Table sx={{ width: "600px" }}>
             <TableHead>
               <TableRow>
                 <TableCell><strong>No</strong></TableCell>
@@ -66,33 +80,33 @@ const CostEstimationSheet = ({ rows, costData }) => {
                 <TableCell><strong>Quantity</strong></TableCell>
                 <TableCell><strong>Cost per Unit</strong></TableCell>
                 <TableCell><strong>Total</strong></TableCell>
-                <TableCell><strong>Actions</strong></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows?.map((row, index) => (
-                <TableRow key={row._id}>
+              {costBreakdowns.map((breakdown, index) => (
+                <TableRow key={breakdown._id}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{row.description || "N/A"}</TableCell>
-                  <TableCell>{row.supplierName || "N/A"}</TableCell>
-                  <TableCell>{row.consumption || "N/A"}</TableCell>
-                  <TableCell>{row.costPerUnit || "N/A"}</TableCell>
-                  <TableCell>{row.totalCost || "N/A"}</TableCell>
+                  <TableCell>{breakdown.description || "N/A"}</TableCell>
+                  <TableCell>{breakdown.supplierName || "N/A"}</TableCell>
+                  <TableCell>{breakdown.consumption || "N/A"}</TableCell>
+                  <TableCell>{breakdown.costPerUnit || "N/A"}</TableCell>
+                  <TableCell>{breakdown.totalCost || "N/A"}</TableCell>
                   <TableCell>
-                    {/* Action Buttons */}
-                    <Button
-                      sx={{ marginRight: "5px" }}
-                      onClick={() => alert("Update feature not implemented")}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      sx={{ marginLeft: "5px" }}
-                      color="error"
-                      onClick={() => alert("Delete feature not implemented")}
-                    >
-                      Delete
-                    </Button>
+                    {allowEdit && (
+                      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+                        <Button variant="contained" color="error" sx={{ mr: 2 }}>
+                          DELETE
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleEditClick(breakdown)} // Trigger edit and pass the breakdown
+                        >
+                          EDIT
+                        </Button>
+                      </Box>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -102,19 +116,21 @@ const CostEstimationSheet = ({ rows, costData }) => {
 
         {/* Total Cost */}
         <Typography variant="h6" sx={{ mt: 3 }}>
-          Total Cost: {costData?.totalCostSum || "N/A"}
+          Total Cost: {selectedCostSheet.totalCostSum || "N/A"}
         </Typography>
+      </Container>
 
-        {/* Action Buttons */}
+      {/* Display Edit Form when breakdown is selected */}
+      {selectedBreakdown && <CostEstiPrimaryData breakdown={selectedBreakdown} />}
+
+      {/* Show submit button if the 'showSubmit' flag is true */}
+      {showSubmit && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-          <Button variant="contained" color="error" sx={{ mr: 2 }}>
-            DELETE
-          </Button>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
             SUBMIT
           </Button>
         </Box>
-      </Container>
+      )}
     </Box>
   );
 };

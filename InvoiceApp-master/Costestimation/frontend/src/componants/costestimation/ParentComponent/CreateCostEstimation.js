@@ -58,7 +58,7 @@ export const CreateCostEstimation = () => {
         />
       </Box>
 
-      <CostEstimationSheet rows={costSheets} />
+      <CostEstimationSheet rows={costSheets} allowEdit={true} showSubmit={true} isNewSheet={true}/>
 
     
     </Box>

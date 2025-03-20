@@ -1,5 +1,6 @@
 const {response} = require('../apps/app_Costestimation');
 const costEstimation = require('../models/costEstiModel');
+const mongoose = require("mongoose");
 
 
 
@@ -15,31 +16,81 @@ const getAllCostEstimationSheets = (req,res,next) => {
 };
 
 
+
 const addCostEstimation = (req, res, next) => {
-  const { costSheetID, productName, estimatedStartDate, estimatedEndDate, costBreakdown } = req.body;
+  const { 
+    costSheetID,
+    productName,
+    estimatedStartDate, 
+    estimatedEndDate ,
+    costBreakdown } = req.body;
 
-
-  //backend validation for security purpose 
-  if (!costSheetID || !productName || !estimatedStartDate || !estimatedEndDate || !Array.isArray(costBreakdown)) {
-    return res.status(400).json({ error: "All required fields must be provided, including a cost breakdown array." });
+  // Backend validation for security purposes
+  if (!costSheetID || !productName || !estimatedStartDate || !estimatedEndDate) {
+    return res.status(400).json({ error: "All required fields must be provided." });
   }
 
+  // Create new cost estimation
   const newCostEstimation = new costEstimation({
     costSheetID,
     productName,
     estimatedStartDate,
     estimatedEndDate,
-    costBreakdown 
+    costBreakdown,
   });
 
-  newCostEstimation.save()
-    .then(savedCostEstimation => {
-      res.status(201).json({ message: "Cost estimation added successfully", data: savedCostEstimation });
+  // Save the new cost estimation
+  newCostEstimation
+  .save()
+  .then(() => {
+      res.status(201).json( "Cost estimation added successfully" );
     })
     .catch(error => {
-      res.status(500).json({ error });
+      console.error("Error in adding cost estimation:", error);
+      res.status(500).json({ error: "Error adding cost estimation." });
     });
+}
+
+
+const addCostBreakdown = async (req, res, next) => {
+  try {
+      const { costEstimationId, description, supplierName, unitType, consumption, costPerUnit } = req.body; 
+
+      if (!costEstimationId || !description || !supplierName || !unitType || !consumption || !costPerUnit) {
+          return res.status(400).json({ error: "All fields are required." });
+      }
+
+      const costEstimation = await costEstimation.findOne({ costSheetID: costEstimationId });
+      if (!costEstimation) {
+          return res.status(404).json({ error: "Cost Estimation not found." });
+      }
+
+      const totalCost = consumption * costPerUnit;
+
+      costEstimation.costBreakdown.push({
+          description,
+          supplierName,
+          unitType,
+          consumption,
+          costPerUnit,
+          totalCost,
+      });
+
+      costEstimation.totalCostSum = costEstimation.costBreakdown.reduce((sum, breakdown) => sum + breakdown.totalCost, 0);
+
+      const updatedCostEstimation = await costEstimation.save();
+
+      res.status(200).json({
+        message: "Cost breakdown added successfully",
+        data: updatedCostEstimation
+      });
+  } catch (error) {
+      console.error("Error in adding cost breakdown:", error);
+      res.status(500).json({ error: "Error adding cost breakdown." });
+  }
 };
+
+
 
 
 
@@ -152,6 +203,7 @@ exports.addCostEstimation = addCostEstimation;
 exports.updateCostEstimation = updateCostEstimation;
 exports.deleteCostEstimation = deleteCostEstimation;
 exports.deleteCostBreakdown = deleteCostBreakdown;
+exports.addCostBreakdown = addCostBreakdown;
 
 
 

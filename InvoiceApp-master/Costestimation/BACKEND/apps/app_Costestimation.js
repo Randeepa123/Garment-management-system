@@ -27,6 +27,22 @@ Cost_app.post('/createCostEstimation', (req, res) => {
     });
 });
 
+
+Cost_app.post('/addCostBreakdown', async (req, res) => {
+    try {
+        // Call the controller function to handle the business logic
+        const result = await addCostBreakdown(req, res);  // Pass the request and response to controller
+        
+        // Send success response (result will already be handled in the controller)
+    } catch (error) {
+        console.error("Error in addCostBreakdown route:", error);
+        res.status(500).json({ error: "Error creating cost breakdown" });
+    }
+});
+
+
+
+
 Cost_app.put('/updateCostEstimation', (req, res) => {
     const { id, updateData } = req.body; 
     if (!id) {
