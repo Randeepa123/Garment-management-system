@@ -18,6 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Router } from 'react-router-dom';  
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
+import axios from 'axios';
 
 
 
@@ -46,16 +47,23 @@ const StatusChip = styled('div')(({ status }) => ({
 }));
 
 
-function OrderTable(props) {
-
-
-
+function OrderTable({rows, getOrders}) {
 
   const navigate = useNavigate();
   const handleAddOrder = () => {    
     console.log("Add Order");
     navigate("/addOrder");
   } 
+  
+  const deleteOrder = (Id) => {
+    const payload = {
+      orderId: Id
+    }
+    axios.post('http://localhost:3001/deleteorder', payload)
+    .then((response) => {
+        getOrders();
+       
+    })}
 
 
   // Function to get the appropriate icon based on product type
@@ -85,7 +93,7 @@ function OrderTable(props) {
       
       {/* Order list */}
       <List disablePadding>
-        {props.rows.map((row) => (
+        {rows.map((row) => (
           <OrderItem key={row.orderId}>
             <Box sx={{ display: 'flex', width: '100%', px: 2 }}>
               <OrderIcon>
@@ -116,7 +124,12 @@ function OrderTable(props) {
                       customer={row.customer}
 
                     />
-                    <DeleteButton/>
+
+                    
+                    <DeleteButton
+                      id={row.orderId}
+                      deleteOrder={deleteOrder}
+                    />
                   </Box>
                   
                 </Box>

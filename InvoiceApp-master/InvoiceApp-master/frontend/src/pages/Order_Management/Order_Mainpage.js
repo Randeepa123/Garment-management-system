@@ -37,7 +37,10 @@ function Order_Mainpage() {
         <OrdersCountBoxes/>
 
         <Container className='main-container'>
-          <OrderTable rows={orders} />
+          <OrderTable 
+            rows={orders} 
+            getOrders={getOrders}
+          />
           <OrderProgress className='OrderProgress'/>
         </Container>
         
