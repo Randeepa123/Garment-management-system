@@ -6,30 +6,23 @@ import logo from '../../../asserts/img/logo.png'
 
 
 
-function UpdateJobCard({submitted,id,orderdate,deliverydate,customer}) {
+function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder}) {
 
     const [formattedOrderdate, setOrderdate] = React.useState("");
     const [formattedDeliverydate, setDeliverydate] = React.useState("");
     const [customer1, setCustomer] = React.useState("");
+    
 
-    // Update formatted dates when orderdate or deliverydate change
-    useEffect(() => {
-        
-            setOrderdate(new Date(orderdate).toISOString().split("T")[0]);     
-            setDeliverydate(new Date(deliverydate).toISOString().split("T")[0]);
-        
-    }, [orderdate, deliverydate]);
 
     useEffect(() => {
-        console.log("Status:", submitted)
+        console.log("Status:", updated)
         console.log("Jobcard Id:", id);
-        if(submitted==false){
+        if(updated==false){
             setOrderdate('');
             setDeliverydate('');    
             setCustomer('');
-
         }
-    }, [submitted])
+    }, [updated])
 
   return (
     <>
@@ -422,7 +415,22 @@ function UpdateJobCard({submitted,id,orderdate,deliverydate,customer}) {
                     BARCODE PLACEHOLDER
                 </div>
             </div>
-            <button onClick={()=>{}}>Submit</button>
+            <button onClick={()=>{
+
+                    const data = {
+                        orderdate: formattedOrderdate,
+                        deliverydate: formattedDeliverydate,
+                        customer: customer1,
+                    }
+                    const stat=updateorder(data);
+                    if (stat) {
+                        alert("Order updated successfully!");
+                    } else {
+                        alert("Failed to update order.");
+                    }
+      
+                    
+                }}>Update</button>
         </div>
     </div>
     </>
