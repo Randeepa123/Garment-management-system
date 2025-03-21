@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AddOrder from "../../../pages/Order_Management/AddOrder";
 import { Routes, Route,navigate, useNavigate} from 'react-router-dom';
 import { 
@@ -14,7 +14,12 @@ import {
 import { styled } from '@mui/material/styles';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Router } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import { Router } from 'react-router-dom';  
+import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
+
+
 
 const OrderItem = styled(ListItem)(({ theme }) => ({
   borderBottom: '1px solid #f0f0f0',
@@ -41,23 +46,17 @@ const StatusChip = styled('div')(({ status }) => ({
 }));
 
 
-function OrderTable() {
+function OrderTable(props) {
+
+
+
 
   const navigate = useNavigate();
-  const handleAddOrder = () => {
+  const handleAddOrder = () => {    
     console.log("Add Order");
     navigate("/addOrder");
   } 
 
-  const orderList = [
-    { id: '01', type: 'tshirt', date: 'May 18th, 2026', status: 'Pending', orderNumber: 'OTBB8486924' },
-    { id: '02', type: 'pants', date: 'May 18th, 2026', status: 'Pending', orderNumber: 'OTBB8487924' },
-    { id: '03', type: 'jacket', date: 'May 18th, 2026', status: 'Cancel', orderNumber: 'OTBB8488924' },
-    { id: '04', type: 'jacket', date: 'May 18th, 2026', status: 'Completed', orderNumber: 'OTBB8489924' },
-    { id: '05', type: 'pants', date: 'May 18th, 2026', status: 'Completed', orderNumber: 'OTBB8481024' },
-    { id: '06', type: 'pants', date: 'May 18th, 2026', status: 'Completed', orderNumber: 'OTBB8481124' },
-    { id: '07', type: 'tshirt', date: 'May 18th, 2026', status: 'Completed', orderNumber: 'OTBB8481224' },
-  ];
 
   // Function to get the appropriate icon based on product type
   const getOrderIcon = (type) => {
@@ -86,35 +85,50 @@ function OrderTable() {
       
       {/* Order list */}
       <List disablePadding>
-        {orderList.map((order) => (
-          <OrderItem key={order.id}>
+        {props.rows.map((row) => (
+          <OrderItem key={row.orderId}>
             <Box sx={{ display: 'flex', width: '100%', px: 2 }}>
               <OrderIcon>
-                {getOrderIcon(order.type)}
+                {getOrderIcon()}
               </OrderIcon>
               <Box sx={{ ml: 2, flex: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                    Order {order.id}
+                    Order {row.customer}
                   </Typography>
-                  <StatusChip status={order.status}>
-                    {order.status}
+                  <StatusChip status={'Cancel'}>
+                    {row.customer}
                   </StatusChip>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
                   <Typography variant="body2" color="text.secondary">
-                    {order.date}
+                    {row.orderdate}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {order.orderNumber}
+                    Id:{row.orderId}
                   </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
+            
+                    <EditButton 
+                      Id={row.orderId}
+                      orderdate={row.orderdate}
+                      deliverydate={row.deliverydate}
+                      customer={row.customer}
+
+                    />
+                    <DeleteButton/>
+                  </Box>
+                  
                 </Box>
               </Box>
             </Box>
           </OrderItem>
         ))}
       </List>
+      <editButton/>
+      <deleteButton/>
     </Paper>
+    
 
 
   )
