@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 
 
 function UpdateOrder() {
+  
 
   const location = useLocation();
   const {Id} = location.state || {};
@@ -13,18 +14,23 @@ function UpdateOrder() {
   const {deliverydate} = location.state || {};
   const {customer} = location.state || {};
 
+  const [updated, setUpdated] = React.useState(false);
+
   console.log("Id in updateOrder:",Id);
 
   const updateorder = (data) => {
+    setUpdated(true);
+
     const payload = {
-      id: Id,
+      orderId: Id,
       orderdate: data.orderdate ,
       deliverydate: data.deliverydate ,
       customer: data.customer,
     }
-    axios.post('http://localhost:3001/updateorder', payload)
+    return axios.post('http://localhost:3001/updateorder', payload)
     .then((response) => {
-      console.log(response);
+      setUpdated(false);
+      return true;
     })
     .catch=(err)=> {
       console.log(err)
@@ -35,7 +41,7 @@ function UpdateOrder() {
     <>
         <div>
         <TopicBar text="Add Orders" userName="Vishwa Dissanayake"/>
-        <UpdateJobCard id={Id} submitted={false} orderdate={orderdate} deliverydate={deliverydate} customer={customer} />
+        <UpdateJobCard updateorder={updateorder} id={Id} updated={updated} orderdate={orderdate} deliverydate={deliverydate} customer={customer} />
         </div> 
         
     </>

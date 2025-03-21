@@ -4,9 +4,6 @@ import axios from 'axios'
 import JobCard from '../../componants/Order Management/Jobcard/JobCard'
 
 function AddOrder() {
-
-  
-
   const [submitted, setSubmitted] = React.useState(false);
 
   const addorder = (data) => {
