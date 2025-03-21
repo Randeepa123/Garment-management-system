@@ -38,7 +38,7 @@ function JobCard({addOrder,submitted}) {
                         <p className= "Title" class="text-muted mb-0 small">Track production from cutting to final quality check</p>
                     </div>
                     <div class="col-md-auto text-md-end mt-2 mt-md-0">
-                        <div class="text-secondary fs-5 fw-bold">#GRM-2025-03459</div>
+                        <div class="text-secondary fs-5 fw-bold">#GRM-2025-....</div>
                     </div>
                 </div>
             </div>
