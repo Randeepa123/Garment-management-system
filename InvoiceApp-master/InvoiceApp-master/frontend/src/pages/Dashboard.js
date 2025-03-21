@@ -11,6 +11,8 @@ import logo from "../asserts/img/logo.png";
 import { UpdateTargets } from "./target/UpdateTargets";
 import { ShoppingBag } from "@mui/icons-material";
 import AddOrder from "./Order_Management/AddOrder";
+import UpdateOrder from "./Order_Management/UpdateOrder";
+
 
 export const Dashboard = () => {
   return (
@@ -53,10 +55,11 @@ export const Dashboard = () => {
           <Routes>
             <Route path="/invoice" element={<InvoicePage />} />
             <Route path="/quote" element={<QuotePage />} />
-            <Route path="/set-targets" element={<SetTargets />} />
+            <Route path="/set-targets" element={<SetTargets />} />  
             <Route path="/update-targets" element={<UpdateTargets />} />
             <Route path="/orders" element={<Order_Mainpage />} />
             <Route path="/addOrder" element={<AddOrder/>} />
+            <Route path="/updateOrder" element={<UpdateOrder/>} />
           </Routes>
         </div>
       </div>

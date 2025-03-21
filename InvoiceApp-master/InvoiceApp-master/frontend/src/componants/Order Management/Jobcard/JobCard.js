@@ -1,13 +1,29 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
 
 
-function JobCard() {
+
+
+function JobCard({addOrder,submitted}) {
+
+    const [orderdate, setOrderdate] = React.useState("");
+    const [deliverydate, setDeliverydate] = React.useState("");
+    const [customer, setCustomer] = React.useState("");
+
+    useEffect(() => {
+        console.log("Status:", submitted)
+        if(submitted==false){
+            setOrderdate('');
+            setDeliverydate('');    
+            setCustomer('');
+
+        }
+    }, [submitted])
+
   return (
     <>
-    
     <div class="container py-4">
         <div class="card shadow-sm">
             <div class="card-header bg-white py-4">
@@ -32,70 +48,86 @@ function JobCard() {
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Order Date</label>
-                            <div><input type="date"class="value"/></div>
+                            <div><input type="date"class="value"
+                                value={orderdate}
+                                onChange={(e) => {
+                                    setOrderdate(e.target.value);
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Delivery Date</label>
-                            <div ><input type="date"class="value"/></div>
+                            <div ><input type="date"class="value"
+                                value={deliverydate}
+                                onChange={(e) => {
+                                    setDeliverydate(e.target.value);
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Customer</label>
-                            <div ><input type="text"class="value"/></div>
+                            <div ><input type="text"class="value"
+                                value={customer}
+                                onChange={(e) => {
+                                setCustomer(e.target.value);
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Priority</label>
-                            <div class="value">High</div>
+                            <div ><input type="text"class="value"/></div>
+                            
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Style Number</label>
-                            <div class="value">ST-45678</div>
+                            <div ><input type="text"class="value"/></div>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Total Quantity</label>
-                            <div class="value">500 Units</div>
+                            <div ><input type="text"class="value"/></div> 
                         </div>
                     </div>
                     
                     <div class="col-12">
                         <div class="detail-box">
                             <label>Description</label>
-                            <div class="value">Men's Graphic T-shirt with Round Neck and Standard Fit</div>
+                            <div ><input type="text"class="value"/></div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
                         <div class="detail-box">
                             <label>Fabric Details</label>
-                            <div class="value">100% Cotton Jersey, 180 GSM</div>
+                            <div ><input type="text"class="value"/></div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
                         <div class="detail-box">
                             <label>Color</label>
-                            <div class="value">Black with White Print</div>
+                            <div ><input type="text"class="value"/></div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
                         <div class="detail-box">
                             <label>Size Range</label>
-                            <div class="value">S - 3XL</div>
+                            <div ><input type="text"class="value"/></div>
                         </div>
                     </div>
                 </div>
@@ -379,6 +411,7 @@ function JobCard() {
                     BARCODE PLACEHOLDER
                 </div>
             </div>
+            <button onClick={() => addOrder({orderdate: orderdate, deliverydate: deliverydate, customer: customer})}>Submit</button>
         </div>
     </div>
     </>

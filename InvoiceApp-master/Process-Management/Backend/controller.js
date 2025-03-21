@@ -12,12 +12,9 @@ const getOrders=(req,res,next)=>{
 
 const addOrder=(req,res,next)=>{
     const order=new orders({
-        jobcardId:req.body.jobcardId,
-        garmenttype:req.body.garmenttype,
-        quantity:req.body.quantity,
-        date:req.body.date,
-        enddate:req.body.enddate,
-        status:req.body.status
+        orderdate:req.body.orderdate,
+        deliverydate:req.body.deliverydate,
+        customer:req.body.customer,
     });
     order.save()
     .then((result)=>{
@@ -29,13 +26,11 @@ const addOrder=(req,res,next)=>{
 };
 
 const updateOrder=(req,res,next)=>{
-    const {jobcardId,garmenttype,quantity,date,enddate,status}=req.body;
-    orders.updateOne({jobcardId:jobcardId},{
-        garmenttype:garmenttype,
-        quantity:quantity,
-        date:date,
-        enddate:enddate,
-        status:status
+    const {orderdate,deliverydate,customer,orderId}=req.body;
+    orders.updateOne({orderId:orderId},{
+        orderdate:orderdate,
+        deliverydate:deliverydate,
+        customer:customer,
     }).then((result)=>{
         res.json(result);
     }).catch((err)=>{
@@ -44,8 +39,8 @@ const updateOrder=(req,res,next)=>{
 };
 
 const deleteOrder=(req,res,next)=>{
-    const jobcardId=req.body.jobcardId;
-    orders.deleteOne({jobcardId:jobcardId})
+    const orderId=req.body.orderId;
+    orders.deleteOne({orderId:orderId})
     .then((result)=>{
         res.json(result);
     }).catch((err)=>{
