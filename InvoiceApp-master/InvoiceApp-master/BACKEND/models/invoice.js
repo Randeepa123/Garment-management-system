@@ -5,13 +5,13 @@ const Schema = mongoose.Schema;
 const invoiceSchema = new Schema({
   invoiceNumber: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
-    required: true,
+    required: false,
   },
   items: [
     {

@@ -1,37 +1,40 @@
 const {response} = require('../apps/app_Costestimation');
-const costEstimation = require('../models/costEstiModel');
+const CostEstimation = require("../models/costEstiModel");
 const mongoose = require("mongoose");
 
-
-
-const getAllCostEstimationSheets = (req,res,next) => {
-    costEstimation.find()
-        .then(response =>{
-          res.json({response})
-        })
-        .catch(error => {
-            res.json({error})
-        })
-
+const getAllCostEstimationSheets = (req, res, next) => {
+  CostEstimation.find()
+    .then((response) => {
+      res.json({ response });
+    })
+    .catch((error) => {
+      res.json({ error });
+    });
 };
 
-
-
 const addCostEstimation = (req, res, next) => {
-  const { 
+  const {
     costSheetID,
     productName,
-    estimatedStartDate, 
-    estimatedEndDate ,
-    costBreakdown } = req.body;
+    estimatedStartDate,
+    estimatedEndDate,
+    costBreakdown,
+  } = req.body;
 
   // Backend validation for security purposes
-  if (!costSheetID || !productName || !estimatedStartDate || !estimatedEndDate) {
-    return res.status(400).json({ error: "All required fields must be provided." });
+  if (
+    !costSheetID ||
+    !productName ||
+    !estimatedStartDate ||
+    !estimatedEndDate
+  ) {
+    return res
+      .status(400)
+      .json({ error: "All required fields must be provided." });
   }
 
   // Create new cost estimation
-  const newCostEstimation = new costEstimation({
+  const newCostEstimation = new CostEstimation({
     costSheetID,
     productName,
     estimatedStartDate,
@@ -41,170 +44,190 @@ const addCostEstimation = (req, res, next) => {
 
   // Save the new cost estimation
   newCostEstimation
-  .save()
-  .then(() => {
-      res.status(201).json( "Cost estimation added successfully" );
+    .save()
+    .then(() => {
+      res.status(201).json("Cost estimation added successfully");
     })
-    .catch(error => {
-      console.error("Error in adding cost estimation:", error);
-      res.status(500).json({ error: "Error adding cost estimation." });
+    .catch((error) => {
+      console.error("Error saving cost estimation:", error); // log the error in detail
+      res
+        .status(500)
+        .json({ error: error.message || "Error adding cost estimation." });
     });
-}
+};
 
+const addCostBreakdown = (costId, breakdownData, callback) => {
+  const { description, supplierName, unitType, consumption, costPerUnit } = breakdownData;
 
-const addCostBreakdown = async (req, res, next) => {
-  try {
-      const { costEstimationId, description, supplierName, unitType, consumption, costPerUnit } = req.body; 
-
-      if (!costEstimationId || !description || !supplierName || !unitType || !consumption || !costPerUnit) {
-          return res.status(400).json({ error: "All fields are required." });
-      }
-
-      const costEstimation = await costEstimation.findOne({ costSheetID: costEstimationId });
-      if (!costEstimation) {
-          return res.status(404).json({ error: "Cost Estimation not found." });
-      }
-
-      const totalCost = consumption * costPerUnit;
-
-      costEstimation.costBreakdown.push({
-          description,
-          supplierName,
-          unitType,
-          consumption,
-          costPerUnit,
-          totalCost,
-      });
-
-      costEstimation.totalCostSum = costEstimation.costBreakdown.reduce((sum, breakdown) => sum + breakdown.totalCost, 0);
-
-      const updatedCostEstimation = await costEstimation.save();
-
-      res.status(200).json({
-        message: "Cost breakdown added successfully",
-        data: updatedCostEstimation
-      });
-  } catch (error) {
-      console.error("Error in adding cost breakdown:", error);
-      res.status(500).json({ error: "Error adding cost breakdown." });
+  // Validate input fields
+  if (!description || !supplierName || !unitType || !consumption || !costPerUnit) {
+    return callback({ error: "All fields are required." }, null);
   }
+
+  // Validate costId format (ensure it follows the correct structure, e.g., string or valid object ID)
+  if (!costId || typeof costId !== 'string') {
+    return callback({ error: "Invalid cost estimation ID." }, null);
+  }
+
+  // Find the cost estimation document by costSheetID
+  CostEstimation.findOne({ costSheetID: costId })
+      .then((costEstimation) => {
+          if (!costEstimation) {
+              return callback({ error: `Cost Estimation with ID ${costId} not found.` }, null);
+          }
+
+          // Calculate total cost for this breakdown
+          const totalCost = consumption * costPerUnit;
+
+          // Add new cost breakdown to the costBreakdown array
+          costEstimation.costBreakdown.push({
+              description,
+              supplierName,
+              unitType,
+              consumption,
+              costPerUnit,
+              totalCost,
+          });
+
+          // Update totalCostSum after adding new breakdown
+          costEstimation.totalCostSum = costEstimation.costBreakdown.reduce(
+              (sum, breakdown) => sum + breakdown.totalCost,
+              0
+          );
+
+          // Save updated cost estimation document
+          return costEstimation.save();
+      })
+      .then((updatedCostEstimation) => {
+          callback(null, updatedCostEstimation); // Return the updated document via callback
+      })
+      .catch((error) => {
+          console.error("Error in adding cost breakdown:", error);
+
+          // Handle specific CastError if invalid costId format
+          if (error.name === 'CastError') {
+              return callback({ error: "Invalid cost estimation ID format." }, null);
+          }
+
+          // Handle MongoDB-related errors
+          if (error.code && error.code === 11000) {
+              return callback({ error: "Duplicate cost estimation ID found." }, null);
+          }
+
+          // Generic error message
+          callback({ error: "Error adding cost breakdown." }, null);
+      });
 };
 
 
 
 
-
 const updateCostEstimation = (req, res, next) => {
-  const { costSheetID, productName, estimatedStartDate, estimatedEndDate, costBreakdown } = req.body;
+  const {
+    costSheetID,
+    productName,
+    estimatedStartDate,
+    estimatedEndDate,
+    costBreakdown,
+  } = req.body;
 
-  // Recalculate totalCost for each breakdown item
-  const updatedCostBreakdown = costBreakdown.map(item => {
-    item.totalCost = item.consumption * item.costPerUnit;  // Recalculate totalCost
+  const updatedCostBreakdown = costBreakdown.map((item) => {
+    item.totalCost = item.consumption * item.costPerUnit;
     return item;
   });
 
-  // Calculate total cost sum after recalculation of breakdowns
-  const totalCostSum = updatedCostBreakdown.reduce((sum, item) => sum + item.totalCost, 0);
+  const totalCostSum = updatedCostBreakdown.reduce(
+    (sum, item) => sum + item.totalCost,
+    0
+  );
 
-  // Update cost estimation based on costSheetID
-  costEstimation.findOneAndUpdate(
-    { costSheetID: costSheetID },  // Use costSheetID in the query
-    { 
-      costSheetID, 
-      productName, 
-      estimatedStartDate, 
-      estimatedEndDate, 
-      costBreakdown: updatedCostBreakdown, 
-      totalCostSum 
-    }, 
-    { new: true }  // Return the updated document
+  CostEstimation.findOneAndUpdate(
+    { costSheetID: costSheetID },
+    {
+      costSheetID,
+      productName,
+      estimatedStartDate,
+      estimatedEndDate,
+      costBreakdown: updatedCostBreakdown,
+      totalCostSum,
+    },
+    { new: true }
   )
-    .then(response => {
+    .then((response) => {
       if (!response) {
         return res.status(404).json({ error: "Cost estimation not found" });
       }
       res.status(200).json({ message: "Updated successfully", data: response });
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(500).json({ error: error.message });
     });
 };
 
 
 
-
 const deleteCostEstimation = (req, res, next) => {
-  const { costSheetID } = req.body;  
+  const { costSheetID } = req.body;
 
   if (!costSheetID) {
-      return res.status(400).json({ error: "Missing costSheetID" });  
+    return res.status(400).json({ error: "Missing costSheetID" });
   }
-  costEstimation.findOneAndDelete({ costSheetID: costSheetID })
-      .then(response => {
-          if (!response) {
-              return res.status(404).json({ error: "Cost estimation not found" });
-          }
-          res.status(200).json({ message: "Cost estimation deleted successfully" });
-      })
-      .catch(error => {
-          res.status(500).json({ error: "Error deleting cost estimation" });
-      });
+  CostEstimation.findOneAndDelete({ costSheetID: costSheetID })
+    .then((response) => {
+      if (!response) {
+        return res.status(404).json({ error: "Cost estimation not found" });
+      }
+      res.status(200).json({ message: "Cost estimation deleted successfully" });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error deleting cost estimation" });
+    });
 };
-
-
 
 const deleteCostBreakdown = async (req, res, next) => {
   try {
     const { costSheetID, breakdownId } = req.body;
 
-    // Check if both costSheetID and breakdownId are provided
     if (!costSheetID || !breakdownId) {
-      return res.status(400).json({ error: "Missing costSheetID or breakdownId in the request body" });
+      return res
+        .status(400)
+        .json({
+          error: "Missing costSheetID or breakdownId in the request body",
+        });
     }
 
-    // Ensure breakdownId is a string, which matches the model definition
     const breakdownIdStr = String(breakdownId);
 
-    // Find and update the cost estimation, pulling the breakdown item using breakdownId
-    const updatedCostEstimation = await costEstimation.findOneAndUpdate(
-      { costSheetID: costSheetID }, // Use costSheetID in the query
-      { $pull: { costBreakdown: { _id: breakdownIdStr } } }, // Use breakdownId as string
-      { new: true } // Ensures the updated document is returned
+    const updatedCostEstimation = await CostEstimation.findOneAndUpdate(
+      { costSheetID: costSheetID },
+      { $pull: { costBreakdown: { _id: breakdownIdStr } } },
+      { new: true }
     );
 
-    // If the cost estimation is not found, return a 404 error
     if (!updatedCostEstimation) {
       return res.status(404).json({ error: "Cost estimation not found" });
     }
 
-    // Recalculate totalCostSum after deletion of the breakdown
-    updatedCostEstimation.totalCostSum = updatedCostEstimation.costBreakdown.reduce(
-      (sum, breakdown) => sum + breakdown.totalCost, 0
-    );
+    updatedCostEstimation.totalCostSum =
+      updatedCostEstimation.costBreakdown.reduce(
+        (sum, breakdown) => sum + breakdown.totalCost,
+        0
+      );
 
-    // Save the updated cost estimation with the new totalCostSum
     await updatedCostEstimation.save();
 
-    // Send success response
     res.status(200).json({
       message: "Cost breakdown deleted successfully",
-      data: updatedCostEstimation
+      data: updatedCostEstimation,
     });
   } catch (error) {
-    // If there's an error, send a 500 response with error message
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-
-
 exports.getAllCostEstimationSheets = getAllCostEstimationSheets;
 exports.addCostEstimation = addCostEstimation;
+exports.addCostBreakdown = addCostBreakdown;
 exports.updateCostEstimation = updateCostEstimation;
 exports.deleteCostEstimation = deleteCostEstimation;
 exports.deleteCostBreakdown = deleteCostBreakdown;
-exports.addCostBreakdown = addCostBreakdown;
-
-
-
-

@@ -19,19 +19,17 @@ const CostEstimationHistory = () => {
       });
   }, []); 
 
-  // Handle selecting a cost estimation sheet to view full details or collapse the details
+
   const handleSelectCostSheet = (costSheet) => {
-    // If the clicked cost sheet is already expanded, collapse it
     if (expandedSheet === costSheet._id) {
       setExpandedSheet(null);
     } else {
-      // Otherwise, set the clicked sheet to be expanded
       setExpandedSheet(costSheet._id);
       setSelectedCostSheet(costSheet);
     }
   };
 
-  // Filter cost sheets based on search query
+  
   const filteredCostSheets = costSheets.filter((costSheet) =>
     costSheet.costSheetID.toLowerCase().includes(searchQuery.toLowerCase())
   );

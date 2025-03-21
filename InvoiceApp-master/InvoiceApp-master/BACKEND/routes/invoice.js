@@ -19,7 +19,6 @@ router.route("/add").post((req, res) => {
     date,
   });
 
-  // Save the invoice to the database
   newInvoice
     .save()
     .then(() => {
@@ -32,20 +31,20 @@ router.route("/add").post((req, res) => {
 });
 
 router.route("/getAll").get((req, res) => {
-  const mycustomerId = req.query.customerId; // Get customerId from URL params
+  const mycustomerId = req.query.customerId; 
 
   // Check if the customerId is a valid ObjectId
   if (!mongoose.Types.ObjectId.isValid(mycustomerId)) {
     return res.status(400).json({ message: "Invalid customer ID" });
   }
 
-  // Find invoices where customerId matches the given ObjectId
+
   Invoice.find({ customerId: mycustomerId })
     .then((invoices) => {
       if (invoices.length === 0) {
         return res.json({ foundInvoices: false });
       }
-      res.json(invoices); // Send invoices as the response
+      res.json(invoices); 
     })
     .catch((err) => {
       console.error(err);
@@ -55,8 +54,8 @@ router.route("/getAll").get((req, res) => {
 
 router.route("/addItem").put((req, res) => {
   const { product, quantity, price, total } = req.body;
-  const invoiceId = req.query.invoiceId; // Extract invoiceId from URL parameter
-  // Find the invoice by its ID
+  const invoiceId = req.query.invoiceId; 
+
   Invoice.findOne({ invoiceNumber: invoiceId })
     .then((invoice) => {
       if (!invoice) {
@@ -73,7 +72,7 @@ router.route("/addItem").put((req, res) => {
 
       invoice.totalAmount += total;
 
-      // Save the updated invoice
+
       invoice
         .save()
         .then(() => {
@@ -91,21 +90,97 @@ router.route("/addItem").put((req, res) => {
 });
 
 router.route("/getInvoice").get((req, res) => {
-  const invoiceId = req.query.invoiceId; // Extract invoiceId from URL parameter
+  const invoiceId = req.query.invoiceId; 
 
-  // Find the invoice by its ID
+  
   Invoice.findOne({ invoiceNumber: invoiceId })
     .populate("customerId")
     .then((invoice) => {
       if (!invoice) {
         return res.json({ foundInvoices: false });
       }
-      res.json(invoice); // Send invoices as the response
+      res.json(invoice); 
     })
     .catch((err) => {
       console.error(err);
       res.status(500).json({ error: "Failed to fetch invoice" });
     });
 });
+
+// DELETE an item from the invoice
+router.route("/deleteItem").delete((req, res) => {
+  const { invoiceId, itemId } = req.query; 
+  
+  Invoice.findOne({ invoiceNumber: invoiceId })
+    .then((invoice) => {
+      if (!invoice) {
+        return res.status(404).json({ error: "Invoice not found" });
+      }
+
+      
+      invoice.items = invoice.items.filter(item => item._id.toString() !== itemId);
+
+
+      invoice.totalAmount = invoice.items.reduce((sum, item) => sum + item.total, 0);
+
+
+      invoice
+        .save()
+        .then(() => {
+          res.json("Item deleted successfully!");
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).json({ error: "Failed to delete item" });
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to find invoice" });
+    });
+});
+
+// PUT to update an existing item
+router.route("/updateItem").put((req, res) => {
+  const { invoiceId, itemId, product, price, quantity, total } = req.body;
+  
+  
+  Invoice.findOne({ invoiceNumber: invoiceId })
+    .then((invoice) => {
+      if (!invoice) {
+        return res.status(404).json({ error: "Invoice not found" });
+      }
+
+      
+      const item = invoice.items.id(itemId);
+      if (!item) {
+        return res.status(404).json({ error: "Item not found" });
+      }
+
+   
+      item.product = product;
+      item.price = price;
+      item.quantity = quantity;
+      item.total = total;
+
+      invoice.totalAmount = invoice.items.reduce((sum, item) => sum + item.total, 0);
+
+     
+      invoice
+        .save()
+        .then(() => {
+          res.json("Item updated successfully!");
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).json({ error: "Failed to update item" });
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to find invoice" });
+    });
+});
+
 
 module.exports = router;

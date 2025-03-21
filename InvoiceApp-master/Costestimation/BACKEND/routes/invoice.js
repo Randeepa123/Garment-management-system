@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const Invoice = require("../models/invoice");
-const Customer = require("../models/Customer");
+
 
 router.route("/add").post((req, res) => {
   const invoiceNumber = req.body.invoiceNumber;

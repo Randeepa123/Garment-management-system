@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require("express")
 const router = express.Router();
 const controllers = require('../controllers/costEsti_controller');
 
 
-router.get('/costEstimations', controllers.getAllCostEstimationSheets);
-router.post('/createCostEstimation', controllers.addCostEstimation);
-router.post('/addCostBreakdown', controllers.addCostBreakdown);
+router.get('/costEstimations', controllers.getAllCostEstimationSheets)
+router.post('/cost-estimations', controllers.addCostEstimation)
+router.post('/cost-estimations/:costId/cost-breakdown', controllers.addCostBreakdown);
 router.put('/updateCostEstimation', controllers.updateCostEstimation);
 router.delete('/deleteCostEstimation', controllers.deleteCostEstimation);
-router.delete('/deleteCostEstimationBreakdown', controllers.deleteCostBreakdown);
+router.delete('/cost-estimations/:costId/cost-breakdown/:breakdownId', controllers.deleteCostBreakdown);
 
 module.exports = router;
