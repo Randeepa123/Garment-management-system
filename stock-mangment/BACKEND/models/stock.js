@@ -1,11 +1,13 @@
+
+
 const mongoose = require("mongoose");
 
 const StockSchema = new mongoose.Schema({
   itemName: { type: String, required: true },
-  category: { type: String, required: true }, // e.g., Shirts, Pants
+  category: { type: String, required: true }, 
   quantity: { type: Number, required: true },
-  price: { type: Number, required: true }, // Price per unit
-  supplier: { type: String }, // Supplier details
+  price: { type: Number, required: true }, 
+  supplier: { type: String }, 
   dateAdded: { type: Date, default: Date.now }
 });
 

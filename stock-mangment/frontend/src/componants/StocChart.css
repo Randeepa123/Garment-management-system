@@ -1,0 +1,47 @@
+/* Stock Chart Container */
+.stock-chart-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Title and Dropdown Container */
+.title-dropdown-container {
+  display: flex;
+  align-items: center; /* Vertically align items */
+  justify-content: space-between; /* Space between title and dropdown */
+  margin-bottom: 15px; /* Add some spacing below */
+}
+
+/* Chart Title */
+.stock-chart-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  margin: 0; /* Remove default margin */
+}
+
+/* Dropdown Menu */
+.category-dropdown {
+  width: 200px;
+}
+
+/* Chart Container */
+.chart-container {
+  width: 100%;
+  height: 200px; /* Updated height to 200px */
+}
+
+/* Error Alert */
+.error-alert {
+  margin-top: 10px;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  align-self: center;
+}

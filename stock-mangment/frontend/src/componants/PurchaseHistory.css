@@ -1,0 +1,153 @@
+/* Purchase History Container */
+.purchase-history-container {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 500px;
+    overflow: hidden;
+    min-height: 400px; /* Fixed minimum height to prevent shrinking */
+}
+
+/* Title */
+.purchase-history-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-top: 2px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* Filter Section */
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.filter-container input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-button {
+    background-color: #007ea4;
+    margin-bottom:10px;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.search-button:hover {
+    background-color: #005f7b;
+}
+
+/* Purchase List */
+.purchase-list {
+    max-height: 295px; /* Increased height by 40px */
+    overflow-y: auto;
+    padding-right: 8px;
+    border-radius: 10px;
+    min-height: 280px; /* Fixed minimum height to maintain structure */
+}
+
+/* Purchase Card */
+.purchase-card {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Adjust text spacing inside cards */
+.purchase-card p {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #444;
+}
+
+/* Date and Remove Button in One Line */
+.date-remove-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 3px;
+}
+
+/* Date Added */
+.date-remove-container p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* Remove Button Positioned Right */
+.remove-button {
+    background-color: #d9534f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.remove-button:hover {
+    background-color: #c9302c;
+}
+
+/* Custom Scrollbar with Arrowheads */
+.purchase-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.purchase-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.purchase-list::-webkit-scrollbar-thumb {
+    background: #007ea4;
+    border-radius: 10px;
+}
+
+.purchase-list::-webkit-scrollbar-thumb:hover {
+    background: #005f7a;
+}
+
+/* Scrollbar Arrowheads */
+.purchase-list::-webkit-scrollbar-button:single-button {
+    display: block;
+    height: 12px;
+    background: #007ea4;
+    border-radius: 50%;
+}
+
+/* Up arrow */
+.purchase-list::-webkit-scrollbar-button:single-button:decrement {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><polygon points="12,8 6,14 18,14"/></svg>') center no-repeat;
+}
+
+/* Down arrow */
+.purchase-list::-webkit-scrollbar-button:single-button:increment {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><polygon points="6,10 12,16 18,10"/></svg>') center no-repeat;
+}

@@ -1,0 +1,89 @@
+/* Main Container */
+.main-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  
+  /* Side Menu */
+  .side-menu {
+    width: 200px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+  }
+  
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Top Bar */
+  .top-bar {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button-grid {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .dashboard-button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .dashboard-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Dashboard Container */
+  .dashboard-container {
+    flex: 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr; /* Single column by default */
+    gap: 20px;
+  }
+  
+  /* Dashboard Sections */
+  .dashboard-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Stock Chart Section */
+  .stock-chart-section {
+    grid-column: 1 / -1; /* Span full width */
+  }
+  
+  /* Purchase History Section */
+  .purchase-history-section {
+    grid-column: 1 / 2; /* First column */
+  }
+  
+  /* Stock Status Section */
+  .stock-status-section {
+    grid-column: 2 / 3; /* Second column */
+  }
+  
+  /* Responsive Layout */
+  @media (min-width: 768px) {
+    .dashboard-container {
+      grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
+    }
+  
+    .stock-chart-section {
+      grid-column: 1 / -1; /* Span full width */
+    }
+  }
