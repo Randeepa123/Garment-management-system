@@ -18,6 +18,11 @@ app.get("/getSheet", (req, res, next) => {
   res.send();
 });
 
+app.get("/getAll", (req, res, next) => {
+  controller.getAll(req, res, next);
+  res.send();
+});
+
 app.get("/getTargetsByEmployee", (req, res, next) => {
   controller.getTargetsByEmployee(req, res, next);
   res.send();
@@ -40,5 +45,11 @@ app.put("/updateTarget", (req, res, next) => {
 
 app.delete("/deleteTarget", (req, res, next) => {
   controller.deleteTarget(req, res, next);
+  res.send();
+});
+
+//orders
+app.get("/orders", (req, res, next) => {
+  controller.getOrders(req, res, next);
   res.send();
 });

@@ -3,8 +3,8 @@ import axios from "axios";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import { UpdateTargetContex } from "../../contex/UpdateTargetContex";
 
-export const UpdateTargetForm = () => {
-  const SheetNo = "S003";
+export const UpdateTargetForm = (props) => {
+  const SheetNo = props.sheetNum;
   const [targets, setTargets] = useState([]);
   const [operators, setOperators] = useState([]);
   const [operations, setOprations] = useState([]);
