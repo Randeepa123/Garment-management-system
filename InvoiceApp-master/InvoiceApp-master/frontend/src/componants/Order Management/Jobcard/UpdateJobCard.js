@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
@@ -6,23 +6,161 @@ import logo from '../../../asserts/img/logo.png'
 
 
 
-function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder}) {
+function UpdateJobCard({
+    updateorder,
+    Id,
+    orderdate,
+    deliverydate,
+    customer,
+    priority,
+    styleNumber,
+    totalQuantity,
+    description,
+    fabricDetails,
+    color,
+    sizeRange,
+    sizeDistributionS,
+    sizeDistributionM,
+    sizeDistributionL,
+    sizeDistributionXL,
+    sizeDistribution2XL,
+    sizeDistribution3XL,
 
-    const [formattedOrderdate, setOrderdate] = React.useState("");
-    const [formattedDeliverydate, setDeliverydate] = React.useState("");
-    const [customer1, setCustomer] = React.useState("");
-    
+    measurementNotes,
 
+    frontDesignImageUrl,
+    frontDesignNotes,
+    backDesignImageUrl,
+    backDesignNotes,
+    patternMakingStartDate,
+    patternMakingEndDate,
+    patternMakingSupervisor,
+    patternMakingStatus,
+    cuttingStartDate,
+    cuttingEndDate,
+    cuttingSupervisor,
+
+    cuttingStatus,
+    printingStartDate,
+    printingEndDate,
+    printingSupervisor,
+    printingStatus,
+    sewingStartDate,
+    sewingEndDate,
+    sewingSupervisor,
+    sewingStatus,
+    finishingStartDate,
+    finishingEndDate,
+    finishingSupervisor,
+    finishingStatus,
+    qualityControlStartDate,
+    qualityControlEndDate,
+    qualityControlSupervisor,
+    qualityControlStatus,
+    packagingStartDate,
+    packagingEndDate,
+    packagingSupervisor,
+    packagingStatus,
+    qcMeasurementsCorrect,
+    qcStitchingQuality,
+    qcColorMatching,
+    qcFabricQuality,
+    qcPrintQuality,
+    qcWashTest,
+    qcFinishing,
+    qcLabelsAndTags,
+    qcNotes,
+
+    }) {
+
+        const [orderdate1, setOrderdate] = useState(orderdate);
+        const [deliverydate1, setDeliverydate] = useState(deliverydate);
+        const [customer1, setCustomer] = useState(customer);
+        const [priority1, setPriority] = useState(priority);
+        const [styleNumber1, setStyleNumber] = useState(styleNumber);
+        const [totalQuantity1, setTotalQuantity] = useState(totalQuantity);
+        const [description1, setDescription] = useState(description);
+        const [fabricDetails1, setFabricDetails] = useState(fabricDetails);
+        const [color1, setColor] = useState(color);
+        const [sizeRange1, setSizeRange] = useState(sizeRange);
+        const [sizeDistributionS1, setSizeDistributionS] = useState(sizeDistributionS);
+        const [sizeDistributionM1, setSizeDistributionM] = useState(sizeDistributionM);
+        const [sizeDistributionL1, setSizeDistributionL] = useState(sizeDistributionL);
+        const [sizeDistributionXL1, setSizeDistributionXL] = useState(sizeDistributionXL);
+        const [sizeDistribution2XL1, setSizeDistribution2XL] = useState(sizeDistribution2XL);
+        const [sizeDistribution3XL1, setSizeDistribution3XL] = useState(sizeDistribution3XL);
+
+        const [measurementNotes1,setmeasurementNotes]=useState(measurementNotes);
+
+        const [frontDesignImageUrl1, setFrontDesignImageUrl] = useState(frontDesignImageUrl);
+        const [frontDesignNotes1, setFrontDesignNotes] = useState(frontDesignNotes);
+        const [backDesignImageUrl1, setBackDesignImageUrl] = useState(backDesignImageUrl);
+        const [backDesignNotes1, setBackDesignNotes] = useState(backDesignNotes);
+
+
+        const [patternMakingStartDate1, setPatternMakingStartDate] = useState(patternMakingStartDate);
+        const [patternMakingEndDate1, setPatternMakingEndDate] = useState(patternMakingEndDate);
+        const [patternMakingSupervisor1, setPatternMakingSupervisor] = useState(patternMakingSupervisor);
+        const [patternMakingStatus1, setPatternMakingStatus] = useState(patternMakingStatus);
+        const [cuttingStartDate1, setCuttingStartDate] = useState(cuttingStartDate);
+        const [cuttingEndDate1, setCuttingEndDate] = useState(cuttingEndDate);
+        const [cuttingSupervisor1, setCuttingSupervisor] = useState(cuttingSupervisor);
+
+        const [cuttingStatus1, setCuttingStatus] = useState(cuttingStatus);
+        const [printingStartDate1, setPrintingStartDate] = useState(printingStartDate);
+        const [printingEndDate1, setPrintingEndDate] = useState(printingEndDate);
+        const [printingSupervisor1, setPrintingSupervisor] = useState(printingSupervisor);
+        const [printingStatus1, setPrintingStatus] = useState(printingStatus);
+        const [sewingStartDate1, setSewingStartDate] = useState(sewingStartDate);
+        const [sewingEndDate1, setSewingEndDate] = useState(sewingEndDate);
+        const [sewingSupervisor1, setSewingSupervisor] = useState(sewingSupervisor);
+        const [sewingStatus1, setSewingStatus] = useState(sewingStatus);
+        const [finishingStartDate1, setFinishingStartDate] = useState(finishingStartDate);
+        const [finishingEndDate1, setFinishingEndDate] = useState(finishingEndDate);
+        const [finishingSupervisor1, setFinishingSupervisor] = useState(finishingSupervisor);
+        const [finishingStatus1, setFinishingStatus] = useState(finishingStatus);
+        const [qualityControlStartDate1, setQualityControlStartDate] = useState(qualityControlStartDate);
+        const [qualityControlEndDate1, setQualityControlEndDate] = useState(qualityControlEndDate);
+        const [qualityControlSupervisor1, setQualityControlSupervisor] = useState(qualityControlSupervisor);
+        const [qualityControlStatus1, setQualityControlStatus] = useState(qualityControlStatus);
+        const [packagingStartDate1, setPackagingStartDate] = useState(packagingStartDate);
+        const [packagingEndDate1, setPackagingEndDate] = useState(packagingEndDate);
+        const [packagingSupervisor1, setPackagingSupervisor] = useState(packagingSupervisor);
+        const [packagingStatus1, setPackagingStatus] = useState(packagingStatus);
+        const [qcMeasurementsCorrect1, setQcMeasurementsCorrect] = useState(qcMeasurementsCorrect);
+        const [qcStitchingQuality1, setQcStitchingQuality] = useState(qcStitchingQuality);
+        const [qcColorMatching1, setQcColorMatching] = useState(qcColorMatching);
+        const [qcFabricQuality1, setQcFabricQuality] = useState(qcFabricQuality);
+        const [qcPrintQuality1, setQcPrintQuality] = useState(qcPrintQuality);
+        const [qcWashTest1, setQcWashTest] = useState(qcWashTest);
+        const [qcFinishing1, setQcFinishing] = useState(qcFinishing);
+        const [qcLabelsAndTags1, setQcLabelsAndTags] = useState(qcLabelsAndTags);
+        const [qcNotes1, setQcNotes] = useState(qcNotes);
+        
+        const [total1,settotal1]=useState(0)
+        
+        const total=(S, M, L, XL, XL2, XL3)=>{             
+            return S + M + L + XL + XL2 + XL3;
+         }
+
+         
+
+
+        
 
     useEffect(() => {
-        console.log("Status:", updated)
-        console.log("Jobcard Id:", id);
-        if(updated==false){
-            setOrderdate('');
-            setDeliverydate('');    
-            setCustomer('');
-        }
-    }, [updated])
+        console.log("Status:")
+        console.log("Jobcard Id:", Id);
+        const caltotal=total(
+            parseInt(sizeDistributionS1, 10) || 0,
+            parseInt(sizeDistributionM1, 10) || 0,
+            parseInt(sizeDistributionL1, 10) || 0,
+            parseInt(sizeDistributionXL1, 10) || 0,
+            parseInt(sizeDistribution2XL1, 10) || 0,
+            parseInt(sizeDistribution3XL1, 10) || 0
+        );
+        settotal1(caltotal)
+    }, [sizeDistributionS1, sizeDistributionM1, sizeDistributionL1, sizeDistributionXL1, sizeDistribution2XL1, sizeDistribution3XL1])
 
   return (
     <>
@@ -40,7 +178,7 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <p className= "Title" class="text-muted mb-0 small">Track production from cutting to final quality check</p>
                     </div>
                     <div class="col-md-auto text-md-end mt-2 mt-md-0">
-                        <div class="text-secondary fs-5 fw-bold">#GRM-2025-{id}</div>
+                        <div class="text-secondary fs-5 fw-bold">#GRM-2025-{Id}</div>
                     </div>
                 </div>
             </div>
@@ -51,7 +189,7 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <div class="detail-box">
                             <label>Order Date</label>
                             <div><input type="date"class="value"
-                                value={formattedOrderdate}
+                                value={orderdate1}
                                 onChange={(e) => {
                                     setOrderdate(e.target.value);
                                 }}
@@ -63,7 +201,7 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <div class="detail-box">
                             <label>Delivery Date</label>
                             <div ><input type="date"class="value"
-                                value={formattedDeliverydate}
+                                value={deliverydate1}
                                 onChange={(e) => {
                                     setDeliverydate(e.target.value);
                                 }}
@@ -75,7 +213,7 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <div class="detail-box">
                             <label>Customer</label>
                             <div ><input type="text"class="value"
-                                placeholder={customer}
+                                value={customer1}
                                 onChange={(e) => {
                                 setCustomer(e.target.value);
                                 }}
@@ -87,7 +225,10 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <div class="detail-box">
                             <label>Priority</label>
                             <div ><input type="text"class="value"
-                                value={formattedDeliverydate}
+                                value={priority1}
+                                onChange={(e)=>{
+                                    setPriority(e.target.value)
+                                }}
                             /></div>
                             
                         </div>
@@ -96,42 +237,82 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Style Number</label>
-                            <div ><input type="text"class="value"/></div>
+                            <div ><input type="text"class="value"
+                                value={styleNumber1}
+                                onChange={(e)=>{
+                                    setStyleNumber(e.target.value)
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Total Quantity</label>
-                            <div ><input type="text"class="value"/></div> 
+                            <div ><input type="text"class="value"
+                                value={total1}
+                                readOnly
+                                onChange={(e)=>{
+                                    setTotalQuantity(e.target.value)
+                                }}
+                            /></div> 
                         </div>
                     </div>
                     
                     <div class="col-12">
                         <div class="detail-box">
                             <label>Description</label>
-                            <div ><input type="text"class="value"/></div>
+                            <div ><input type="text"class="value"
+                                value={description1}
+                                onChange={(e)=>{
+                                    setDescription(e.target.value)
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
                         <div class="detail-box">
                             <label>Fabric Details</label>
-                            <div ><input type="text"class="value"/></div>
+                            <div ><input type="text"class="value"
+                                value={fabricDetails}
+                                onChange={(e)=>{
+                                    setFabricDetails(e.target.value)
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
                         <div class="detail-box">
                             <label>Color</label>
-                            <div ><input type="text"class="value"/></div>
+                            <div ><input type="text"class="value"
+                                value={color}
+                                onChange={(e)=>{
+                                    setColor(e.target.value)
+                                }}
+                            /></div>
                         </div>
                     </div>
                     
                     <div class="col-md-4">
                         <div class="detail-box">
                             <label>Size Range</label>
-                            <div ><input type="text"class="value"/></div>
+                            <div ><select 
+                                    class="form-select" 
+                                    id="sizeRange" 
+                                    value={sizeRange1} 
+                                    onChange={(e) => setSizeRange(e.target.value)}
+                                >
+                                    <option value="">Select a size range</option>
+                                    <option value="XS-S">XS - S</option>
+                                    <option value="S-L">S - M</option>
+                                    <option value="M-XL">M - L</option>
+                                    <option value="L-2XL">L - XL</option>
+                                    <option value="s-2XL">XL - 2XL</option>
+                                    <option value="s-3XL">2XL - 3XL</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,13 +339,60 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <tbody>
                             <tr>
                                 <td>Quantity</td>
-                                <td>50</td>
-                                <td>100</td>
-                                <td>150</td>
-                                <td>100</td>
-                                <td>75</td>
-                                <td>25</td>
-                                <td>500</td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={sizeDistributionS1}
+                                        onChange={(e)=>{
+                                        setSizeDistributionS(e.target.value)
+                                    }}
+                                    /></div>
+                                </td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={sizeDistributionM1}
+                                        onChange={(e)=>{
+                                            setSizeDistributionM(e.target.value)
+                                    }}
+                                    /></div>
+                                </td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={sizeDistributionL1}
+                                        onChange={(e)=>{
+                                        setSizeDistributionL(e.target.value)
+                                    }}
+                                    /></div>
+                                </td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={sizeDistributionXL1}
+                                        onChange={(e)=>{
+                                        setSizeDistributionXL(e.target.value)
+                                    }}
+                                    /></div>
+                                </td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={sizeDistribution2XL1}
+                                        onChange={(e)=>{
+                                        setSizeDistribution2XL(e.target.value)
+                                    }}
+                                    /></div>
+                                </td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={sizeDistribution3XL1}
+                                        onChange={(e)=>{
+                                        setSizeDistribution3XL(e.target.value)
+                                    }}
+                                    /></div>
+                                </td>
+                                <td>
+                                    <div ><input type="text"class="value"
+                                        value={total1}
+                                        readOnly
+                                    /></div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -236,7 +464,12 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                 
                 <div class="detail-box">
                     <label>Measurement Notes</label>
-                    <div class="value">All measurements are finished garment measurements. Tolerance: ±1cm. Wash care instructions: Machine wash cold, do not bleach, tumble dry low.</div>
+                    <div ><input type="text"class="value"
+                        value={measurementNotes1}
+                        onChange={(e)=>{
+                        setmeasurementNotes(e.target.value)
+                    }}
+                    /></div>
                 </div>
             </div>
             
@@ -247,8 +480,8 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <div class="card h-100">
                             <h5 class="card-header text-center fs-6">Front View</h5>
                             <div class="card-body">
-                                <div class="image-placeholder mb-3">
-                                    <img src="/api/placeholder/400/320" alt="T-shirt Front Design"/>
+                                <div class="image-value mb-3">
+                                    <img src="/api/value/400/320" alt="T-shirt Front Design"/>
                                 </div>
                                 <div class="detail-box">
                                     <label>Front Design Notes</label>
@@ -262,8 +495,8 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                         <div class="card h-100">
                             <h5 class="card-header text-center fs-6">Back View</h5>
                             <div class="card-body">
-                                <div class="image-placeholder mb-3">
-                                    <img src="/api/placeholder/400/320" alt="T-shirt Back Design"/>
+                                <div class="image-value mb-3">
+                                    <img src="/api/value/400/320" alt="T-shirt Back Design"/>
                                 </div>
                                 <div class="detail-box">
                                     <label>Back Design Notes</label>
@@ -293,58 +526,226 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                             <tr>
                                 <td>Pattern Making</td>
                                 <td>Design</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={patternMakingStartDate1}
+                                    onChange={(e)=>{
+                                        setPatternMakingStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={patternMakingEndDate1}
+                                    onChange={(e)=>{
+                                        setPatternMakingEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={patternMakingSupervisor1}
+                                    onChange={(e)=>{
+                                        setPatternMakingSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={patternMakingStatus1} // Ensure this is correctly set in state
+                                    onChange={(e) => setPatternMakingStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                             <tr>
                                 <td>Cutting</td>
                                 <td>Cutting</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={cuttingStartDate1}
+                                    onChange={(e)=>{
+                                        setCuttingStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={cuttingEndDate1}
+                                    onChange={(e)=>{
+                                        setCuttingEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={cuttingSupervisor1}
+                                    onChange={(e)=>{
+                                        setCuttingSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={cuttingStatus1} 
+                                    onChange={(e) => setCuttingStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                             <tr>
                                 <td>Printing</td>
                                 <td>Print Shop</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={printingStartDate1}
+                                    onChange={(e)=>{
+                                        setPrintingStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={printingEndDate1}
+                                    onChange={(e)=>{
+                                        setPrintingEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={printingSupervisor1}
+                                    onChange={(e)=>{
+                                        setPrintingSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={printingStatus1} // Ensure this is correctly set in state
+                                    onChange={(e) => setPrintingStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                             <tr>
                                 <td>Sewing</td>
                                 <td>Production</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={sewingStartDate1}
+                                    onChange={(e)=>{
+                                        setSewingStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={sewingEndDate1}
+                                    onChange={(e)=>{
+                                        setPrintingEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={sewingSupervisor1}
+                                    onChange={(e)=>{
+                                        setSewingSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={sewingStatus1} // Ensure this is correctly set in state
+                                    onChange={(e) => setSewingStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                             <tr>
                                 <td>Finishing</td>
                                 <td>Finishing</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={finishingStartDate1}
+                                    onChange={(e)=>{
+                                        setFinishingStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={finishingEndDate1}
+                                    onChange={(e)=>{
+                                        setFinishingEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={finishingSupervisor1}
+                                    onChange={(e)=>{
+                                        setFinishingSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={finishingStatus1} // Ensure this is correctly set in state
+                                    onChange={(e) => setFinishingStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                             <tr>
                                 <td>Quality Control</td>
                                 <td>QC</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={qualityControlStartDate1}
+                                    onChange={(e)=>{
+                                        setQualityControlStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={qualityControlEndDate1}
+                                    onChange={(e)=>{
+                                        setQualityControlEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={qualityControlSupervisor1}
+                                    onChange={(e)=>{
+                                        setQualityControlSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={qualityControlStatus1} // Ensure this is correctly set in state
+                                    onChange={(e) => setQualityControlStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                             <tr>
                                 <td>Packaging</td>
                                 <td>Packaging</td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="date"class="value"/></td>
-                                <td><input type="text"class="value"/></td>
-                                <td><input type="text"value="ss" class="value"/></td>
+                                <td><input type="date"class="value"
+                                    value={packagingStartDate1}
+                                    onChange={(e)=>{
+                                        setPackagingStartDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="date"class="value"
+                                    value={packagingEndDate1}
+                                    onChange={(e)=>{
+                                        setPackagingEndDate(e.target.value)
+                                }}
+                                /></td>
+                                <td><input type="text"class="value"
+                                    value={packagingSupervisor1}
+                                    onChange={(e)=>{
+                                        setPackagingSupervisor(e.target.value)
+                                }}
+                                /></td>
+                                <td><select 
+                                    className="form-select"
+                                    value={packagingStatus1} // Ensure this is correctly set in state
+                                    onChange={(e) => setPackagingStatus(e.target.value)}
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Delayed">Delayed</option>
+                                </select></td>
                             </tr>
                         </tbody>
                     </table>
@@ -356,49 +757,73 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                 <div class="g-3 row mb-3">
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="measurement"/>
+                            <input class="form-check-input" type="checkbox" id="measurement"
+                                checked={qcMeasurementsCorrect1}
+                                onChange={(e)=>{setQcMeasurementsCorrect(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="measurement">Measurements Correct</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="stitching"/>
+                            <input class="form-check-input" type="checkbox" id="stitching"
+                                checked={qcStitchingQuality1}
+                                onChange={(e)=>{setQcStitchingQuality(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="stitching">Stitching Quality</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color"/>
+                            <input class="form-check-input" type="checkbox" id="color"
+                                checked={qcColorMatching1}
+                                onChange={(e)=>{setQcColorMatching(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="color">Color Matching</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="fabric"/>
+                            <input class="form-check-input" type="checkbox" id="fabric"
+                                checked={qcFabricQuality1}
+                                onChange={(e)=>{setQcFabricQuality(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="fabric">Fabric Quality</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="print"/>
+                            <input class="form-check-input" type="checkbox" id="print"
+                                checked={qcPrintQuality1}
+                                onChange={(e)=>{setQcPrintQuality(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="print">Print Quality</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="wash"/>
+                            <input class="form-check-input" type="checkbox" id="wash"
+                                checked={qcWashTest1}
+                                onChange={(e)=>{setQcWashTest(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="wash">Wash Test</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="finish"/>
+                            <input class="form-check-input" type="checkbox" id="finish"
+                                checked={qcFinishing1}
+                                onChange={(e)=>{setQcFinishing(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="finish">Finishing</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="labels"/>
+                            <input class="form-check-input" type="checkbox" id="labels"
+                                checked={qcLabelsAndTags1}
+                                onChange={(e)=>{setQcLabelsAndTags(e.target.checked)}}
+                            />
                             <label class="form-check-label" for="labels">Labels & Tags</label>
                         </div>
                     </div>
@@ -406,22 +831,107 @@ function UpdateJobCard({updated,id,orderdate,deliverydate,customer,updateorder})
                 
                 <div class="detail-box">
                     <label>QC Notes</label>
-                    <div class="value"></div>
+                    <div class="value">
+                        <input type="text"class="value"
+                            value={qcNotes1}
+                            onChange={(e)=>{
+                                setQcNotes(e.target.value)
+                        }}
+                        />
+                    </div>
                 </div>
             </div>
             
             <div class="card-body border-top text-center pt-4">
                 <div class="barcode-img">
-                    BARCODE PLACEHOLDER
+                    BARCODE value
                 </div>
             </div>
             <button onClick={()=>{
 
                     const data = {
-                        orderdate: formattedOrderdate,
-                        deliverydate: formattedDeliverydate,
+                        orderdate: orderdate1,
+                        deliverydate: deliverydate1,
                         customer: customer1,
-                    }
+                        priority: priority1,
+                        styleNumber: styleNumber1,
+                        description: description1,
+                        fabricDetails: fabricDetails1,
+                        color: color1,
+                        sizeRange: sizeRange1,
+                        sizeDistribution: {
+                            S: sizeDistributionS1,
+                            M: sizeDistributionM1,
+                            L: sizeDistributionL1,
+                            XL: sizeDistributionXL1,
+                            "2XL": sizeDistribution2XL1,
+                            "3XL": sizeDistribution3XL1
+                        },
+                        measurementNotes: measurementNotes1,
+                        frontDesign: {
+                            imageUrl: frontDesignImageUrl1,
+                            notes: frontDesignNotes1
+                        },
+                        backDesign: {
+                            imageUrl: backDesignImageUrl1,
+                            notes: backDesignNotes1
+                        },
+                        patternMaking: {
+                            startDate: patternMakingStartDate1,
+                            endDate: patternMakingEndDate1,
+                            supervisor: patternMakingSupervisor1,
+                            status: patternMakingStatus1
+                        },
+                        cutting: {
+                            startDate: cuttingStartDate1,
+                            endDate: cuttingEndDate1,
+                            supervisor: cuttingSupervisor1,
+                            status: cuttingStatus1
+                        },
+                        printing: {
+                            startDate: printingStartDate1,
+                            endDate: printingEndDate1,
+                            supervisor: printingSupervisor1,
+                            status: printingStatus1
+                        },
+                        sewing: {
+                            startDate: sewingStartDate1,
+                            endDate: sewingEndDate1,
+                            supervisor: sewingSupervisor1,
+                            status: sewingStatus1
+                        },
+                        finishing: {
+                            startDate: finishingStartDate1,
+                            endDate: finishingEndDate1,
+                            supervisor: finishingSupervisor1,
+                            status: finishingStatus1
+                        },
+                        qualityControl: {
+                            startDate: qualityControlStartDate1,
+                            endDate: qualityControlEndDate1,
+                            supervisor: qualityControlSupervisor1,
+                            status: qualityControlStatus1,
+                            checks: {
+                                measurementsCorrect: qcMeasurementsCorrect1,
+                                stitchingQuality: qcStitchingQuality1,
+                                colorMatching: qcColorMatching1,
+                                fabricQuality: qcFabricQuality1,
+                                printQuality: qcPrintQuality1,
+                                washTest: qcWashTest1,
+                                finishing: qcFinishing1,
+                                labelsAndTags: qcLabelsAndTags1,
+                                notes: qcNotes1
+                            }
+                        },
+                        packaging: {
+                            startDate: packagingStartDate1,
+                            endDate: packagingEndDate1,
+                            supervisor: packagingSupervisor1,
+                            status: packagingStatus1
+                        },
+                        total: total1
+                        };
+                    
                     const stat=updateorder(data);
                     if (stat) {
                         alert("Order updated successfully!");
