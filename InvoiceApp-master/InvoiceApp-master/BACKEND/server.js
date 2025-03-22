@@ -4,6 +4,16 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 require("dotenv").config();
+const customerRouter = require("./routes/customerRouter.js");
+const invoiceRouter = require("./routes/invoiceRoute.js");
+
+
+
+
+
+const HOST = process.env.HOST || 'localhost';
+const URI = process.env.MONGODB_URI;
+
 
 const app = express();
 
@@ -15,24 +25,23 @@ app.use(bodyParser.json());
 
 const URL = process.env.MONGODB_URL;
 
-mongoose.connect(URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const connect = async () => {
+    try {
+        await mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('MongoDB Error:', error);
+    }
+};
 
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("Mongoose connection success!");
-});
+connect();
 
-// const studentRouter = require("./routes/students.js");
-const customerRouter = require("./routes/customer.js");
-const invoiceRouter = require("./routes/invoice.js");
+
 
 // app.use("/student" , studentRouter);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is up and running on port ${PORT}`);
+  console.log(`Server is up and running on port ${HOST}and${PORT}`);
 });

@@ -17,7 +17,7 @@ export const InvoiceAddItem = () => {
     total: parseFloat(itemTotal) || 0, // Should be quantity * price
   };
 
-  const addItemToInvoice = async (e) => {
+  const addItemToInvoice = async(e) => {
     e.preventDefault();
     try {
       console.log("Adding item to invoice:", JSON.stringify(newItem));
@@ -27,7 +27,7 @@ export const InvoiceAddItem = () => {
         newItem,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type":"application/json",
           },
         }
       );
