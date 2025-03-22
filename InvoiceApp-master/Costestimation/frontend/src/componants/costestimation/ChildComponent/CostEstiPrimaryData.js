@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, Typography, Divider } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import axios from "axios";
 
-const CostEstiPrimaryData = (props) => {
+const CostEstiPrimaryData = ({ setCurrentCostSheetID }) => {
   const [costData, setCostData] = useState({
-    costSheetID:"",
-    productName:"",
-    estimatedStartDate:"",
-    estimatedEndDate:"",
+    costSheetID: "",
+    productName: "",
+    estimatedStartDate: "",
+    estimatedEndDate: "",
   });
 
   const handleInputChange = (e) => {
@@ -15,94 +16,35 @@ const CostEstiPrimaryData = (props) => {
     setCostData({ ...costData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Cost Data:", costData);
+    try {
+      const response = await axios.post("http://localhost:8070/api/cost-estimations", costData);
+      alert("Cost Estimation Created Successfully");
+      
+      // Pass the new costSheetID to the parent component
+      setCurrentCostSheetID(costData.costSheetID);
+      
+    } catch (error) {
+      console.error("Error adding cost estimation:", error);
+    }
   };
 
   return (
-    <Box
-      sx={{
-        padding: 2,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        marginTop: "5px",
-      }}
-    >
-      <Box sx={{ flex: 1, paddingRight: 2 }}>
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{
-            marginBottom: "30px",
-            marginTop: "-40px",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <ControlPointIcon sx={{ marginRight: "10px" }} />
-          Create New Cost-Estimation
-        </Typography>
+    <Box sx={{ padding: 1, display: "flex", flexDirection: "column", gap:2 ,marginRight:"-90px", width:"350px"}}>
+      <Typography variant="h6">
+        <ControlPointIcon sx={{ marginRight: "5px" }} />
+        Create New Cost Estimation
+      </Typography>
 
-        <form onSubmit={handleSubmit}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              marginTop: "20px",
-            }}
-          >
-            <TextField
-              label="CostSheet ID"
-              name="costSheetID"
-              value={costData.CostSheetID}
-              onChange={handleInputChange }
-              variant="outlined"
-              required
-            />
+      <form onSubmit={handleSubmit}>
+        <TextField sx={{marginTop:"10px"}}label="CostSheet ID" name="costSheetID" value={costData.costSheetID} onChange={handleInputChange} required />
+        <TextField sx={{marginTop:"15px"}} label="Product Name" name="productName" value={costData.productName} onChange={handleInputChange} required />
+        <TextField sx={{marginTop:"15px",width:"200px"}}label="Estimated Start Date" name="estimatedStartDate" type="date" value={costData.estimatedStartDate} onChange={handleInputChange} required />
+        <TextField sx={{marginTop:"15px", display:"flex" , width:"200px"}}label="Estimated End Date" name="estimatedEndDate" type="date" value={costData.estimatedEndDate} onChange={handleInputChange} required />
 
-            <TextField
-              label="Product Name"
-              name="productName"
-              value={costData.ProductName}
-              onChange={handleInputChange}
-              variant="outlined"
-              required
-            />
-
-            <TextField
-              label="Estimated Start-Date"
-              name="estimatedStartDate"
-              value={costData.StartDate}
-              onChange={handleInputChange}
-              variant="outlined"
-              type="Date"
-              required
-            />
-
-            <TextField
-              label="Estimated End-Date"
-              name="estimatedEndDate"
-              value={costData.EndDate}
-              onChange={handleInputChange}
-              variant="outlined"
-              type="Date"
-              required
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ marginTop: 2 }}
-            >
-              ADD
-            </Button>
-          </Box>
-        </form>
-      </Box>
-
+        <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>ADD</Button>
+      </form>
     </Box>
   );
 };

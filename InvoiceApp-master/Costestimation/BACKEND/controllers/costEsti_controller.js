@@ -12,6 +12,32 @@ const getAllCostEstimationSheets = (req, res, next) => {
     });
 };
 
+const getSingleCostEstimationSheet = (req, res,next) => {
+  const { costSheetID } = req.params;
+
+  if (!costSheetID) {
+    return res.status(400).json({ error: "Missing costSheetID" });
+  }
+
+  CostEstimation.findOne({ costSheetID })
+    .then((costEstimation) => {
+      if (!costEstimation) {
+        return res.status(404).json({ error: "Cost estimation not found" });
+      }
+      res.status(200).json({ data: costEstimation });
+    })
+    .catch((error) => {
+      console.error("Error fetching cost estimation:", error);
+      res.status(500).json({ error: "Server error while fetching cost estimation" });
+    });
+};
+
+
+
+
+
+
+
 const addCostEstimation = (req, res, next) => {
   const {
     costSheetID,
@@ -33,7 +59,7 @@ const addCostEstimation = (req, res, next) => {
       .json({ error: "All required fields must be provided." });
   }
 
-  // Create new cost estimation
+
   const newCostEstimation = new CostEstimation({
     costSheetID,
     productName,
@@ -56,68 +82,46 @@ const addCostEstimation = (req, res, next) => {
     });
 };
 
-const addCostBreakdown = (costId, breakdownData, callback) => {
-  const { description, supplierName, unitType, consumption, costPerUnit } = breakdownData;
 
-  // Validate input fields
-  if (!description || !supplierName || !unitType || !consumption || !costPerUnit) {
-    return callback({ error: "All fields are required." }, null);
-  }
+const addCostBreakdown = async (req, res) => {
+  try {
+    const { costId } = req.params;
+    const { costBreakdown } = req.body;
 
-  // Validate costId format (ensure it follows the correct structure, e.g., string or valid object ID)
-  if (!costId || typeof costId !== 'string') {
-    return callback({ error: "Invalid cost estimation ID." }, null);
-  }
+    if (!costId) {
+      return res.status(400).json({ error: "Cost Sheet ID is required" });
+    }
 
-  // Find the cost estimation document by costSheetID
-  CostEstimation.findOne({ costSheetID: costId })
-      .then((costEstimation) => {
-          if (!costEstimation) {
-              return callback({ error: `Cost Estimation with ID ${costId} not found.` }, null);
-          }
+    if (!costBreakdown || !Array.isArray(costBreakdown)) {
+      return res.status(400).json({ error: "Invalid cost breakdown data" });
+    }
 
-          // Calculate total cost for this breakdown
-          const totalCost = consumption * costPerUnit;
+    const costEstimation = await CostEstimation.findOne({ costSheetID: costId });
 
-          // Add new cost breakdown to the costBreakdown array
-          costEstimation.costBreakdown.push({
-              description,
-              supplierName,
-              unitType,
-              consumption,
-              costPerUnit,
-              totalCost,
-          });
+    if (!costEstimation) {
+      return res.status(404).json({ error: "Cost Sheet not found" });
+    }
 
-          // Update totalCostSum after adding new breakdown
-          costEstimation.totalCostSum = costEstimation.costBreakdown.reduce(
-              (sum, breakdown) => sum + breakdown.totalCost,
-              0
-          );
-
-          // Save updated cost estimation document
-          return costEstimation.save();
-      })
-      .then((updatedCostEstimation) => {
-          callback(null, updatedCostEstimation); // Return the updated document via callback
-      })
-      .catch((error) => {
-          console.error("Error in adding cost breakdown:", error);
-
-          // Handle specific CastError if invalid costId format
-          if (error.name === 'CastError') {
-              return callback({ error: "Invalid cost estimation ID format." }, null);
-          }
-
-          // Handle MongoDB-related errors
-          if (error.code && error.code === 11000) {
-              return callback({ error: "Duplicate cost estimation ID found." }, null);
-          }
-
-          // Generic error message
-          callback({ error: "Error adding cost breakdown." }, null);
+    costBreakdown.forEach((breakdown) => {
+      costEstimation.costBreakdown.push({
+        description: breakdown.description,
+        supplierName: breakdown.supplierName,
+        unitType: breakdown.unitType,
+        consumption: breakdown.consumption,
+        costPerUnit: breakdown.costPerUnit,
+        totalCost: breakdown.consumption * breakdown.costPerUnit,
       });
+    });
+
+    await costEstimation.save();
+
+    res.status(201).json({ message: "Cost breakdown added successfully", updatedCostEstimation: costEstimation });
+  } catch (error) {
+    console.error("Error adding cost breakdown:", error);
+    res.status(500).json({ error: "Server error while adding cost breakdown" });
+  }
 };
+
 
 
 
@@ -226,6 +230,7 @@ const deleteCostBreakdown = async (req, res, next) => {
 };
 
 exports.getAllCostEstimationSheets = getAllCostEstimationSheets;
+exports.getSingleCostEstimationSheet = getSingleCostEstimationSheet;
 exports.addCostEstimation = addCostEstimation;
 exports.addCostBreakdown = addCostBreakdown;
 exports.updateCostEstimation = updateCostEstimation;

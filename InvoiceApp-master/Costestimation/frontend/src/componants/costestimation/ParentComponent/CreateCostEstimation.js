@@ -1,68 +1,66 @@
 import React, { useEffect, useState } from "react";
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
 import CostBreakdownData from "../ChildComponent/CostBreakdownData";
-import CostEstimationSheet from "../ChildComponent/CostEstimationSheet";
-import { Divider, Box, Button } from "@mui/material";
-import Axios from "axios";
+import OperationSheet from "../ChildComponent/OperationSheet";
+import { Divider, Box } from "@mui/material";
+//import { CostContext } from "../../../contex/CostContext";
+
 
 export const CreateCostEstimation = () => {
-  const [costSheets, setCostSheets] = useState([]);
 
-  useEffect(() => {
-    getAllCostEstimationSheets();
-  }, []);
+  //const [Cost]
+  //const [refresh, setRefresh] = useState("");
+  const [currentCostSheetID, setCurrentCostSheetID] = useState(null);
+  const [selectedCostSheet, setSelectedCostSheet] = useState(null);
 
-  const getAllCostEstimationSheets = () => {
-    Axios.get('http://localhost:8070/api/costEstimations')
-      .then((response) => {
-        setCostSheets(response.data.response || [])
-        
-      })
-      .catch((error) => {
-        console.error("Axios error:", error);
-      });
+  const handleAddBreakdown = (newBreakdowns) => {
+    if (!selectedCostSheet) return;
+
+    const updatedSheet = {
+      ...selectedCostSheet,
+      costBreakdown: [...selectedCostSheet.costBreakdown, ...newBreakdowns],
+    };
+
+    setSelectedCostSheet(updatedSheet);
+   
   };
 
-
   return (
-    <Box sx={{ display: "flex" }}>
-      <CostEstiPrimaryData />
-
-      <Box>
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{
-            bgcolor: "#b2b8b8",
-            width: "2px",
-            height: "100%",
-            marginLeft: "2px",
-            marginTop: "20px",
-            marginRight: "10px",
-          }}
-        />
-      </Box>
-      <CostBreakdownData />
-
-      <Box>
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{
-            bgcolor: "#b2b8b8",
-            width: "2px",
-            height: "100%",
-            marginLeft: 2,
-            marginTop: "20px",
-          }}
-        />
-      </Box>
-
-      <CostEstimationSheet rows={costSheets} allowEdit={true} showSubmit={true} isNewSheet={true}/>
-
+    <Box sx={{ display: "flex", p: 2, gap: 2 }}>
+      <Box sx={{ flex: 1 }}>
     
+
+        <CostEstiPrimaryData 
+          setCurrentCostSheetID={setCurrentCostSheetID}
+          />
+     
+          
+       
+      </Box>
+
+      <Divider orientation="vertical" flexItem />
+
+      <Box sx={{ flex: 1 }}>
+      
+        <CostBreakdownData 
+          currentCostSheetID={currentCostSheetID}
+          onAddBreakdown={handleAddBreakdown} 
+        />
+         
+      </Box>
+    
+
+      <Divider orientation="vertical" flexItem />
+
+      <Box sx={{ flex: 2 }}>
+        <OperationSheet 
+          selectedCostSheet={selectedCostSheet}
+          allowEdit={true}
+          showSubmit={true}
+        />
+      </Box>
     </Box>
   );
-};
+  };
 
 export default CreateCostEstimation;

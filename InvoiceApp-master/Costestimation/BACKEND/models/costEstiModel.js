@@ -4,44 +4,44 @@ const Schema = mongoose.Schema;
 const costEstimationSchema = new Schema({
   costSheetID: {
     type: String,
-    required: true,
-    unique: true, // Ensures unique cost sheet ID
+    required: false,
+    unique: true, 
   },
   productName: {
     type: String,
-    required: true, // Name of the product being estimated
+    required: true, 
   },
   estimatedStartDate: {
     type: Date,
-    required: true, // Start date of the estimation period
+    required: true, 
   },
   estimatedEndDate: {
     type: Date,
-    required: true, // End date of the estimation period
+    required: true,
   },
   costBreakdown: [
     {
-      description: { type: String, required: true }, // Description of the cost
-      supplierName: { type: String, required: true }, // Supplier for the item
-      unitType: { type: String, required: true }, // Unit type (e.g., kg, hour)
-      consumption: { type: Number, required: true }, // Quantity of units consumed
-      costPerUnit: { type: Number, required: true }, // Cost per unit
+      description: { type: String, required: true }, 
+      supplierName: { type: String, required: true }, 
+      unitType: { type: String, required: true }, 
+      consumption: { type: Number, required: true }, 
+      costPerUnit: { type: Number, required: true }, 
       totalCost: { 
         type: Number, 
         required: true, 
         default: function() {
-          return this.consumption * this.costPerUnit; // Automatically calculate total cost
+          return this.consumption * this.costPerUnit; 
         }
-      }, // Total cost calculated automatically
+      }, 
     },
   ],
   totalCostSum: {
     type: Number,
-    default: 0, // Default total cost sum is 0
+    default: 0, 
   },
   date: {
     type: Date,
-    default: Date.now, // Default to the current date when creating the document
+    default: Date.now, 
   },
 });
 

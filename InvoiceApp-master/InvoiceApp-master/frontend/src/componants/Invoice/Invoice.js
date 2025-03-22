@@ -43,6 +43,7 @@ export const Invoice = () => {
 
     fetchInvoice();
   }, [refresh, InvoiceNumber]);
+  
 
   // Update total when items change
   useEffect(() => {

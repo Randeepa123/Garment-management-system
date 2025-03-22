@@ -1,133 +1,184 @@
 import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
 import axios from "axios";
+import { TextField, Button, Typography, Box, List, ListItem, ListItemText } from "@mui/material";
 
-const CostBreakdownData = () => {
+
+const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown }) => {
   const [breakdowns, setBreakdowns] = useState([]);
-  const [newBreakdown, setNewBreakdown] = useState({
+  const [formData, setFormData] = useState({
     description: "",
     supplierName: "",
     unitType: "",
     consumption: "",
     costPerUnit: "",
   });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleInputChange = (e) => {
-    setNewBreakdown({ ...newBreakdown, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const addBreakdown = () => {
-    setBreakdowns([...breakdowns, newBreakdown]); // No totalCost calculation here
-    setNewBreakdown({
+    if (!Object.values(formData).every(field => field.trim() !== "")) {
+      setError("Please fill all fields before adding.");
+      setTimeout(() => setError(""), 3000);
+      return;
+    }
+
+    const newBreakdown = {
+      ...formData,
+      consumption: parseFloat(formData.consumption),
+      costPerUnit: parseFloat(formData.costPerUnit),
+    };
+
+    setBreakdowns(prev => [...prev, newBreakdown]);
+    setFormData({
       description: "",
       supplierName: "",
       unitType: "",
       consumption: "",
       costPerUnit: "",
     });
+    setError("");
   };
 
-  const handleSubmit = async () => {
+  const submitBreakdown = async () => {
+    if (!currentCostSheetID) {
+      setError("Cost Sheet ID is missing!");
+      return;
+    }
+
+    if (breakdowns.length === 0) {
+      setError("Please add at least one breakdown before submitting.");
+      return;
+    }
+
     try {
-      await axios.post("/api/cost-estimation", { costBreakdown: breakdowns }); // Send raw data, backend handles calculations
-      alert("Cost Breakdown Submitted Successfully");
+      await axios.post(
+        `http://localhost:8070/api/cost-estimations/${currentCostSheetID}/cost-breakdown`,
+        { costBreakdown: breakdowns }
+      );
+
+      onAddBreakdown(breakdowns); // Notify parent about new breakdowns
+      setSuccess("Cost breakdown submitted successfully!");
+      setBreakdowns([]);
+      
+      setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
-      console.error("Error submitting cost breakdown:", error);
+      console.error("Submission error:", error.response?.data || error.message);
+      setError(error.response?.data?.error || "Failed to submit cost breakdown");
+      
+      setTimeout(() => setError(""), 3000);
     }
   };
 
+
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: "1000px",
-        margin: "auto",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      {/* Form Section */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          width: "250px",
-        }}
-      >
-        <Typography variant="h6" gutterBottom sx={{ marginBottom: "-5px" }}>
-          Cost-Breakdown
+    <Box sx={{ maxWidth: 800, margin: "auto", p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "#fff" }}>
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Cost Breakdown Data
+      </Typography>
+
+      {error && (
+        <Typography color="error" sx={{ mb: 2 }}>
+          {error}
         </Typography>
+      )}
+
+      {success && (
+        <Typography color="green" sx={{ mb: 2 }}>
+          {success}
+        </Typography>
+      )}
+
+      <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2,height:"600px" }}>
         <TextField
           label="Description"
           name="description"
-          value={newBreakdown.description}
-          onChange={handleInputChange}
+          value={formData.description}
+          onChange={handleChange}
           fullWidth
-          required
+          variant="outlined"
         />
-        <TextField
-          label="Supplier Name"
-          name="supplierName"
-          value={newBreakdown.supplierName}
-          onChange={handleInputChange}
-          fullWidth
-          required
-        />
+                  <TextField
+            label="Supplier Name"
+            name="supplierName"
+            value={formData.supplierName}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            />
 
-        {/* Dropdown for Unit Type */}
-        <FormControl fullWidth required>
-          <InputLabel>Unit Type</InputLabel>
-          <Select
+            <TextField
+            label="Unit Type"
             name="unitType"
-            value={newBreakdown.unitType}
-            onChange={handleInputChange}
+            value={formData.unitType}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            />
+
+            <TextField
+            label="Consumption"
+            name="consumption"
+            type="number"
+            value={formData.consumption}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            />
+
+            <TextField
+            label="Cost Per Unit"
+            name="costPerUnit"
+            type="number"
+            value={formData.costPerUnit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            />
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+          <Button sx={{height:"50px"}} variant="contained" color="primary" onClick={addBreakdown}>
+            Add Breakdown
+          </Button>
+          <Button sx={{
+            position:"relative",
+            right:"124px",
+            top:"70px"
+          }}
+            variant="contained" 
+            color="secondary" 
+            onClick={submitBreakdown}
+            disabled={breakdowns.length === 0}
           >
-            <MenuItem value="metres">Metres</MenuItem>
-            <MenuItem value="pieces">Pieces</MenuItem>
-            <MenuItem value="kg">Kilograms</MenuItem>
-            <MenuItem value="bundle">Bundle</MenuItem>
-          </Select>
-        </FormControl>
-
-        <TextField
-          label="Consumption"
-          name="consumption"
-          type="number"
-          value={newBreakdown.consumption}
-          onChange={handleInputChange}
-          fullWidth
-          required
-        />
-
-        <TextField
-          label="Cost per Unit"
-          name="costPerUnit"
-          type="number"
-          value={newBreakdown.costPerUnit}
-          onChange={handleInputChange}
-          fullWidth
-          required
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={addBreakdown}
-          sx={{ width: "100%" }}
-        >
-          Add Breakdown
-        </Button>
+            Submit
+          </Button>
+        </Box>
       </Box>
+
+      {breakdowns.length > 0 && (
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Added Breakdowns
+          </Typography>
+    {/*   <List>
+            {breakdowns.map((item, index) => (
+              <ListItem key={index}>
+                <ListItemText
+                  primary={`${item.description} - ${item.supplierName}`}
+                  secondary={`${item.consumption} ${item.unitType} @ ${item.costPerUnit} = ${item.consumption * item.costPerUnit}`}
+                />
+              </ListItem>
+            ))}
+          </List> */}
+        </Box>
+      )}
     </Box>
   );
 };

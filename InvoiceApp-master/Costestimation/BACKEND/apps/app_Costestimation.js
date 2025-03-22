@@ -17,6 +17,16 @@ Cost_app.get('/costEstimations', (req, res) => {
     });
 });
 
+Cost_app.get('/costEstimations/:costSheetID', (req, res) => {
+    Cost_controller.getSingleCostEstimationSheet(req, res)
+        .then(result => {
+            res.status(200).json(result);  
+        })
+        .catch(error => {
+            res.status(500).json({ error: "Error fetching cost estimation" }); 
+        });
+});
+
 
 Cost_app.post('/cost-estimations', (req, res) => {
     Cost_controller.addCostEstimation(req.body, (error, result) => {
@@ -27,7 +37,7 @@ Cost_app.post('/cost-estimations', (req, res) => {
     });
 });
 
-Cost_app.put('/cost-estimations/:costId/cost-breakdown', (req, res) => {
+Cost_app.post('/cost-estimations/:costId/cost-breakdown', (req, res) => {
     const costId = req.params.costId;
     const breakdownData = req.body;
 
@@ -77,20 +87,15 @@ Cost_app.delete('/deleteCostEstimationBreakdown', async (req, res) => {
       
         const { costSheetID, breakdownId } = req.body;
 
-     
         if (!costSheetID || !breakdownId) {
             return res.status(400).json({ error: "Missing required IDs" });
         }
 
-       
         const updatedCostEstimation = await Cost_controller.deleteCostBreakdown(costSheetID, breakdownId);
 
-     
         if (!updatedCostEstimation) {
             return res.status(404).json({ error: "Cost estimation not found" });
         }
-
-       
         res.status(200).json({ message: "Cost breakdown deleted successfully", data: updatedCostEstimation });
     } catch (error) {
         res.status(500).json({ error: "Error deleting cost breakdown" });

@@ -23,9 +23,8 @@ const CostEstimationSheet = ({ rows, allowEdit = false, showSubmit = false }) =>
     setSelectedBreakdown(breakdown); // Set the selected breakdown for editing
   };
 
-  // Handler for submitting the cost estimation sheet
+
   const handleSubmit = () => {
-    // You can add logic here for submitting the entire cost estimation sheet
     alert("Cost Estimation Sheet Submitted!");
   };
 
