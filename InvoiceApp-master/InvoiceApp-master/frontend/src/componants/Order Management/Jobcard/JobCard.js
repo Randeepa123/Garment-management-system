@@ -6,7 +6,8 @@ import logo from '../../../asserts/img/logo.png'
 
 
 
-function JobCard({addOrder,submitted}) {
+function JobCard({
+    addOrder,submitted}) {
 
     const [orderdate, setOrderdate] = React.useState("");
     const [deliverydate, setDeliverydate] = React.useState("");
