@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { TopicBar } from '../../componants/TopicBar'
 import axios from 'axios'
 import UpdateJobCard from '../../componants/Order Management/Jobcard/UpdateJobCard'
@@ -10,87 +10,38 @@ function UpdateOrder() {
 
   const location = useLocation();
   const {Id} = location.state || {};
-  const {orderdate} = location.state || {};
-  const {deliverydate} = location.state || {};
-  const {customer} = location.state || {};
-  const {priority} = location.state || {};
-  const {styleNumber} = location.state || {};
-  const {totalQuantity} = location.state || {};
-  const {description} = location.state || {};
-  const {fabricDetails} = location.state || {};
-  const {color} = location.state || {};
-  const {sizeRange} = location.state || {};
-
-  const {sizeDistributionS} = location.state || {};
-  const {sizeDistributionM} = location.state || {};
-  const {sizeDistributionL} = location.state || {};
-  const {sizeDistributionXL} = location.state || {};
-  const {sizeDistribution2XL} = location.state || {};
-  const {sizeDistribution3XL} = location.state || {};
-
-  const {frontDesignImageUrl}=location.state||{};
-  const {frontDesignNotes}=location.state||{};
-  const {backDesignImageUrl}=location.state||{};
-  const {backDesignNotes}=location.state||{};
-  const {patternMakingStartDate}=location.state||{};
-  const {patternMakingEndDate}=location.state||{};
-  const {patternMakingSupervisor}=location.state||{};
-  const {patternMakingStatus}=location.state||{};
-  const {cuttingStartDate}=location.state||{};
-  const {cuttingEndDate}=location.state||{};
-  const {cuttingSupervisor}=location.state||{};
-
-  const {measurementNotes}=location.state || {};
-
-  const {cuttingStatus} = location.state || {};
-
-  const {printingStartDate} = location.state || {};
-  const {printingEndDate} = location.state || {};
-  const {printingSupervisor} = location.state || {};
-  const {printingStatus} = location.state || {};
-
-  const {sewingStartDate} = location.state || {};
-  const {sewingEndDate} = location.state || {};
-  const {sewingSupervisor} = location.state || {};
-  const {sewingStatus} = location.state || {};
-
-  const {finishingStartDate} = location.state || {};
-  const {finishingEndDate} = location.state || {};
-  const {finishingSupervisor} = location.state || {};
-  const {finishingStatus} = location.state || {};
-
-  const {qualityControlStartDate} = location.state || {};
-  const {qualityControlEndDate} = location.state || {};
-  const {qualityControlSupervisor} = location.state || {};
-  const {qualityControlStatus} = location.state || {};
-
-  const {packagingStartDate} = location.state || {};
-  const {packagingEndDate} = location.state || {};
-  const {packagingSupervisor} = location.state || {};
-  const {packagingStatus} = location.state || {};
-  const {qcMeasurementsCorrect} = location.state || {};
-  const {qcStitchingQuality} = location.state || {};
-  const {qcColorMatching} = location.state || {};
-  const {qcFabricQuality} = location.state || {};
-  const {qcPrintQuality} = location.state || {};
-  const {qcWashTest} = location.state || {};
-  const {qcFinishing} = location.state || {};
-  const {qcLabelsAndTags} = location.state || {};
-
-  const {qcNotes} = location.state || {};
+  const [order,setOrder]=useState([]);
+  
+          useEffect(() => {
+              getOrderbyId(Id);
+              }, [])
+          
+            const getOrderbyId =(Id) => {
+              const payload={jobcardId:Id}
+          
+              axios.post('http://localhost:3001/findOrderById',payload)
+              .then((response) => {
+                setOrder(response.data);
+                console.log("data is:",response.data);
+              })
+              .catch((err)=> {
+                console.log(err)
+              } )
+            }
 
   const [updated, setUpdated] = React.useState(false);
 
   console.log("Id in updateOrder:",Id);
-  console.log("customer in updateOrder:",customer);
-  console.log("printingSupervisor in updateOrder:",cuttingSupervisor.cutting.cuttingSupervisor);
+  console.log("data in updateOrder:",order);
+  console.log("data in updateOrder:",order.customer);
+
   const updateorder = (data) => {
     setUpdated(true);
     console.log(data);
     const payload = {
       jobcardId: Id,
-      orderDate: data.orderdate,  // Note: Changed from "orderdate" to match schema
-      deliveryDate: data.deliverydate,  // Changed from "deliverydate" to match schema
+      orderDate: data.orderdate,  
+      deliveryDate: data.deliverydate,  
       customer: data.customer,
       priority: data.priority,
       styleNumber: data.styleNumber,
@@ -99,79 +50,78 @@ function UpdateOrder() {
       color: data.color,
       sizeRange: data.sizeRange,
       sizeDistribution: {
-        sizeDistributionS: data.sizeDistributionS,
-        sizeDistributionM: data.sizeDistributionM,
-        sizeDistributionL: data.sizeDistributionL,
-        sizeDistributionXL: data.sizeDistributionXL,
-        sizeDistribution2XL: data.sizeDistribution2XL,
-        sizeDistribution3XL: data.sizeDistribution3XL
+        sizeDistributionS: data.sizeDistribution.S,
+        sizeDistributionM: data.sizeDistribution.M,
+        sizeDistributionL: data.sizeDistribution.L,
+        sizeDistributionXL: data.sizeDistribution.XL,
+        sizeDistribution2XL: data.sizeDistribution["2XL"],
+        sizeDistribution3XL: data.sizeDistribution["3XL"]
       },
       measurementNotes: data.measurementNotes,
       frontDesign: {
-        imageUrl: data.frontDesignImageUrl,
-        notes: data.frontDesignNotes
+        imageUrl: data.frontDesign.imageUrl,
+        notes: data.frontDesign.notes
       },
       backDesign: {
-        imageUrl: data.backDesignImageUrl,
-        notes: data.backDesignNotes
+        imageUrl: data.backDesign.imageUrl,
+        notes: data.backDesign.notes
       },
-      // Restructure to match your schema's productionTracking structure
       productionTracking: {
         patternMaking: {
-          startDate: data.patternMakingStartDate,
-          endDate: data.patternMakingEndDate,
-          supervisor: data.patternMakingSupervisor,
-          status: data.patternMakingStatus
+          startDate: data.productionTracking.patternMaking.startDate,
+          endDate: data.productionTracking.patternMaking.endDate,
+          supervisor: data.productionTracking.patternMaking.supervisor,
+          status: data.productionTracking.patternMaking.status
         },
         cutting: {
-          startDate: data.cuttingStartDate,
-          endDate: data.cuttingEndDate,
-          supervisor: data.cuttingSupervisor,
-          status: data.cuttingStatus
+          startDate: data.productionTracking.cutting.startDate,
+          endDate: data.productionTracking.cutting.endDate,
+          supervisor: data.productionTracking.cutting.supervisor,
+          status: data.productionTracking.cutting.status
         },
         printing: {
-          startDate: data.printingStartDate,
-          endDate: data.printingEndDate,
-          supervisor: data.printingSupervisor,
-          status: data.printingStatus
+          startDate: data.productionTracking.printing.startDate,
+          endDate: data.productionTracking.printing.endDate,
+          supervisor: data.productionTracking.printing.supervisor,
+          status: data.productionTracking.printing.status
         },
         sewing: {
-          startDate: data.sewingStartDate,
-          endDate: data.sewingEndDate,
-          supervisor: data.sewingSupervisor,
-          status: data.sewingStatus
+          startDate: data.productionTracking.sewing.startDate,
+          endDate: data.productionTracking.sewing.endDate,
+          supervisor: data.productionTracking.sewing.supervisor,
+          status: data.productionTracking.sewing.status
         },
         finishing: {
-          startDate: data.finishingStartDate,
-          endDate: data.finishingEndDate,
-          supervisor: data.finishingSupervisor,
-          status: data.finishingStatus
+          startDate: data.productionTracking.finishing.startDate,
+          endDate: data.productionTracking.finishing.endDate,
+          supervisor: data.productionTracking.finishing.supervisor,
+          status: data.productionTracking.finishing.status
         },
         qualityControl: {
-          startDate: data.qualityControlStartDate,
-          endDate: data.qualityControlEndDate,
-          supervisor: data.qualityControlSupervisor,
-          status: data.qualityControlStatus,
+          startDate: data.productionTracking.qualityControl.startDate,
+          endDate: data.productionTracking.qualityControl.endDate,
+          supervisor: data.productionTracking.qualityControl.supervisor,
+          status: data.productionTracking.qualityControl.status,
           checks: {
-            measurementsCorrect: data.qcMeasurementsCorrect,
-            stitchingQuality: data.qcStitchingQuality,
-            colorMatching: data.qcColorMatching,
-            fabricQuality: data.qcFabricQuality,
-            printQuality: data.qcPrintQuality,
-            washTest: data.qcWashTest,
-            finishing: data.qcFinishing,
-            labelsAndTags: data.qcLabelsAndTags,
-            notes: data.qcNotes
+            measurementsCorrect: data.productionTracking.qualityControl.checks.measurementsCorrect,
+            stitchingQuality: data.productionTracking.qualityControl.checks.stitchingQuality,
+            colorMatching: data.productionTracking.qualityControl.checks.colorMatching,
+            fabricQuality: data.productionTracking.qualityControl.checks.fabricQuality,
+            printQuality: data.productionTracking.qualityControl.checks.printQuality,
+            washTest: data.productionTracking.qualityControl.checks.washTest,
+            finishing: data.productionTracking.qualityControl.checks.finishing,
+            labelsAndTags: data.productionTracking.qualityControl.checks.labelsAndTags,
+            notes: data.productionTracking.qualityControl.checks.notes
           }
         },
         packaging: {
-          startDate: data.packagingStartDate,
-          endDate: data.packagingEndDate,
-          supervisor: data.packagingSupervisor,
-          status: data.packagingStatus
+          startDate: data.productionTracking.packaging.startDate,
+          endDate: data.productionTracking.packaging.endDate,
+          supervisor: data.productionTracking.packaging.supervisor,
+          status: data.productionTracking.packaging.status
         }
       }
-    };
+    }
     return axios.post('http://localhost:3001/updateorder', payload)
     .then((response) => {
       setUpdated(false);
@@ -186,76 +136,93 @@ function UpdateOrder() {
 
   return (
     <>
-        <div>
+        
         <TopicBar text="Add Orders" userName="Vishwa Dissanayake"/>
         <UpdateJobCard 
           updateorder={updateorder} 
           updated={updated} 
           Id={Id}
-          orderdate={orderdate}
-          deliverydate={deliverydate}
-          customer={customer}
-          priority={priority}
-          styleNumber={styleNumber}
-          totalQuantity={totalQuantity}
-          description={description}
-          fabricDetails={fabricDetails}
-          color={color}
-          sizeRange={sizeRange}
-          sizeDistributionS={sizeDistributionS}
-          sizeDistributionM={sizeDistributionM}
-          sizeDistributionL={sizeDistributionL}
-          sizeDistributionXL={sizeDistributionXL}
-          sizeDistribution2XL={sizeDistribution2XL}
-          sizeDistribution3XL={sizeDistribution3XL}
-
-          measurementNotes={measurementNotes}
-
-         frontDesignImageUrl= {frontDesignImageUrl}
-         frontDesignNotes= {frontDesignNotes}
-         backDesignImageUrl= {backDesignImageUrl}
-         backDesignNotes= {backDesignNotes}
-         patternMakingStartDate= {patternMakingStartDate}
-         patternMakingEndDate= {patternMakingEndDate}
-         patternMakingSupervisor= {patternMakingSupervisor}
-         patternMakingStatus= {patternMakingStatus}
-         cuttingStartDate= {cuttingStartDate}
-         cuttingEndDate= {cuttingEndDate}
-         cuttingSupervisor= {cuttingSupervisor}
-
-          cuttingStatus={cuttingStatus}
-          printingStartDate={printingStartDate}
-          printingEndDate={printingEndDate}
-          printingSupervisor={printingSupervisor}
-          printingStatus={printingStatus}
-          sewingStartDate={sewingStartDate}
-          sewingEndDate={sewingEndDate}
-          sewingSupervisor={sewingSupervisor}
-          sewingStatus={sewingStatus}
-          finishingStartDate={finishingStartDate}
-          finishingEndDate={finishingEndDate}
-          finishingSupervisor={finishingSupervisor}
-          finishingStatus={finishingStatus}
-          qualityControlStartDate={qualityControlStartDate}
-          qualityControlEndDate={qualityControlEndDate}
-          qualityControlSupervisor={qualityControlSupervisor}
-          qualityControlStatus={qualityControlStatus}
-          packagingStartDate={packagingStartDate}
-          packagingEndDate={packagingEndDate}
-          packagingSupervisor={packagingSupervisor}
-          packagingStatus={packagingStatus}
-          qcMeasurementsCorrect={qcMeasurementsCorrect}
-          qcStitchingQuality={qcStitchingQuality}
-          qcColorMatching={qcColorMatching}
-          qcFabricQuality={qcFabricQuality}
-          qcPrintQuality={qcPrintQuality}
-          qcWashTest={qcWashTest}
-          qcFinishing={qcFinishing}
-          qcLabelsAndTags={qcLabelsAndTags}
-          qcNotes={qcNotes}
+          customer={order.customer}
+          orderdate={order.orderDate || ''}
+          deliverydate={order.deliveryDate || ''}
+          priority={order.priority }
+          styleNumber={order.styleNumber || ''}
+          totalQuantity={order.totalQuantity || 0}
+          description={order.description || ''}
+          fabricDetails={order.fabricDetails || ''}
+          color={order.color || ''}
+          sizeRange={order.sizeRange || ''}
+          
+          // Size distribution (nested object in API response)
+          sizeDistributionS={order.sizeDistribution?.sizeDistributionS || 0}
+          sizeDistributionM={order.sizeDistribution?.sizeDistributionM || 0}
+          sizeDistributionL={order.sizeDistribution?.sizeDistributionL || 0}
+          sizeDistributionXL={order.sizeDistribution?.sizeDistributionXL || 0}
+          sizeDistribution2XL={order.sizeDistribution?.sizeDistribution2XL || 0}
+          sizeDistribution3XL={order.sizeDistribution?.sizeDistribution3XL || 0}
+          
+          // Measurement notes
+          measurementNotes={order.measurementNotes || ''}
+          
+          // Design details (nested objects in API response)
+          frontDesignImageUrl={order.frontDesign?.imageUrl || ''}
+          frontDesignNotes={order.frontDesign?.notes || ''}
+          backDesignImageUrl={order.backDesign?.imageUrl || ''}
+          backDesignNotes={order.backDesign?.notes || ''}
+          
+          // Production tracking - Pattern Making (nested object)
+          patternMakingStartDate={order.productionTracking?.patternMaking?.startDate || ''}
+          patternMakingEndDate={order.productionTracking?.patternMaking?.endDate || ''}
+          patternMakingSupervisor={order.productionTracking?.patternMaking?.supervisor || ''}
+          patternMakingStatus={order.productionTracking?.patternMaking?.status || 'Pending'}
+          
+          // Production tracking - Cutting (nested object)
+          cuttingStartDate={order.productionTracking?.cutting?.startDate || ''}
+          cuttingEndDate={order.productionTracking?.cutting?.endDate || ''}
+          cuttingSupervisor={order.productionTracking?.cutting?.supervisor || ''}
+          cuttingStatus={order.productionTracking?.cutting?.status || 'Pending'}
+          
+          // Production tracking - Printing (nested object)
+          printingStartDate={order.productionTracking?.printing?.startDate || ''}
+          printingEndDate={order.productionTracking?.printing?.endDate || ''}
+          printingSupervisor={order.productionTracking?.printing?.supervisor || ''}
+          printingStatus={order.productionTracking?.printing?.status || 'Pending'}
+          
+          // Production tracking - Sewing (nested object)
+          sewingStartDate={order.productionTracking?.sewing?.startDate || ''}
+          sewingEndDate={order.productionTracking?.sewing?.endDate || ''}
+          sewingSupervisor={order.productionTracking?.sewing?.supervisor || ''}
+          sewingStatus={order.productionTracking?.sewing?.status || 'Pending'}
+          
+          // Production tracking - Finishing (nested object)
+          finishingStartDate={order.productionTracking?.finishing?.startDate || ''}
+          finishingEndDate={order.productionTracking?.finishing?.endDate || ''}
+          finishingSupervisor={order.productionTracking?.finishing?.supervisor || ''}
+          finishingStatus={order.productionTracking?.finishing?.status || 'Pending'}
+          
+          // Production tracking - Quality Control (nested object)
+          qualityControlStartDate={order.productionTracking?.qualityControl?.startDate || ''}
+          qualityControlEndDate={order.productionTracking?.qualityControl?.endDate || ''}
+          qualityControlSupervisor={order.productionTracking?.qualityControl?.supervisor || ''}
+          qualityControlStatus={order.productionTracking?.qualityControl?.status || 'Pending'}
+          
+          // Production tracking - Packaging (nested object)
+          packagingStartDate={order.productionTracking?.packaging?.startDate || ''}
+          packagingEndDate={order.productionTracking?.packaging?.endDate || ''}
+          packagingSupervisor={order.productionTracking?.packaging?.supervisor || ''}
+          packagingStatus={order.productionTracking?.packaging?.status || 'Pending'}
+          
+          // Quality Control Checks (deeply nested object)
+          qcMeasurementsCorrect={order.productionTracking?.qualityControl?.checks?.measurementsCorrect || false}
+          qcStitchingQuality={order.productionTracking?.qualityControl?.checks?.stitchingQuality || false}
+          qcColorMatching={order.productionTracking?.qualityControl?.checks?.colorMatching || false}
+          qcFabricQuality={order.productionTracking?.qualityControl?.checks?.fabricQuality || false}
+          qcPrintQuality={order.productionTracking?.qualityControl?.checks?.printQuality || false}
+          qcWashTest={order.productionTracking?.qualityControl?.checks?.washTest || false}
+          qcFinishing={order.productionTracking?.qualityControl?.checks?.finishing || false}
+          qcLabelsAndTags={order.productionTracking?.qualityControl?.checks?.labelsAndTags || false}
+          qcNotes={order.productionTracking?.qualityControl?.checks?.notes || ''}/>
         
-          />
-        </div> 
         
     </>
   )
