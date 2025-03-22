@@ -8,7 +8,7 @@ const TargetSchema = new Schema({
     required: true,
     unique: true,
   },
-  OrderNo: {
+  jobcardId: {
     type: String,
     required: true,
   },
@@ -22,6 +22,9 @@ const TargetSchema = new Schema({
         type: String,
       },
       ITarget: {
+        type: Number,
+      },
+      OperationPg: {
         type: Number,
       },
       IOuts: [

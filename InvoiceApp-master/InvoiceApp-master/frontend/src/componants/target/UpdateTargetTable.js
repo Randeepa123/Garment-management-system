@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { UpdateTargetContex } from "../../contex/UpdateTargetContex";
 
-export const UpdateTargetTable = () => {
+export const UpdateTargetTable = (props) => {
   const { refresh, setRefresh } = useContext(UpdateTargetContex);
-  const SheetNo = "S003";
+  const SheetNo = props.sheetNum;
   const [targets, setTargets] = useState([]);
 
   const fetchTargets = async () => {

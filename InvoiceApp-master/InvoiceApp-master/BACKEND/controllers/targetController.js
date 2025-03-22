@@ -7,11 +7,23 @@ const getAllOperators = (req, res, next) => {
       if (operators.length === 0) {
         return res.json({ foundInvoices: false });
       }
-      res.json(operators); // Send invoices as the response
+      res.json(operators);
     })
     .catch((err) => {
       console.error(err);
       res.status(500).json({ error: "Failed to fetch opertors" });
+    });
+};
+
+const getAll = (req, res, next) => {
+  Target.find()
+    .populate("Targets.EmployeeId")
+    .then((targetSheets) => {
+      res.json(targetSheets);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch targets" });
     });
 };
 
@@ -58,11 +70,11 @@ const getTargetsByEmployee = async (req, res, next) => {
 
 const addTargetSheet = (req, res, next) => {
   const SheetNo = req.body.SheetNo;
-  const OrderNo = req.body.OrderNo;
+  const jobcardId = req.body.jobcardId;
 
   const newTargetSheet = new Target({
     SheetNo,
-    OrderNo,
+    jobcardId,
   });
 
   // Save the invoice to the database
@@ -81,6 +93,7 @@ const addTarget = (req, res, next) => {
   const EmployeeId = req.body.EmployeeId;
   const Operation = req.body.Operation;
   const ITarget = req.body.Itarget;
+  const OperationPg = req.body.OperationPg;
   const SheetNum = req.query.SheetNo;
 
   Target.findOne({ SheetNo: SheetNum }).then((targetSheet) => {
@@ -92,6 +105,7 @@ const addTarget = (req, res, next) => {
       EmployeeId: EmployeeId,
       Operation: Operation,
       ITarget: ITarget,
+      OperationPg: OperationPg,
     });
 
     targetSheet
@@ -149,16 +163,20 @@ const updateTarget = (req, res, next) => {
 const deleteTarget = (req, res, next) => {
   const objId = req.query.objId;
 
-  Target.deleteOne({ "Targets._id": objId })
+  Target.updateOne(
+    { "Targets._id": objId },
+    { $pull: { Targets: { _id: objId } } }
+  )
     .then((result) => {
-      if (result.deletedCount === 0) {
-        return res.status(404).json({ error: "Target sheet not found" });
+      if (result.modifiedCount === 0) {
+        return res.status(404).json({ error: "Target not found" });
       }
-      res.json({ message: "Target sheet deleted successfully" });
+
+      res.json({ message: "Target removed successfully" });
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).json({ error: "Failed to delete target sheet" });
+      res.status(500).json({ error: "Failed to remove target" });
     });
 };
 
@@ -169,3 +187,4 @@ exports.addTarget = addTarget;
 exports.updateTarget = updateTarget;
 exports.deleteTarget = deleteTarget;
 exports.getAllOperators = getAllOperators;
+exports.getAll = getAll;

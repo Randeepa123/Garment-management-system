@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 /*
 const mongoose = require("mongoose");
-const Target = require("../models/target");*/
+const Target = require("../models/target");
+*/
 const controller = require("../controllers/targetController");
 
 router.get("/getSheet", controller.getTargetSheet);
@@ -12,6 +13,7 @@ router.put("/addTarget", controller.addTarget);
 router.put("/updateTarget", controller.updateTarget);
 router.delete("/deleteTarget", controller.deleteTarget);
 router.get("/getAllOperators", controller.getAllOperators);
+router.get("/getAll", controller.getAll);
 
 /*
 

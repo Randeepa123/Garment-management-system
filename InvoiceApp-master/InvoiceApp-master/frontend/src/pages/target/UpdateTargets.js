@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useParams } from "react-router-dom";
 import { TopicBar } from "../../componants/TopicBar";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -30,6 +30,7 @@ function CircleIconBox({ icon, color = "#007ea4", pwidth = 40 }) {
 
 export const UpdateTargets = () => {
   const [refresh, setRefresh] = useState(0);
+  const { sheetNo } = useParams();
 
   return (
     <div>
@@ -75,7 +76,7 @@ export const UpdateTargets = () => {
             </button>
           </div>
         </div>
-        <UpdateTargetTable />
+        <UpdateTargetTable sheetNum={sheetNo} />
         <div className="row px-5">
           <div className="col-3 target-card rounded-4 mx-2 p-3">
             <div className="d-flex justify-content-between">
@@ -121,7 +122,7 @@ export const UpdateTargets = () => {
             />
           </div>
           <div className="col target-card rounded-4 mx-2 ">
-            <UpdateTargetForm />
+            <UpdateTargetForm sheetNum={sheetNo} />
           </div>
         </div>
       </UpdateTargetContex.Provider>
