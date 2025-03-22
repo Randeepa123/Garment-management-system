@@ -56,9 +56,7 @@ function OrderTable({rows, getOrders}) {
   } 
   
   const deleteOrder = (Id) => {
-    const payload = {
-      orderId: Id
-    }
+    const payload = {jobcardId: Id}
     axios.post('http://localhost:3001/deleteorder', payload)
     .then((response) => {
         getOrders();
@@ -117,131 +115,9 @@ function OrderTable({rows, getOrders}) {
                   </Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
             
-                    <EditButton 
-                          // Basic information
-                                Id= {row.jobcardId}
-                                orderDate= {row.orderDate}
-                                deliveryDate= {row.deliveryDate}
-                                customer= {row.customer}
-                                priority= {row.priority}
-                                styleNumber= {row.styleNumber}
-                                totalQuantity= {row.totalQuantity}
-                                description= {row.description}
-                                fabricDetails= {row.fabricDetails}
-                                color=  {row.color}
-                                sizeRange= {row.sizeRange}
-                                
-                                // Size Distribution
-                                sizeDistributionS={row.sizeDistributionS}
-                                sizeDistributionM={row.sizeDistributionM}
-                                sizeDistributionL={row.sizeDistributionL}
-                                sizeDistributionXL={row.sizeDistributionXL}
-                                sizeDistribution2XL={row.sizeDistribution2XL}
-                                sizeDistribution3XL={row.sizeDistribution3XL}
-                                
-                                // Size Measurements
-                                chestWidthS= {row.chestWidthS}
-                                chestWidthM= {row.chestWidthM}
-                                chestWidthL= {row.chestWidthL}
-                                chestWidthXL= {row.chestWidthXL}
-                                chestWidth2XL= {row.chestWidth2XL}
-                                chestWidth3XL= {row.chestWidth3XL}
-                                
-                                bodyLengthS={row.bodyLengthS}
-                                bodyLengthM={row.bodyLengthM}
-                                bodyLengthL={row.bodyLengthL}
-                                bodyLengthXL={row.bodyLengthXL}
-                                bodyLength2XL={row.bodyLength2XL}
-                                bodyLength3XL={row.bodyLength3XL}
-                                
-                                shoulderWidthS= {row.shoulderWidthS}
-                                shoulderWidthM= {row.shoulderWidthM}
-                                shoulderWidthL= {row.shoulderWidthL}
-                                shoulderWidthXL= {row.shoulderWidthXL}
-                                shoulderWidth2XL= {row.shoulderWidth2XL}
-                                shoulderWidth3XL= {row.shoulderWidth3XL}
-                                
-                                sleeveLengthS= {row.sleeveLengthS}
-                                sleeveLengthM= {row.sleeveLengthM}
-                                sleeveLengthL= {row.sleeveLengthL}
-                                sleeveLengthXL= {row.sleeveLengthXL}
-                                sleeveLength2XL= {row.sleeveLength2XL}
-                                sleeveLength3XL= {row.sleeveLength3XL}
-                                
-                                neckWidthS= {row.neckWidthS}
-                                neckWidthM= {row.neckWidthM}
-                                neckWidthL= {row.neckWidthL}
-                                neckWidthXL= {row.neckWidthXL}
-                                neckWidth2XL= {row.neckWidth2XL}
-                                neckWidth3XL= {row.neckWidth3XL}
-                                
-                                measurementNotes= {row.measurementNotes}
-                                
-                                // Design Information
-                                frontDesignImageUrl= {row.frontDesignImageUrl}
-                                frontDesignNotes= {row.frontDesignNotes}
-                                backDesignImageUrl= {row.backDesignImageUrl}
-                                backDesignNotes= {row.backDesignNotes}
-                                
-                                // Production Tracking - Pattern Making
-                                patternMakingStartDate= {row.patternMakingStartDate}
-                                patternMakingEndDate= {row.patternMakingEndDate}
-                                patternMakingSupervisor= {row.patternMakingSupervisor}
-                                patternMakingStatus= {row.patternMakingStatus}
-                                
-                                // Production Tracking - Cutting
-                                cuttingStartDate= {row.cuttingStartDate}
-                                cuttingEndDate= {row.cuttingEndDate}
-                                cuttingSupervisor= { row.cuttingSupervisor}
-                                cuttingStatus= { row.cuttingStatus}
-                                
-                                // Production Tracking - Printing
-                                printingStartDate= { row.printingStartDate}
-                                printingEndDate= { row.printingEndDate}
-                                printingSupervisor= {row.printingSupervisor}
-                                printingStatus= {row.printingStatus}
-                                
-                                // Production Tracking - Sewing
-                                sewingStartDate= { row.sewingStartDate}
-                                sewingEndDate= { row.sewingEndDate}
-                                sewingSupervisor= {row.sewingSupervisor}
-                                sewingStatus= {row.sewingStatus}
-                                
-                                // Production Tracking - Finishing
-                                finishingStartDate= {row.finishingStartDate}
-                                finishingEndDate= {row.finishingEndDate}
-                                finishingSupervisor= { row.finishingSupervisor}
-                                finishingStatus= { row.finishingStatus}
-                                
-                                // Production Tracking - Quality Control
-                                qualityControlStartDate= { row.qualityControlStartDate}
-                                qualityControlEndDate= { row.qualityControlEndDate}
-                                qualityControlSupervisor= {row.qualityControlSupervisor}
-                                qualityControlStatus= {row.qualityControlStatus}
-                                
-                                // Production Tracking - Packaging
-                                packagingStartDate= {row.packagingStartDate}
-                                packagingEndDate= {row.packagingEndDate}
-                                packagingSupervisor= { row.packagingSupervisor}
-                                packagingStatus= { row.packagingStatus}
-                                
-                                // Quality Control Checklist
-                                qcMeasurementsCorrect= { row.qcMeasurementsCorrect}
-                                qcStitchingQuality= {row.qcStitchingQuality}
-                                qcColorMatching={row.qcColorMatching}
-                                qcFabricQuality= { row.qcFabricQuality}
-                                qcPrintQuality= {row.qcPrintQuality}
-                                qcWashTest= {row.qcWashTest}
-                                qcFinishing= { row.qcFinishing}
-                                qcLabelsAndTags= { row.qcLabelsAndTags}
-                                qcNotes= { row.qcNotes}
-
-
-                    />
-
-                    
+                    <EditButton Id= {row.jobcardId}/>
                     <DeleteButton
-                      id={row.orderId}
+                      id={row.jobcardId}
                       deleteOrder={deleteOrder}
                     />
                   </Box>

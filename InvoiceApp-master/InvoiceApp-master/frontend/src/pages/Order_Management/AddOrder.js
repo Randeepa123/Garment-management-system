@@ -8,13 +8,93 @@ function AddOrder() {
 
   const addorder = (data) => {
     setSubmitted(true);
-
+    console.log(data.orderDate)
+    console.log(data.deliveryDate)
     const payload = {
-      orderdate: data.orderdate ,
-      deliverydate: data.deliverydate ,
+      
+      orderDate: data.orderDate,  
+      deliveryDate: data.deliveryDate,  
       customer: data.customer,
+      priority: data.priority,
+      styleNumber: data.styleNumber,
+      description: data.description,
+      fabricDetails: data.fabricDetails,
+      color: data.color,
+      sizeRange: data.sizeRange,
+      sizeDistribution: {
+        sizeDistributionS: data.sizeDistribution.S,
+        sizeDistributionM: data.sizeDistribution.M,
+        sizeDistributionL: data.sizeDistribution.L,
+        sizeDistributionXL: data.sizeDistribution.XL,
+        sizeDistribution2XL: data.sizeDistribution["2XL"],
+        sizeDistribution3XL: data.sizeDistribution["3XL"]
+      },
+      measurementNotes: data.measurementNotes,
+      frontDesign: {
+        imageUrl: data.frontDesign.imageUrl,
+        notes: data.frontDesign.notes
+      },
+      backDesign: {
+        imageUrl: data.backDesign.imageUrl,
+        notes: data.backDesign.notes
+      },
+      productionTracking: {
+        patternMaking: {
+          startDate: data.productionTracking.patternMaking.startDate,
+          endDate: data.productionTracking.patternMaking.endDate,
+          supervisor: data.productionTracking.patternMaking.supervisor,
+          status: data.productionTracking.patternMaking.status
+        },
+        cutting: {
+          startDate: data.productionTracking.cutting.startDate,
+          endDate: data.productionTracking.cutting.endDate,
+          supervisor: data.productionTracking.cutting.supervisor,
+          status: data.productionTracking.cutting.status
+        },
+        printing: {
+          startDate: data.productionTracking.printing.startDate,
+          endDate: data.productionTracking.printing.endDate,
+          supervisor: data.productionTracking.printing.supervisor,
+          status: data.productionTracking.printing.status
+        },
+        sewing: {
+          startDate: data.productionTracking.sewing.startDate,
+          endDate: data.productionTracking.sewing.endDate,
+          supervisor: data.productionTracking.sewing.supervisor,
+          status: data.productionTracking.sewing.status
+        },
+        finishing: {
+          startDate: data.productionTracking.finishing.startDate,
+          endDate: data.productionTracking.finishing.endDate,
+          supervisor: data.productionTracking.finishing.supervisor,
+          status: data.productionTracking.finishing.status
+        },
+        qualityControl: {
+          startDate: data.productionTracking.qualityControl.startDate,
+          endDate: data.productionTracking.qualityControl.endDate,
+          supervisor: data.productionTracking.qualityControl.supervisor,
+          status: data.productionTracking.qualityControl.status,
+          checks: {
+            measurementsCorrect: data.productionTracking.qualityControl.checks.measurementsCorrect,
+            stitchingQuality: data.productionTracking.qualityControl.checks.stitchingQuality,
+            colorMatching: data.productionTracking.qualityControl.checks.colorMatching,
+            fabricQuality: data.productionTracking.qualityControl.checks.fabricQuality,
+            printQuality: data.productionTracking.qualityControl.checks.printQuality,
+            washTest: data.productionTracking.qualityControl.checks.washTest,
+            finishing: data.productionTracking.qualityControl.checks.finishing,
+            labelsAndTags: data.productionTracking.qualityControl.checks.labelsAndTags,
+            notes: data.productionTracking.qualityControl.checks.notes
+          }
+        },
+        packaging: {
+          startDate: data.productionTracking.packaging.startDate,
+          endDate: data.productionTracking.packaging.endDate,
+          supervisor: data.productionTracking.packaging.supervisor,
+          status: data.productionTracking.packaging.status
+        }
+      }
     }
-    axios.post('http://localhost:3001/addorder', payload)
+    return axios.post('http://localhost:3001/addorder', payload)
     .then((response) => {
       setSubmitted(false);
     })

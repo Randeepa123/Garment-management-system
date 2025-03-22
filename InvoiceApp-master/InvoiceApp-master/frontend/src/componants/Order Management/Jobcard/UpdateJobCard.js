@@ -2,13 +2,14 @@ import React, { use, useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
+import axios from 'axios'
 
 
 
 
 function UpdateJobCard({
     updateorder,
-    Id,
+    Id,    
     orderdate,
     deliverydate,
     customer,
@@ -25,9 +26,7 @@ function UpdateJobCard({
     sizeDistributionXL,
     sizeDistribution2XL,
     sizeDistribution3XL,
-
     measurementNotes,
-
     frontDesignImageUrl,
     frontDesignNotes,
     backDesignImageUrl,
@@ -39,7 +38,6 @@ function UpdateJobCard({
     cuttingStartDate,
     cuttingEndDate,
     cuttingSupervisor,
-
     cuttingStatus,
     printingStartDate,
     printingEndDate,
@@ -69,73 +67,170 @@ function UpdateJobCard({
     qcWashTest,
     qcFinishing,
     qcLabelsAndTags,
-    qcNotes,
+    qcNotes}) {
 
-    }) {
+        
 
-        const [orderdate1, setOrderdate] = useState(orderdate);
-        const [deliverydate1, setDeliverydate] = useState(deliverydate);
-        const [customer1, setCustomer] = useState(customer);
-        const [priority1, setPriority] = useState(priority);
-        const [styleNumber1, setStyleNumber] = useState(styleNumber);
-        const [totalQuantity1, setTotalQuantity] = useState(totalQuantity);
-        const [description1, setDescription] = useState(description);
-        const [fabricDetails1, setFabricDetails] = useState(fabricDetails);
-        const [color1, setColor] = useState(color);
-        const [sizeRange1, setSizeRange] = useState(sizeRange);
-        const [sizeDistributionS1, setSizeDistributionS] = useState(sizeDistributionS);
-        const [sizeDistributionM1, setSizeDistributionM] = useState(sizeDistributionM);
-        const [sizeDistributionL1, setSizeDistributionL] = useState(sizeDistributionL);
-        const [sizeDistributionXL1, setSizeDistributionXL] = useState(sizeDistributionXL);
-        const [sizeDistribution2XL1, setSizeDistribution2XL] = useState(sizeDistribution2XL);
-        const [sizeDistribution3XL1, setSizeDistribution3XL] = useState(sizeDistribution3XL);
+        console.log("data in jobcard:",customer);
 
-        const [measurementNotes1,setmeasurementNotes]=useState(measurementNotes);
+        const [orderdate1, setOrderdate] = useState('');
+        const [deliverydate1, setDeliverydate] = useState('');
+        const [customer1, setCustomer] = useState('');
+        const [priority1, setPriority] = useState('');
+        const [styleNumber1, setStyleNumber] = useState('');
+        const [totalQuantity1, setTotalQuantity] = useState(0);
+        const [description1, setDescription] = useState('');
+        const [fabricDetails1, setFabricDetails] = useState('');
+        const [color1, setColor] = useState('');
+        const [sizeRange1, setSizeRange] = useState('');
+        const [sizeDistributionS1, setSizeDistributionS] = useState(0);
+        const [sizeDistributionM1, setSizeDistributionM] = useState(0);
+        const [sizeDistributionL1, setSizeDistributionL] = useState(0);
+        const [sizeDistributionXL1, setSizeDistributionXL] = useState(0);
+        const [sizeDistribution2XL1, setSizeDistribution2XL] = useState(0);
+        const [sizeDistribution3XL1, setSizeDistribution3XL] = useState(0);
+        const [measurementNotes1, setmeasurementNotes] = useState('');
+        const [frontDesignImageUrl1, setFrontDesignImageUrl] = useState('');
+        const [frontDesignNotes1, setFrontDesignNotes] = useState('');
+        const [backDesignImageUrl1, setBackDesignImageUrl] = useState('');
+        const [backDesignNotes1, setBackDesignNotes] = useState('');
+        const [patternMakingStartDate1, setPatternMakingStartDate] = useState('');
+        const [patternMakingEndDate1, setPatternMakingEndDate] = useState('');
+        const [patternMakingSupervisor1, setPatternMakingSupervisor] = useState('');
+        const [patternMakingStatus1, setPatternMakingStatus] = useState('');
+        const [cuttingStartDate1, setCuttingStartDate] = useState('');
+        const [cuttingEndDate1, setCuttingEndDate] = useState('');
+        const [cuttingSupervisor1, setCuttingSupervisor] = useState('');
+        const [cuttingStatus1, setCuttingStatus] = useState('');
+        const [printingStartDate1, setPrintingStartDate] = useState('');
+        const [printingEndDate1, setPrintingEndDate] = useState('');
+        const [printingSupervisor1, setPrintingSupervisor] = useState('');
+        const [printingStatus1, setPrintingStatus] = useState('');
+        const [sewingStartDate1, setSewingStartDate] = useState('');
+        const [sewingEndDate1, setSewingEndDate] = useState('');
+        const [sewingSupervisor1, setSewingSupervisor] = useState('');
+        const [sewingStatus1, setSewingStatus] = useState('');
+        const [finishingStartDate1, setFinishingStartDate] = useState('');
+        const [finishingEndDate1, setFinishingEndDate] = useState('');
+        const [finishingSupervisor1, setFinishingSupervisor] = useState('');
+        const [finishingStatus1, setFinishingStatus] = useState('');
+        const [qualityControlStartDate1, setQualityControlStartDate] = useState('');
+        const [qualityControlEndDate1, setQualityControlEndDate] = useState('');
+        const [qualityControlSupervisor1, setQualityControlSupervisor] = useState('');
+        const [qualityControlStatus1, setQualityControlStatus] = useState('');
+        const [packagingStartDate1, setPackagingStartDate] = useState('');
+        const [packagingEndDate1, setPackagingEndDate] = useState('');
+        const [packagingSupervisor1, setPackagingSupervisor] = useState('');
+        const [packagingStatus1, setPackagingStatus] = useState('');
+        const [qcMeasurementsCorrect1, setQcMeasurementsCorrect] = useState('');
+        const [qcStitchingQuality1, setQcStitchingQuality] = useState('');
+        const [qcColorMatching1, setQcColorMatching] = useState('');
+        const [qcFabricQuality1, setQcFabricQuality] = useState('');
+        const [qcPrintQuality1, setQcPrintQuality] = useState('');
+        const [qcWashTest1, setQcWashTest] = useState('');
+        const [qcFinishing1, setQcFinishing] = useState('');
+        const [qcLabelsAndTags1, setQcLabelsAndTags] = useState('');
+        const [qcNotes1, setQcNotes] = useState('');
 
-        const [frontDesignImageUrl1, setFrontDesignImageUrl] = useState(frontDesignImageUrl);
-        const [frontDesignNotes1, setFrontDesignNotes] = useState(frontDesignNotes);
-        const [backDesignImageUrl1, setBackDesignImageUrl] = useState(backDesignImageUrl);
-        const [backDesignNotes1, setBackDesignNotes] = useState(backDesignNotes);
+        useEffect(() => {
+            // Set order details
+            if (orderdate !== undefined) setOrderdate(orderdate);
+            if (deliverydate !== undefined) setDeliverydate(deliverydate);
+            if (customer !== undefined) setCustomer(customer);
+            if (priority !== undefined) setPriority(priority);
+            if (styleNumber !== undefined) setStyleNumber(styleNumber);
+            if (totalQuantity !== undefined) setTotalQuantity(totalQuantity);
+            if (description !== undefined) setDescription(description);
+            
+            // Set fabric and sizing details
+            if (fabricDetails !== undefined) setFabricDetails(fabricDetails);
+            if (color !== undefined) setColor(color);
+            if (sizeRange !== undefined) setSizeRange(sizeRange);
+            if (sizeDistributionS !== undefined) setSizeDistributionS(sizeDistributionS);
+            if (sizeDistributionM !== undefined) setSizeDistributionM(sizeDistributionM);
+            if (sizeDistributionL !== undefined) setSizeDistributionL(sizeDistributionL);
+            if (sizeDistributionXL !== undefined) setSizeDistributionXL(sizeDistributionXL);
+            if (sizeDistribution2XL !== undefined) setSizeDistribution2XL(sizeDistribution2XL);
+            if (sizeDistribution3XL !== undefined) setSizeDistribution3XL(sizeDistribution3XL);
+            if (measurementNotes !== undefined) setmeasurementNotes(measurementNotes);
+            
+            // Set design details
+            if (frontDesignImageUrl !== undefined) setFrontDesignImageUrl(frontDesignImageUrl);
+            if (frontDesignNotes !== undefined) setFrontDesignNotes(frontDesignNotes);
+            if (backDesignImageUrl !== undefined) setBackDesignImageUrl(backDesignImageUrl);
+            if (backDesignNotes !== undefined) setBackDesignNotes(backDesignNotes);
+            
+            // Set pattern making details
+            if (patternMakingStartDate !== undefined) setPatternMakingStartDate(patternMakingStartDate);
+            if (patternMakingEndDate !== undefined) setPatternMakingEndDate(patternMakingEndDate);
+            if (patternMakingSupervisor !== undefined) setPatternMakingSupervisor(patternMakingSupervisor);
+            if (patternMakingStatus !== undefined) setPatternMakingStatus(patternMakingStatus);
+            
+            // Set cutting details
+            if (cuttingStartDate !== undefined) setCuttingStartDate(cuttingStartDate);
+            if (cuttingEndDate !== undefined) setCuttingEndDate(cuttingEndDate);
+            if (cuttingSupervisor !== undefined) setCuttingSupervisor(cuttingSupervisor);
+            if (cuttingStatus !== undefined) setCuttingStatus(cuttingStatus);
+            
+            // Set printing details
+            if (printingStartDate !== undefined) setPrintingStartDate(printingStartDate);
+            if (printingEndDate !== undefined) setPrintingEndDate(printingEndDate);
+            if (printingSupervisor !== undefined) setPrintingSupervisor(printingSupervisor);
+            if (printingStatus !== undefined) setPrintingStatus(printingStatus);
+            
+            // Set sewing details
+            if (sewingStartDate !== undefined) setSewingStartDate(sewingStartDate);
+            if (sewingEndDate !== undefined) setSewingEndDate(sewingEndDate);
+            if (sewingSupervisor !== undefined) setSewingSupervisor(sewingSupervisor);
+            if (sewingStatus !== undefined) setSewingStatus(sewingStatus);
+            
+            // Set finishing details
+            if (finishingStartDate !== undefined) setFinishingStartDate(finishingStartDate);
+            if (finishingEndDate !== undefined) setFinishingEndDate(finishingEndDate);
+            if (finishingSupervisor !== undefined) setFinishingSupervisor(finishingSupervisor);
+            if (finishingStatus !== undefined) setFinishingStatus(finishingStatus);
+            
+            // Set quality control details
+            if (qualityControlStartDate !== undefined) setQualityControlStartDate(qualityControlStartDate);
+            if (qualityControlEndDate !== undefined) setQualityControlEndDate(qualityControlEndDate);
+            if (qualityControlSupervisor !== undefined) setQualityControlSupervisor(qualityControlSupervisor);
+            if (qualityControlStatus !== undefined) setQualityControlStatus(qualityControlStatus);
+            
+            // Set packaging details
+            if (packagingStartDate !== undefined) setPackagingStartDate(packagingStartDate);
+            if (packagingEndDate !== undefined) setPackagingEndDate(packagingEndDate);
+            if (packagingSupervisor !== undefined) setPackagingSupervisor(packagingSupervisor);
+            if (packagingStatus !== undefined) setPackagingStatus(packagingStatus);
+            
+            // Set QC details
+            if (qcMeasurementsCorrect !== undefined) setQcMeasurementsCorrect(qcMeasurementsCorrect);
+            if (qcStitchingQuality !== undefined) setQcStitchingQuality(qcStitchingQuality);
+            if (qcColorMatching !== undefined) setQcColorMatching(qcColorMatching);
+            if (qcFabricQuality !== undefined) setQcFabricQuality(qcFabricQuality);
+            if (qcPrintQuality !== undefined) setQcPrintQuality(qcPrintQuality);
+            if (qcWashTest !== undefined) setQcWashTest(qcWashTest);
+            if (qcFinishing !== undefined) setQcFinishing(qcFinishing);
+            if (qcLabelsAndTags !== undefined) setQcLabelsAndTags(qcLabelsAndTags);
+            if (qcNotes !== undefined) setQcNotes(qcNotes);
+            
+          }, [
+            // List all dependencies
+            orderdate, deliverydate, customer, priority, styleNumber, totalQuantity, description,
+            fabricDetails, color, sizeRange, sizeDistributionS, sizeDistributionM, sizeDistributionL,
+            sizeDistributionXL, sizeDistribution2XL, sizeDistribution3XL, measurementNotes,
+            frontDesignImageUrl, frontDesignNotes, backDesignImageUrl, backDesignNotes,
+            patternMakingStartDate, patternMakingEndDate, patternMakingSupervisor, patternMakingStatus,
+            cuttingStartDate, cuttingEndDate, cuttingSupervisor, cuttingStatus,
+            printingStartDate, printingEndDate, printingSupervisor, printingStatus,
+            sewingStartDate, sewingEndDate, sewingSupervisor, sewingStatus,
+            finishingStartDate, finishingEndDate, finishingSupervisor, finishingStatus,
+            qualityControlStartDate, qualityControlEndDate, qualityControlSupervisor, qualityControlStatus,
+            packagingStartDate, packagingEndDate, packagingSupervisor, packagingStatus,
+            qcMeasurementsCorrect, qcStitchingQuality, qcColorMatching, qcFabricQuality,
+            qcPrintQuality, qcWashTest, qcFinishing, qcLabelsAndTags, qcNotes
+          ]);
 
-
-        const [patternMakingStartDate1, setPatternMakingStartDate] = useState(patternMakingStartDate);
-        const [patternMakingEndDate1, setPatternMakingEndDate] = useState(patternMakingEndDate);
-        const [patternMakingSupervisor1, setPatternMakingSupervisor] = useState(patternMakingSupervisor);
-        const [patternMakingStatus1, setPatternMakingStatus] = useState(patternMakingStatus);
-        const [cuttingStartDate1, setCuttingStartDate] = useState(cuttingStartDate);
-        const [cuttingEndDate1, setCuttingEndDate] = useState(cuttingEndDate);
-        const [cuttingSupervisor1, setCuttingSupervisor] = useState(cuttingSupervisor);
-
-        const [cuttingStatus1, setCuttingStatus] = useState(cuttingStatus);
-        const [printingStartDate1, setPrintingStartDate] = useState(printingStartDate);
-        const [printingEndDate1, setPrintingEndDate] = useState(printingEndDate);
-        const [printingSupervisor1, setPrintingSupervisor] = useState(printingSupervisor);
-        const [printingStatus1, setPrintingStatus] = useState(printingStatus);
-        const [sewingStartDate1, setSewingStartDate] = useState(sewingStartDate);
-        const [sewingEndDate1, setSewingEndDate] = useState(sewingEndDate);
-        const [sewingSupervisor1, setSewingSupervisor] = useState(sewingSupervisor);
-        const [sewingStatus1, setSewingStatus] = useState(sewingStatus);
-        const [finishingStartDate1, setFinishingStartDate] = useState(finishingStartDate);
-        const [finishingEndDate1, setFinishingEndDate] = useState(finishingEndDate);
-        const [finishingSupervisor1, setFinishingSupervisor] = useState(finishingSupervisor);
-        const [finishingStatus1, setFinishingStatus] = useState(finishingStatus);
-        const [qualityControlStartDate1, setQualityControlStartDate] = useState(qualityControlStartDate);
-        const [qualityControlEndDate1, setQualityControlEndDate] = useState(qualityControlEndDate);
-        const [qualityControlSupervisor1, setQualityControlSupervisor] = useState(qualityControlSupervisor);
-        const [qualityControlStatus1, setQualityControlStatus] = useState(qualityControlStatus);
-        const [packagingStartDate1, setPackagingStartDate] = useState(packagingStartDate);
-        const [packagingEndDate1, setPackagingEndDate] = useState(packagingEndDate);
-        const [packagingSupervisor1, setPackagingSupervisor] = useState(packagingSupervisor);
-        const [packagingStatus1, setPackagingStatus] = useState(packagingStatus);
-        const [qcMeasurementsCorrect1, setQcMeasurementsCorrect] = useState(qcMeasurementsCorrect);
-        const [qcStitchingQuality1, setQcStitchingQuality] = useState(qcStitchingQuality);
-        const [qcColorMatching1, setQcColorMatching] = useState(qcColorMatching);
-        const [qcFabricQuality1, setQcFabricQuality] = useState(qcFabricQuality);
-        const [qcPrintQuality1, setQcPrintQuality] = useState(qcPrintQuality);
-        const [qcWashTest1, setQcWashTest] = useState(qcWashTest);
-        const [qcFinishing1, setQcFinishing] = useState(qcFinishing);
-        const [qcLabelsAndTags1, setQcLabelsAndTags] = useState(qcLabelsAndTags);
-        const [qcNotes1, setQcNotes] = useState(qcNotes);
+        console.log("data in customer1:",customer1);
         
         const [total1,settotal1]=useState(0)
         
@@ -275,7 +370,7 @@ function UpdateJobCard({
                         <div class="detail-box">
                             <label>Fabric Details</label>
                             <div ><input type="text"class="value"
-                                value={fabricDetails}
+                                value={fabricDetails1}
                                 onChange={(e)=>{
                                     setFabricDetails(e.target.value)
                                 }}
@@ -287,7 +382,7 @@ function UpdateJobCard({
                         <div class="detail-box">
                             <label>Color</label>
                             <div ><input type="text"class="value"
-                                value={color}
+                                value={color1}
                                 onChange={(e)=>{
                                     setColor(e.target.value)
                                 }}
@@ -876,6 +971,7 @@ function UpdateJobCard({
                             imageUrl: backDesignImageUrl1,
                             notes: backDesignNotes1
                         },
+                        productionTracking: {
                         patternMaking: {
                             startDate: patternMakingStartDate1,
                             endDate: patternMakingEndDate1,
@@ -921,14 +1017,14 @@ function UpdateJobCard({
                                 finishing: qcFinishing1,
                                 labelsAndTags: qcLabelsAndTags1,
                                 notes: qcNotes1
-                            }
-                        },
+                            }},
+                        
                         packaging: {
                             startDate: packagingStartDate1,
                             endDate: packagingEndDate1,
                             supervisor: packagingSupervisor1,
                             status: packagingStatus1
-                        },
+                        }},
                         total: total1
                         };
                     
