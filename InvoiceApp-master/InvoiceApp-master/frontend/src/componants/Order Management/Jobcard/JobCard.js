@@ -2,7 +2,9 @@ import React, { use, useEffect,useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
-import  Swal from 'sweetalert2/dist/sweetalert2.js'
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -71,6 +73,95 @@ function JobCard({
 
         const [total1,settotal1]=useState(0)
         
+        const navigate=useNavigate()
+        const cancell=()=>{
+            navigate("/orders")
+        }
+
+        const validateForm = () => {
+            // Check essential required fields
+            if (!customer1 || customer1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please enter customer name"
+              });
+              return false;
+            }
+            //check priority
+            if (!priority1 || priority1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Priority is not selected"
+              });
+              return false;
+            }
+            //check ordertype
+            if (!styleNumber1 || styleNumber1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Order type is not selected"
+              });
+              return false;
+            }
+            if (!description1 || description1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please Enter a Description"
+              });
+              return false;
+            }
+            if (!fabricDetails1 || fabricDetails1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please Enter a Fabric Details"
+              });
+              return false;
+            }
+            if (!color1 || color1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please Enter a Color Details"
+              });
+              return false;
+            }
+            if (!sizeRange1 || sizeRange1.trim() === '') {
+              Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please Enter a size Range"
+              });
+              return false;
+            }
+            
+            // Check dates
+            if (deliverydate1 && orderdate1 && new Date(deliverydate1) < new Date(orderdate1)) {
+              Swal.fire({
+                icon: "warning",
+                title: "Invalid Dates",
+                text: "Delivery date cannot be before order date"
+              });
+              return false;
+            }
+            
+            // Check total quantity
+            if (total1 <= 0) {
+              Swal.fire({
+                icon: "warning",
+                title: "Invalid Quantity",
+                text: "Total quantity must be greater than 0"
+              });
+              return false;
+            }
+            
+            return true;
+          }
+
         const total=(S, M, L, XL, XL2, XL3)=>{             
             return S + M + L + XL + XL2 + XL3;
          }
@@ -123,7 +214,7 @@ function JobCard({
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Order Date</label>
-                            <div><input type="date"class="value"
+                            <div><input type="date"class="value" 
                                 value={orderdate1}
                                 onChange={(e) => {
                                     setOrderdate(e.target.value);
@@ -135,7 +226,7 @@ function JobCard({
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Delivery Date</label>
-                            <div ><input type="date"class="value"
+                            <div ><input type="date"class="value" 
                                 value={deliverydate1}
                                 onChange={(e) => {
                                     setDeliverydate(e.target.value);
@@ -147,7 +238,7 @@ function JobCard({
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Customer</label>
-                            <div ><input type="text"class="value"
+                            <div ><input type="text"class="value" required
                                 value={customer1}
                                 onChange={(e) => {
                                 setCustomer(e.target.value);
@@ -163,7 +254,8 @@ function JobCard({
                                     className="form-select"
                                     value={priority1} 
                                     onChange={(e) => setPriority(e.target.value)}
-                                >
+                                >   
+                                    <option value="No data">No-data</option>
                                     <option value="High">High</option>
                                     <option value="Middle">Middle</option>
                                     <option value="Low">Low</option>
@@ -183,6 +275,7 @@ function JobCard({
                                 onChange={(e)=>{
                                     setStyleNumber(e.target.value)
                                 }}>
+                                <option value="No data">No-data</option>
                                 <option value="T-Shirts">T-shirts</option>
                                 <option value="Trousers">Trousers</option>
                                 <option value="Other">Other</option>
@@ -792,118 +885,130 @@ function JobCard({
                 <div class="barcode-img">
                     BARCODE value
                 </div>
-            </div>
-            <button onClick={() => {
-                console.log(orderdate1)
-                console.log(deliverydate1)
-                const data = {
-                    orderDate: orderdate1,
-                    deliveryDate: deliverydate1,
-                    customer: customer1,
-                    priority: priority1,
-                    styleNumber: styleNumber1,
-                    description: description1,
-                    fabricDetails: fabricDetails1,
-                    color: color1,
-                    sizeRange: sizeRange1,
-                    sizeDistribution: {
-                        S: sizeDistributionS1,
-                        M: sizeDistributionM1,
-                        L: sizeDistributionL1,
-                        XL: sizeDistributionXL1,
-                        "2XL": sizeDistribution2XL1,
-                        "3XL": sizeDistribution3XL1
-                    },
-                    measurementNotes: measurementNotes1,
-                    frontDesign: {
-                        imageUrl: frontDesignImageUrl1,
-                        notes: frontDesignNotes1
-                    },
-                    backDesign: {
-                        imageUrl: backDesignImageUrl1,
-                        notes: backDesignNotes1
-                    },
-                    productionTracking: {
-                    patternMaking: {
-                        startDate: patternMakingStartDate1,
-                        endDate: patternMakingEndDate1,
-                        supervisor: patternMakingSupervisor1,
-                        status: patternMakingStatus1
-                    },
-                    cutting: {
-                        startDate: cuttingStartDate1,
-                        endDate: cuttingEndDate1,
-                        supervisor: cuttingSupervisor1,
-                        status: cuttingStatus1
-                    },
-                    printing: {
-                        startDate: printingStartDate1,
-                        endDate: printingEndDate1,
-                        supervisor: printingSupervisor1,
-                        status: printingStatus1
-                    },
-                    sewing: {
-                        startDate: sewingStartDate1,
-                        endDate: sewingEndDate1,
-                        supervisor: sewingSupervisor1,
-                        status: sewingStatus1
-                    },
-                    finishing: {
-                        startDate: finishingStartDate1,
-                        endDate: finishingEndDate1,
-                        supervisor: finishingSupervisor1,
-                        status: finishingStatus1
-                    },
-                    qualityControl: {
-                        startDate: qualityControlStartDate1,
-                        endDate: qualityControlEndDate1,
-                        supervisor: qualityControlSupervisor1,
-                        status: qualityControlStatus1,
-                        checks: {
-                            measurementsCorrect: qcMeasurementsCorrect1,
-                            stitchingQuality: qcStitchingQuality1,
-                            colorMatching: qcColorMatching1,
-                            fabricQuality: qcFabricQuality1,
-                            printQuality: qcPrintQuality1,
-                            washTest: qcWashTest1,
-                            finishing: qcFinishing1,
-                            labelsAndTags: qcLabelsAndTags1,
-                            notes: qcNotes1
-                        }
-                    },
-                    packaging: {
-                        startDate: packagingStartDate1,
-                        endDate: packagingEndDate1,
-                        supervisor: packagingSupervisor1,
-                        status: packagingStatus1
-                    }},
-                    total: total1
-                    };
-
-                    const add=addOrder(data);
-                    if (add) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Success",
-                            text: "Job Card Created",
-                            footer: '<a href="#">Why do I have this issue?</a>'
-                          });
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Something went wrong!",
-                            footer: '<a href="#">Why do I have this issue?</a>'
-                          });
-                    }
                 
+            
+                
+                <button type="button" class="btn btn-success" style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }} 
+                            
+                onClick={()=> {
+                    if (validateForm()) {
+                        console.log(orderdate1)
+                        console.log(deliverydate1)
+                        const data = {
+                            orderDate: orderdate1,
+                            deliveryDate: deliverydate1,
+                            customer: customer1,
+                            priority: priority1,
+                            styleNumber: styleNumber1,
+                            description: description1,
+                            fabricDetails: fabricDetails1,
+                            color: color1,
+                            sizeRange: sizeRange1,
+                            sizeDistribution: {
+                                S: sizeDistributionS1,
+                                M: sizeDistributionM1,
+                                L: sizeDistributionL1,
+                                XL: sizeDistributionXL1,
+                                "2XL": sizeDistribution2XL1,
+                                "3XL": sizeDistribution3XL1
+                            },
+                            measurementNotes: measurementNotes1,
+                            frontDesign: {
+                                imageUrl: frontDesignImageUrl1,
+                                notes: frontDesignNotes1
+                            },
+                            backDesign: {
+                                imageUrl: backDesignImageUrl1,
+                                notes: backDesignNotes1
+                            },
+                            productionTracking: {
+                            patternMaking: {
+                                startDate: patternMakingStartDate1,
+                                endDate: patternMakingEndDate1,
+                                supervisor: patternMakingSupervisor1,
+                                status: patternMakingStatus1
+                            },
+                            cutting: {
+                                startDate: cuttingStartDate1,
+                                endDate: cuttingEndDate1,
+                                supervisor: cuttingSupervisor1,
+                                status: cuttingStatus1
+                            },
+                            printing: {
+                                startDate: printingStartDate1,
+                                endDate: printingEndDate1,
+                                supervisor: printingSupervisor1,
+                                status: printingStatus1
+                            },
+                            sewing: {
+                                startDate: sewingStartDate1,
+                                endDate: sewingEndDate1,
+                                supervisor: sewingSupervisor1,
+                                status: sewingStatus1
+                            },
+                            finishing: {
+                                startDate: finishingStartDate1,
+                                endDate: finishingEndDate1,
+                                supervisor: finishingSupervisor1,
+                                status: finishingStatus1
+                            },
+                            qualityControl: {
+                                startDate: qualityControlStartDate1,
+                                endDate: qualityControlEndDate1,
+                                supervisor: qualityControlSupervisor1,
+                                status: qualityControlStatus1,
+                                checks: {
+                                    measurementsCorrect: qcMeasurementsCorrect1,
+                                    stitchingQuality: qcStitchingQuality1,
+                                    colorMatching: qcColorMatching1,
+                                    fabricQuality: qcFabricQuality1,
+                                    printQuality: qcPrintQuality1,
+                                    washTest: qcWashTest1,
+                                    finishing: qcFinishing1,
+                                    labelsAndTags: qcLabelsAndTags1,
+                                    notes: qcNotes1
+                                }
+                            },
+                            packaging: {
+                                startDate: packagingStartDate1,
+                                endDate: packagingEndDate1,
+                                supervisor: packagingSupervisor1,
+                                status: packagingStatus1
+                            }},
+                            total: total1
+                            };
+
+                            const add=addOrder(data);
+                            if (add) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: "Job Card Created",
+                                    
+                                });
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Something went wrong!",
+                                        
+                                    });
+                                }
+                    }
+                    
+                        }
                 }
-            }
                 
                 
                 >Submit</button>
+                <button type="button" class="btn btn-danger" style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }}
+                onClick={() => cancell()} 
+                  
+                >Cancell</button>
+                
+            </div>
         </div>
-    </div>
+        </div>
     </>
   )
 }

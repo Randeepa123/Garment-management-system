@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
 import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -72,6 +73,10 @@ function UpdateJobCard({
         
 
         console.log("data in jobcard:",customer);
+        const navigate=useNavigate()
+        const cancell=()=>{
+            navigate("/orders")
+        }
 
         const [orderdate1, setOrderdate] = useState('');
         const [deliverydate1, setDeliverydate] = useState('');
@@ -230,6 +235,91 @@ function UpdateJobCard({
             qcPrintQuality, qcWashTest, qcFinishing, qcLabelsAndTags, qcNotes
           ]);
 
+
+        const validateForm = () => {
+                    // Check essential required fields
+                    if (!customer1 || customer1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Please enter customer name"
+                      });
+                      return false;
+                    }
+                    //check priority
+                    if (!priority1 || priority1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Priority is not selected"
+                      });
+                      return false;
+                    }
+                    //check ordertype
+                    if (!styleNumber1 || styleNumber1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Order type is not selected"
+                      });
+                      return false;
+                    }
+                    if (!description1 || description1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Please Enter a Description"
+                      });
+                      return false;
+                    }
+                    if (!fabricDetails1 || fabricDetails1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Please Enter a Fabric Details"
+                      });
+                      return false;
+                    }
+                    if (!color1 || color1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Please Enter a Color Details"
+                      });
+                      return false;
+                    }
+                    if (!sizeRange1 || sizeRange1.trim() === '') {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Missing Information",
+                        text: "Please Enter a size Range"
+                      });
+                      return false;
+                    }
+                    
+                    // Check dates
+                    if (deliverydate1 && orderdate1 && new Date(deliverydate1) < new Date(orderdate1)) {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Invalid Dates",
+                        text: "Delivery date cannot be before order date"
+                      });
+                      return false;
+                    }
+                    
+                    // Check total quantity
+                    if (total1 <= 0) {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Invalid Quantity",
+                        text: "Total quantity must be greater than 0"
+                      });
+                      return false;
+                    }
+                    
+                    return true;
+                  }
+
         console.log("data in customer1:",customer1);
         
         const [total1,settotal1]=useState(0)
@@ -324,6 +414,7 @@ function UpdateJobCard({
                                     value={priority1} // Ensure this is correctly set in state
                                     onChange={(e) => setPriority(e.target.value)}
                                 >
+                                    <option value="No data">No-data</option>
                                     <option value="High">High</option>
                                     <option value="Middle">Middle</option>
                                     <option value="Low">Low</option>
@@ -343,6 +434,7 @@ function UpdateJobCard({
                                 onChange={(e)=>{
                                     setStyleNumber(e.target.value)
                                 }}>
+                                <option value="No data">No-data</option>
                                 <option value="T-Shirts">T-shirts</option>
                                 <option value="Trousers">Trousers</option>
                                 <option value="Other">Other</option>
@@ -952,8 +1044,14 @@ function UpdateJobCard({
                     BARCODE value
                 </div>
             </div>
-            <button onClick={()=>{
-
+            <div style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }}>
+            <button type="button" class="btn btn-danger"
+                onClick={() => cancell()} 
+                  
+            >Cancell</button>
+            <button type="button" class="btn btn-success"  
+                onClick={()=>{
+                    if (validateForm()) {
                     const data = {
                         orderdate: orderdate1,
                         deliverydate: deliverydate1,
@@ -1056,7 +1154,10 @@ function UpdateJobCard({
                     }
       
                     
-                }}>Update</button>
+                }}}>Update</button>
+
+                
+            </div>
         </div>
     </div>
     </>

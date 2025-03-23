@@ -1,4 +1,5 @@
 import React from 'react'
+import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 
 import { 
   Grid, 
@@ -29,10 +30,10 @@ const ArrowForwardIcon = () => (
 
 function OrdersCountBoxes() {
     const orderSummary = [
-        { title: 'Pending Orders', count: 50, icon: <MoreVertIcon /> },
-        { title: 'Completed Orders', count: 49, icon: <MoreVertIcon /> },
-        { title: 'Urgent Orders', count: 10, icon: <MoreVertIcon /> },
-        { title: 'Cancelled Orders', count: 10, icon: <MoreVertIcon /> },
+        { title: 'Pending Orders', count: 50, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Completed Orders', count: 49, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Urgent Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Cancelled Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
       ];
   return (
     <Grid container spacing={3} sx={{ mb: 4 }}>
