@@ -2,6 +2,7 @@ import React, { use, useEffect,useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
+import  Swal from 'sweetalert2/dist/sweetalert2.js'
 
 
 
@@ -881,9 +882,19 @@ function JobCard({
 
                     const add=addOrder(data);
                     if (add) {
-                        alert("Order added successfully!");
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: "Job Card Created",
+                            footer: '<a href="#">Why do I have this issue?</a>'
+                          });
                     } else {
-                        alert("Failed to update order.");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                            footer: '<a href="#">Why do I have this issue?</a>'
+                          });
                     }
                 
                 }

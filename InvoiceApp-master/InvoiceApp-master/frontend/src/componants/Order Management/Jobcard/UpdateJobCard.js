@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
-import axios from 'axios'
+import Swal from "sweetalert2";
 
 
 
@@ -1040,9 +1040,19 @@ function UpdateJobCard({
                     
                     const stat=updateorder(data);
                     if (stat) {
-                        alert("Order updated successfully!");
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: "Job Card Updated",
+                            
+                          });
                     } else {
-                        alert("Failed to update order.");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        
+                          });
                     }
       
                     
