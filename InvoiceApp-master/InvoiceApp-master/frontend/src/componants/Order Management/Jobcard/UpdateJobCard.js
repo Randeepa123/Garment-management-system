@@ -319,25 +319,35 @@ function UpdateJobCard({
                     <div class="col-md-6">
                         <div class="detail-box">
                             <label>Priority</label>
-                            <div ><input type="text"class="value"
-                                value={priority1}
-                                onChange={(e)=>{
-                                    setPriority(e.target.value)
-                                }}
-                            /></div>
+                            <td><select 
+                                    className="form-select"
+                                    value={priority1} // Ensure this is correctly set in state
+                                    onChange={(e) => setPriority(e.target.value)}
+                                >
+                                    <option value="High">High</option>
+                                    <option value="Middle">Middle</option>
+                                    <option value="Low">Low</option>
+                                </select></td>
                             
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="detail-box">
-                            <label>Style Number</label>
-                            <div ><input type="text"class="value"
+                            <label>Order-Type</label>
+                            <div ><select
+                                class="form-select" 
+                                id="sizeRange"  
+                                type="text"
                                 value={styleNumber1}
                                 onChange={(e)=>{
                                     setStyleNumber(e.target.value)
-                                }}
-                            /></div>
+                                }}>
+                                <option value="T-Shirts">T-shirts</option>
+                                <option value="Trousers">Trousers</option>
+                                <option value="Other">Other</option>
+
+                                </select></div>
                         </div>
                     </div>
                     

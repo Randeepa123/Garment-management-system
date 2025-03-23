@@ -19,6 +19,9 @@ import { Router } from 'react-router-dom';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 import axios from 'axios';
+import { FaShirt } from "react-icons/fa6";
+import { GiTrousers } from "react-icons/gi";
+import { FaShoppingCart } from "react-icons/fa";
 
 
 
@@ -39,10 +42,10 @@ const StatusChip = styled('div')(({ status }) => ({
   borderRadius: '4px',
   fontSize: '12px',
   fontWeight: 'bold',
-  color: status === 'Completed' ? '#4caf50' : 
-         status === 'Cancel' ? '#f44336' : '#ff9800',
-  background: status === 'Completed' ? '#e8f5e9' : 
-              status === 'Cancel' ? '#ffebee' : '#fff8e1',
+  color: status === 'Low' ? '#4caf50' : 
+         status === 'High' ? '#f44336' : '#ff9800',
+  background: status === 'Low' ? '#e8f5e9' : 
+              status === 'High' ? '#ffebee' : '#fff8e1',
   display: 'inline-block',
 }));
 
@@ -66,8 +69,12 @@ function OrderTable({rows, getOrders}) {
 
   // Function to get the appropriate icon based on product type
   const getOrderIcon = (type) => {
-    // This could be expanded to show different icons for different product types
-    return <ShoppingCartIcon fontSize="small" />;
+    if(type==="T-Shirts"){
+      return <FaShirt fontSize="small" />;
+    }if(type==="Trousers"){
+      return <GiTrousers fontSize="small" />;
+    }
+    return <FaShoppingCart fontSize="small" />;
   };
 
   return (
@@ -95,15 +102,15 @@ function OrderTable({rows, getOrders}) {
           <OrderItem key={row.jobcardId}>
             <Box sx={{ display: 'flex', width: '100%', px: 2 }}>
               <OrderIcon>
-                {getOrderIcon()}
+                {getOrderIcon(row.styleNumber)}
               </OrderIcon>
               <Box sx={{ ml: 2, flex: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
                     Order {row.customer}
                   </Typography>
-                  <StatusChip status={'Cancel'}>
-                    {row.customer}
+                  <StatusChip status={row.priority}>
+                    {row.priority}
                   </StatusChip>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
