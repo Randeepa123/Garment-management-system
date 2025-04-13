@@ -46,6 +46,7 @@ const addOrder=(req,res,next)=>{
         description: req.body.description,
         fabricDetails: req.body.fabricDetails,
         color: req.body.color,
+        wait:req.body.wait,
         sizeRange: req.body.sizeRange,
 
         // Size Distribution - accessing the correct nested structure
@@ -150,6 +151,7 @@ const updateOrder=(req,res,next)=>{
         description: req.body.description,
         fabricDetails: req.body.fabricDetails,
         color: req.body.color,
+        wait:req.body.wait,
         sizeRange: req.body.sizeRange,
 
         // Size Distribution - accessing the correct nested structure

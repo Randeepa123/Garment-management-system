@@ -19,7 +19,7 @@ function UpdateOrder() {
             const getOrderbyId =(Id) => {
               const payload={jobcardId:Id}
           
-              axios.post('http://localhost:3001/findOrderById',payload)
+              axios.post('http://localhost:8070/findOrderById',payload)
               .then((response) => {
                 setOrder(response.data);
                 console.log("data is:",response.data);
@@ -48,6 +48,7 @@ function UpdateOrder() {
       description: data.description,
       fabricDetails: data.fabricDetails,
       color: data.color,
+      wait:data.wait,
       sizeRange: data.sizeRange,
       sizeDistribution: {
         sizeDistributionS: data.sizeDistribution.S,
@@ -122,7 +123,7 @@ function UpdateOrder() {
         }
       }
     }
-    return axios.post('http://localhost:3001/updateorder', payload)
+    return axios.post('http://localhost:8070/orders/updateorder', payload)
     .then((response) => {
       setUpdated(false);
       return true;
@@ -151,6 +152,7 @@ function UpdateOrder() {
           description={order.description || ''}
           fabricDetails={order.fabricDetails || ''}
           color={order.color || ''}
+          wait={order.wait || ''}
           sizeRange={order.sizeRange || ''}
           
           // Size distribution (nested object in API response)

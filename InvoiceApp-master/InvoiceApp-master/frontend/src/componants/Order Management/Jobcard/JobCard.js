@@ -14,6 +14,7 @@ function JobCard({
 
         const [orderdate1, setOrderdate] = useState();
         const [deliverydate1, setDeliverydate] = useState();
+
         const [customer1, setCustomer] = useState();
         const [priority1, setPriority] = useState();
         const [styleNumber1, setStyleNumber] = useState();
@@ -70,6 +71,7 @@ function JobCard({
         const [qcFinishing1, setQcFinishing] = useState();
         const [qcLabelsAndTags1, setQcLabelsAndTags] = useState();
         const [qcNotes1, setQcNotes] = useState();
+        const[wait,setwait]=useState()
 
         const [total1,settotal1]=useState(0)
         
@@ -329,6 +331,17 @@ function JobCard({
                                 value={color1}
                                 onChange={(e)=>{
                                     setColor(e.target.value)
+                                }}
+                            /></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-box">
+                            <label>Wait</label>
+                            <div ><input type="text"class="value"
+                                value={wait}
+                                onChange={(e)=>{
+                                    setwait(e.target.value)
                                 }}
                             /></div>
                         </div>
@@ -903,6 +916,7 @@ function JobCard({
                             description: description1,
                             fabricDetails: fabricDetails1,
                             color: color1,
+                            wait:wait,
                             sizeRange: sizeRange1,
                             sizeDistribution: {
                                 S: sizeDistributionS1,
