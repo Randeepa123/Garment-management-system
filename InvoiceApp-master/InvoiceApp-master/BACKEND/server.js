@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 require("dotenv").config();
+const host="localhost";
+
 
 const app = express();
 
@@ -29,13 +31,15 @@ const customerRouter = require("./routes/customer.js");
 const invoiceRouter = require("./routes/invoice.js");
 const targetRouter = require("./routes/target.js");
 const employeeRouter = require("./routes/employee.js");
+const processManagement=require('./Process-Management/Backend/router.js');
 
 // app.use("/student" , studentRouter);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
 app.use("/target", targetRouter);
 app.use("/employee", employeeRouter);
+app.use("",processManagement);
 
-app.listen(PORT, () => {
+app.listen(PORT,host,() => {
   console.log(`Server is up and running on port ${PORT}`);
 });

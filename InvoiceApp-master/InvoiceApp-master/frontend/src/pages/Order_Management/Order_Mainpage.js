@@ -19,7 +19,7 @@ function Order_Mainpage() {
   }, [])
 
   const getOrders = async () => {
-    axios.get('http://localhost:3001/orders')
+    axios.get('http://localhost:8070/orders')
     .then((response) => {
       setOrders(response.data);
     })

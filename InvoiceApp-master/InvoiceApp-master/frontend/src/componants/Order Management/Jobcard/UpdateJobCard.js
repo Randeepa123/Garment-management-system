@@ -20,6 +20,7 @@ function UpdateJobCard({
     description,
     fabricDetails,
     color,
+    wait,
     sizeRange,
     sizeDistributionS,
     sizeDistributionM,
@@ -87,6 +88,7 @@ function UpdateJobCard({
         const [description1, setDescription] = useState('');
         const [fabricDetails1, setFabricDetails] = useState('');
         const [color1, setColor] = useState('');
+        const [wait1, setwait] = useState('');
         const [sizeRange1, setSizeRange] = useState('');
         const [sizeDistributionS1, setSizeDistributionS] = useState(0);
         const [sizeDistributionM1, setSizeDistributionM] = useState(0);
@@ -150,6 +152,7 @@ function UpdateJobCard({
             // Set fabric and sizing details
             if (fabricDetails !== undefined) setFabricDetails(fabricDetails);
             if (color !== undefined) setColor(color);
+            if (wait !== undefined) setwait(wait);
             if (sizeRange !== undefined) setSizeRange(sizeRange);
             if (sizeDistributionS !== undefined) setSizeDistributionS(sizeDistributionS);
             if (sizeDistributionM !== undefined) setSizeDistributionM(sizeDistributionM);
@@ -232,7 +235,7 @@ function UpdateJobCard({
             qualityControlStartDate, qualityControlEndDate, qualityControlSupervisor, qualityControlStatus,
             packagingStartDate, packagingEndDate, packagingSupervisor, packagingStatus,
             qcMeasurementsCorrect, qcStitchingQuality, qcColorMatching, qcFabricQuality,
-            qcPrintQuality, qcWashTest, qcFinishing, qcLabelsAndTags, qcNotes
+            qcPrintQuality, qcWashTest, qcFinishing, qcLabelsAndTags, qcNotes,wait
           ]);
 
 
@@ -487,6 +490,17 @@ function UpdateJobCard({
                                 value={color1}
                                 onChange={(e)=>{
                                     setColor(e.target.value)
+                                }}
+                            /></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-box">
+                            <label>Wait</label>
+                            <div ><input type="text"class="value"
+                                value={wait1}
+                                onChange={(e)=>{
+                                    setwait(e.target.value)
                                 }}
                             /></div>
                         </div>
@@ -1061,6 +1075,7 @@ function UpdateJobCard({
                         description: description1,
                         fabricDetails: fabricDetails1,
                         color: color1,
+                        wait: wait1,
                         sizeRange: sizeRange1,
                         sizeDistribution: {
                             S: sizeDistributionS1,

@@ -60,7 +60,7 @@ function OrderTable({rows, getOrders}) {
   
   const deleteOrder = (Id) => {
     const payload = {jobcardId: Id}
-    axios.post('http://localhost:3001/deleteorder', payload)
+    axios.post('http://localhost:8070/deleteorder', payload)
     .then((response) => {
         getOrders();
        

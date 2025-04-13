@@ -20,6 +20,7 @@ function AddOrder() {
       description: data.description,
       fabricDetails: data.fabricDetails,
       color: data.color,
+      wait:data.wait,
       sizeRange: data.sizeRange,
       sizeDistribution: {
         sizeDistributionS: data.sizeDistribution.S,
@@ -94,7 +95,7 @@ function AddOrder() {
         }
       }
     }
-    return axios.post('http://localhost:3001/addorder', payload)
+    return axios.post('http://localhost:8070/addorder', payload)
     .then((response) => {
       setSubmitted(false);
     })
