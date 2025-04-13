@@ -1,13 +1,23 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
+import { UpdateTargetContex } from "../../contex/UpdateTargetContex";
 
-export const UpdateTargetForm = () => {
-  const [employeeID, setEmployeeID] = useState(" ");
-  const SheetNo = "TS001";
+export const UpdateTargetForm = (props) => {
+  const SheetNo = props.sheetNum;
   const [targets, setTargets] = useState([]);
   const [operators, setOperators] = useState([]);
+  const [operations, setOprations] = useState([]);
   const [operator, setOperator] = useState();
+  const [oper, setOper] = useState();
+  const [numOfPcs, setNumOfPcs] = useState();
+  const [timeIndex, setTimeIndex] = useState();
+
+  const { refresh, setRefresh } = useContext(UpdateTargetContex);
+
+  const load = () => {
+    setRefresh(refresh + 1);
+  };
 
   const fetchOperators = () => {
     const ops = [];
@@ -24,11 +34,22 @@ export const UpdateTargetForm = () => {
       );
     });
 
-    console.log("op", ops);
     setOperators(uops);
   };
 
-  const fetchOperations = (operator) => {};
+  const fetchOperations = (opId) => {
+    setOprations([]);
+    setOperator(opId);
+
+    const oprs = [];
+    targets.map((target) => {
+      if (target.EmployeeId._id == opId) {
+        oprs.push(target.Operation);
+      }
+    });
+
+    setOprations(oprs);
+  };
 
   const fetchTargets = async () => {
     try {
@@ -39,6 +60,33 @@ export const UpdateTargetForm = () => {
       setTargets(response.data);
     } catch (error) {
       console.error("Error fetching targets:", error);
+    }
+  };
+
+  const newItem = {
+    time: parseInt(timeIndex),
+    quantity: parseInt(numOfPcs),
+  };
+
+  const updatetargets = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("Updating Target!!");
+      const response = await axios.put(
+        `http://localhost:8070/target/updateTarget?SheetNo=${SheetNo}&Operation=${oper}&EmployeeId=${operator}`,
+        newItem, // Request body
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data);
+      load();
+    } catch (error) {
+      console.error("Error adding item:", error);
+      alert("Failed to add Targets to sheet!");
     }
   };
 
@@ -57,7 +105,7 @@ export const UpdateTargetForm = () => {
           class="form-select"
           id="floatingSelect"
           aria-label="Floating label select example"
-          onChange={(e) => setEmployeeID(e.target.value)}
+          onChange={(e) => fetchOperations(e.target.value)}
         >
           <option selected>Open this select menu</option>
           {operators.map((operator) => (
@@ -73,11 +121,14 @@ export const UpdateTargetForm = () => {
           class="form-select"
           id="floatingSelect"
           aria-label="Floating label select example"
+          onChange={(e) => setOper(e.target.value)}
         >
           <option selected>Open this select menu</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          {operations.map((operation) => (
+            <option key={operation} value={operation}>
+              {operation}
+            </option>
+          ))}
         </select>
         <label for="floatingSelect">Select Operation</label>
       </div>
@@ -86,10 +137,11 @@ export const UpdateTargetForm = () => {
           class="form-select"
           id="floatingSelect"
           aria-label="Floating label select example"
+          onChange={(e) => setTimeIndex(e.target.value)}
         >
           <option selected>Open this select menu</option>
           {[...Array(10)].map((_, i) => (
-            <option value={8 + i}>{`${8 + i}:15 - ${9 + i}:15`}</option>
+            <option value={i}>{`${8 + i}:15 - ${9 + i}:15`}</option>
           ))}
         </select>
         <label for="floatingSelect">Hour</label>
@@ -102,9 +154,14 @@ export const UpdateTargetForm = () => {
           type="number"
           placeholder="ex : Pocket"
           aria-label="default input example"
+          onChange={(e) => setNumOfPcs(e.target.value)}
         />
       </div>
-      <button type="button" class="w-50 btn btn-primary btn-md">
+      <button
+        type="button"
+        class="w-50 btn btn-primary btn-md"
+        onClick={(e) => updatetargets(e)}
+      >
         <ArrowOutwardOutlinedIcon />
         Set Target
       </button>
