@@ -15,9 +15,9 @@ export const SetTargets = () => {
 
   return (
     <div>
-      <TopicBar text="Set Targets" />
-      <div className="setTargetContainer px-5">
-        <div className="row set-target-wrapper d-flex w-100 justify-content-between p-5 bg-light rounded shadow ">
+      <TopicBar text="Set Targets" userName="Adithya Hulangamuwa" />
+      <div className="px-5 setTargetContainer">
+        <div className="d-flex row bg-light justify-content-between p-5 rounded shadow w-100 set-target-wrapper">
           <TargetContex.Provider value={{ refresh, setRefresh }}>
             <SetTargetForm sheetNum={sheetNo} />
             <TargetTable sheetNum={sheetNo} />
@@ -25,17 +25,17 @@ export const SetTargets = () => {
         </div>
       </div>
       <div className="displaylineTargetContainer py-5">
-        <div className="displaylinetarget p-5 d-flex justify-content-between rounded shadow">
-          <button type="button" className="btn btn-primary btn-md">
+        <div className="d-flex justify-content-between p-5 rounded shadow displaylinetarget">
+          <button type="button" className="btn btn-md btn-primary">
             <ArrowOutwardOutlinedIcon />
             Set Target
           </button>
           <div className="d-flex align-items-center gap-3">
-            <span className="fs-3 fw-semibold align-middle">Line Target: </span>
+            <span className="align-middle fs-3 fw-semibold">Line Target: </span>
             <span>125pcs/Day</span>
           </div>
           <div className="d-flex align-items-center gap-3">
-            <span className="fs-3 fw-semibold align-middle">
+            <span className="align-middle fs-3 fw-semibold">
               Estimamet Delivary:
             </span>
             <span>5 Days 5th May 2025</span>

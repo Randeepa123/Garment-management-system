@@ -42,7 +42,7 @@ export const InvoiceAddItem = () => {
 
   return (
     <div>
-      <form className="my-5 invoice-items-form">
+      <form className="invoice-items-form my-5">
         <div className="mb-3">
           <div className="form-floating mb-3">
             <input

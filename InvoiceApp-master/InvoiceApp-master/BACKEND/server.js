@@ -6,7 +6,9 @@ const host = "localhost";
 const mongoose = require("mongoose");
 require("dotenv").config();
 const targetRouter = require("./routes/target");
+
 const orderRouter = require("./routes/order");
+
 
 app.use(cors());
 app.use(express.json());
@@ -29,7 +31,9 @@ const server = app.listen(port, host, () => {
 });
 
 app.use("/target", targetRouter);
+
 app.use("/order", orderRouter);
+
 
 /*const express = require("express");
 const mongoose = require("mongoose");
