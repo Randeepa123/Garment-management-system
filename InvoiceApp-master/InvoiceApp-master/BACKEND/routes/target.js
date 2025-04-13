@@ -1,7 +1,21 @@
 const express = require("express");
 const router = express.Router();
+/*
 const mongoose = require("mongoose");
 const Target = require("../models/target");
+*/
+const controller = require("../controllers/targetController");
+
+router.get("/getSheet", controller.getTargetSheet);
+router.get("/getTargetsByEmployee", controller.getTargetsByEmployee);
+router.post("/add", controller.addTargetSheet);
+router.put("/addTarget", controller.addTarget);
+router.put("/updateTarget", controller.updateTarget);
+router.delete("/deleteTarget", controller.deleteTarget);
+router.get("/getAllOperators", controller.getAllOperators);
+router.get("/getAll", controller.getAll);
+
+/*
 
 router.route("/getSheet").get((req, res) => {
   const SheetNum = req.query.SheetNo;
@@ -99,7 +113,7 @@ router.route("/updateTarget").put((req, res) => {
   const Operation = req.query.Operation;
   const SheetNum = req.query.SheetNo;
 
-  const Time = req.body.time;
+  const TimeIndex = req.body.time;
   const quantity = req.body.quantity;
 
   Target.findOne({ SheetNo: SheetNum }).then((targetSheet) => {
@@ -114,8 +128,8 @@ router.route("/updateTarget").put((req, res) => {
         "Targets.Operation": Operation,
       },
       {
-        $push: {
-          "Targets.$.IOuts": { Time: Time, quantity: quantity }, // Add the new value to the IOuts array
+        $set: {
+          [`Targets.$.IOuts.${TimeIndex}`]: quantity, // Update specific index in IOuts array
         },
       }
     )
@@ -134,4 +148,20 @@ router.route("/updateTarget").put((req, res) => {
   });
 });
 
+router.route("/deleteTarget").delete((req, res) => {
+  const objId = req.query.objId;
+
+  Target.deleteOne({ "Targets._id": objId })
+    .then((result) => {
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ error: "Target sheet not found" });
+      }
+      res.json({ message: "Target sheet deleted successfully" });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to delete target sheet" });
+    });
+});
+*/
 module.exports = router;

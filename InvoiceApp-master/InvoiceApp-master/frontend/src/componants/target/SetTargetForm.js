@@ -6,9 +6,10 @@ import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 
 import { TargetContex } from "../../contex/TargetContex";
 
-export const SetTargetForm = () => {
+export const SetTargetForm = (props) => {
   const [operators, setoperators] = useState([]);
   const [operation, setOperation] = useState(" ");
+  const [operationPg, setOperationPg] = useState();
   const [employeeID, setEmployeeID] = useState(" ");
   const [timeForOperation, setTimeForOperation] = useState();
   const [noOpForHr, setNoOpForHr] = useState();
@@ -17,14 +18,14 @@ export const SetTargetForm = () => {
 
   const [key, setKey] = useState(0);
 
-  const SheetNo = "TS001";
+  const SheetNo = props.sheetNum;
 
   useEffect(() => {
     const fetchOperators = async () => {
       try {
         console.log("Fetching Operators...");
         const response = await axios.get(
-          "http://localhost:8070/employee/getAllOperators"
+          "http://localhost:8070/target/getAllOperators"
         );
         setoperators(response.data);
       } catch (error) {
@@ -39,6 +40,7 @@ export const SetTargetForm = () => {
     EmployeeId: employeeID,
     Operation: operation,
     Itarget: parseFloat(noOpForHr),
+    OperationPg: operationPg,
   };
 
   const addItemToInvoice = async (e) => {
@@ -67,6 +69,10 @@ export const SetTargetForm = () => {
   };
 
   const calculateTarget = () => {
+    if (timeForOperation < 0) {
+      setTimeForOperation(0);
+      return alert("Do not enter minus numbers!!");
+    }
     const pcs = ((60 / timeForOperation) * 70) / 100;
     setNoOpForHr(pcs);
   };
@@ -76,7 +82,7 @@ export const SetTargetForm = () => {
       <div className="target-form d-flex flex-column justify-content-center">
         <h3>Set Individual Targets</h3>
         <form className="d-flex flex-column justify-content-center">
-          <div className="d-flex gap-3 align-items-center m-4">
+          <div className="d-flex gap-3 align-items-center m-3">
             <label htmlFor="">Select Operator</label>
             <select
               className="form-select form-select-lg "
@@ -91,7 +97,7 @@ export const SetTargetForm = () => {
               ))}
             </select>
           </div>
-          <div className="d-flex gap-3 align-items-center m-4">
+          <div className="d-flex gap-3 align-items-center m-3">
             <label htmlFor="">Operation</label>
             <input
               className="form-control"
@@ -101,7 +107,18 @@ export const SetTargetForm = () => {
               onChange={(e) => setOperation(e.target.value)}
             />
           </div>
-          <div className="d-flex gap-3 align-items-center m-4">
+          <div className="d-flex gap-3 align-items-center m-3">
+            <label htmlFor="">Operations Per Garments</label>
+            <input
+              className="form-control"
+              type="Number"
+              placeholder="ex : 2"
+              aria-label="default input example"
+              value={operationPg ? operationPg : null}
+              onChange={(e) => setOperationPg(e.target.value)}
+            />
+          </div>
+          <div className="d-flex gap-3 align-items-center m-3">
             <label htmlFor="">Time for 1 operation</label>
             <div className="input-group">
               <input
@@ -121,7 +138,7 @@ export const SetTargetForm = () => {
               </button>
             </div>
           </div>
-          <div className="d-flex gap-3 align-items-center m-4">
+          <div className="d-flex gap-3 align-items-center m-3">
             <label htmlFor="">Operations for 1hr</label>
             <input
               className="form-control"
