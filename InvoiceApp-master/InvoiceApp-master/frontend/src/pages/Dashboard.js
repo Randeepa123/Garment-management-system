@@ -8,6 +8,7 @@ import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import logo from "../asserts/img/logo.png";
 import { UpdateTargets } from "./target/UpdateTargets";
+import { TargetDashboard } from "./target/TargetDashboard";
 
 export const Dashboard = () => {
   return (
@@ -28,7 +29,7 @@ export const Dashboard = () => {
             </li>
             <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
-              <Link to="quote">Quotation</Link>
+              <Link to="quote">Quotations</Link>
             </li>
             <span className="fw-semibold">Targets</span>
             <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
@@ -39,14 +40,22 @@ export const Dashboard = () => {
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
               <Link to="update-targets">Update Targets</Link>
             </li>
+            <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
+              <PriceCheckIcon sx={{ fill: "#007EA4" }} />
+              <Link to="targets">Target Dashboard</Link>
+            </li>
           </ul>
         </div>
         <div className="m-3 pl-5 content-section">
           <Routes>
             <Route path="/invoice" element={<InvoicePage />} />
             <Route path="/quote" element={<QuotePage />} />
-            <Route path="/set-targets" element={<SetTargets />} />
-            <Route path="/update-targets" element={<UpdateTargets />} />
+            <Route path="/set-targets/:sheetNo" element={<SetTargets />} />
+            <Route path="/targets" element={<TargetDashboard />} />
+            <Route
+              path="/update-targets/:sheetNo"
+              element={<UpdateTargets />}
+            />
           </Routes>
         </div>
       </div>

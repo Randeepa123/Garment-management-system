@@ -1,4 +1,37 @@
 const express = require("express");
+const app = express();
+const cors = require("cors");
+const port = 8070;
+const host = "localhost";
+const mongoose = require("mongoose");
+require("dotenv").config();
+const targetRouter = require("./routes/target");
+const orderRouter = require("./routes/order");
+
+app.use(cors());
+app.use(express.json());
+
+const DbUrl = process.env.MONGODB_URL;
+
+const connect = async () => {
+  try {
+    await mongoose.connect(DbUrl);
+    console.log("Connected to DB");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+connect();
+
+const server = app.listen(port, host, () => {
+  console.log(`Server is listening to http://${host}:${port}`);
+});
+
+app.use("/target", targetRouter);
+app.use("/order", orderRouter);
+
+/*const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -38,4 +71,4 @@ app.use("/employee", employeeRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is up and running on port ${PORT}`);
-});
+});*/
