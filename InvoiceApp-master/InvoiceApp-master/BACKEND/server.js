@@ -1,11 +1,42 @@
 const express = require("express");
+const app = express();
+const cors = require("cors");
+const port = 8070;
+const host = "localhost";
+const mongoose = require("mongoose");
+require("dotenv").config();
+const targetRouter = require("./routes/target");
+const processManagement=require("./Process-Management/Backend/router")
+
+app.use(cors());
+app.use(express.json());
+
+const DbUrl = process.env.MONGODB_URL;
+
+const connect = async () => {
+  try {
+    await mongoose.connect(DbUrl);
+    console.log("Connected to DB");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+connect();
+
+const server = app.listen(port, host, () => {
+  console.log(`Server is listening to http://${host}:${port}`);
+});
+
+app.use("/target", targetRouter);
+app.use("", processManagement);
+
+/*const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 require("dotenv").config();
-const host="localhost";
-
 
 const app = express();
 
@@ -31,15 +62,13 @@ const customerRouter = require("./routes/customer.js");
 const invoiceRouter = require("./routes/invoice.js");
 const targetRouter = require("./routes/target.js");
 const employeeRouter = require("./routes/employee.js");
-const processManagement=require('./Process-Management/Backend/router.js');
 
 // app.use("/student" , studentRouter);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
 app.use("/target", targetRouter);
 app.use("/employee", employeeRouter);
-app.use("",processManagement);
 
-app.listen(PORT,host,() => {
+app.listen(PORT, () => {
   console.log(`Server is up and running on port ${PORT}`);
-});
+});*/
