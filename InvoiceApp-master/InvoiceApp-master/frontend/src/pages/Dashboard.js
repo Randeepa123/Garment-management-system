@@ -9,9 +9,8 @@ import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import logo from "../asserts/img/logo.png";
 import { UpdateTargets } from "./target/UpdateTargets";
-import { ShoppingBag } from "@mui/icons-material";
-import AddOrder from "./Order_Management/AddOrder";
-import UpdateOrder from "./Order_Management/UpdateOrder";
+
+import { TargetDashboard } from "./target/TargetDashboard";
 
 
 export const Dashboard = () => {
@@ -33,7 +32,7 @@ export const Dashboard = () => {
             </li>
             <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
-              <Link to="quote">Quotation</Link>
+              <Link to="quote">Quotations</Link>
             </li>
             <span className="fw-semibold">Targets</span>
             <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
@@ -44,10 +43,11 @@ export const Dashboard = () => {
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
               <Link to="update-targets">Update Targets</Link>
             </li>
-            <span className="fw-semibold">Orders</span>
-            <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
-              <ShoppingBag sx={{ fill: "#007EA4" }} />
-              <Link to="orders">Orders</Link>
+
+            <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
+              <PriceCheckIcon sx={{ fill: "#007EA4" }} />
+              <Link to="targets">Target Dashboard</Link>
+
             </li>
           </ul>
         </div>
@@ -55,11 +55,14 @@ export const Dashboard = () => {
           <Routes>
             <Route path="/invoice" element={<InvoicePage />} />
             <Route path="/quote" element={<QuotePage />} />
-            <Route path="/set-targets" element={<SetTargets />} />  
-            <Route path="/update-targets" element={<UpdateTargets />} />
-            <Route path="/orders" element={<Order_Mainpage />} />
-            <Route path="/addOrder" element={<AddOrder/>} />
-            <Route path="/updateOrder" element={<UpdateOrder/>} />
+
+            <Route path="/set-targets/:sheetNo" element={<SetTargets />} />
+            <Route path="/targets" element={<TargetDashboard />} />
+            <Route
+              path="/update-targets/:sheetNo"
+              element={<UpdateTargets />}
+            />
+
           </Routes>
         </div>
       </div>

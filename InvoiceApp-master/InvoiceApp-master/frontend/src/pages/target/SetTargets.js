@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { SetTargetForm } from "../../componants/target/SetTargetForm";
 import { TargetTable } from "../../componants/target/TargetTable";
 import { TargetContex } from "../../contex/TargetContex";
@@ -9,6 +11,7 @@ import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 
 export const SetTargets = () => {
   const [refresh, setRefresh] = useState(0);
+  const { sheetNo } = useParams();
 
   return (
     <div>
@@ -16,8 +19,8 @@ export const SetTargets = () => {
       <div className="px-5 setTargetContainer">
         <div className="d-flex row bg-light justify-content-between p-5 rounded shadow w-100 set-target-wrapper">
           <TargetContex.Provider value={{ refresh, setRefresh }}>
-            <SetTargetForm />
-            <TargetTable />
+            <SetTargetForm sheetNum={sheetNo} />
+            <TargetTable sheetNum={sheetNo} />
           </TargetContex.Provider>
         </div>
       </div>

@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
+
+/*
 const mongoose = require("mongoose");
 const Employee = require("../models/employee");
+const controller = require("../controllers/employeeTarget");
 
+router.get("/getAllOperators", controller);*/
+
+/*
 router.route("/getAllOperators").get((req, res) => {
   Employee.find({ post: "operator" })
     .then((operators) => {
@@ -15,6 +21,6 @@ router.route("/getAllOperators").get((req, res) => {
       console.error(err);
       res.status(500).json({ error: "Failed to fetch opertors" });
     });
-});
+});*/
 
 module.exports = router;
