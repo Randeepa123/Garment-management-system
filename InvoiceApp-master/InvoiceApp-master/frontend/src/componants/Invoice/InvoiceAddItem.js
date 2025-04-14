@@ -1,42 +1,89 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { InvoiceContex } from "../../contex/InvoiceContex";
 
-export const InvoiceAddItem = () => {
+export const InvoiceAddItem = ({ editingItem, setEditingItem }) => {
   const [itemName, setItemName] = useState("");
-  const [itemTotal, setitemTotal] = useState("");
-  const [itemQTY, setItemQTY] = useState();
-  const [itemPrice, setitemPrice] = useState();
+  const [itemQTY, setItemQTY] = useState("");
+  const [itemDiscount, setDiscount] = useState("");
+  const [itemPrice, setItemPrice] = useState("");
 
   const { refresh, setRefresh, InvoiceNumber } = useContext(InvoiceContex);
 
-  const newItem = {
-    product: itemName,
-    quantity: parseInt(itemQTY),
-    price: parseFloat(itemPrice),
-    total: parseFloat(itemTotal), // Should be quantity * price
-  };
 
-  const addItemToInvoice = async (e) => {
+
+  const total = ((parseFloat(itemPrice) || 0) * (parseInt(itemQTY) || 0) ) - itemDiscount ;
+  
+ 
+
+  useEffect(() => {
+    if (editingItem) {
+      setItemName(editingItem.product);
+      setItemQTY(editingItem.quantity.toString());
+      setItemPrice(editingItem.price.toString());
+      setDiscount(editingItem.Discount.toString());
+    } else {
+   
+      setItemName("");
+      setItemQTY("");
+      setItemPrice("");
+      setDiscount("");
+    }
+  }, [editingItem]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const newItem = {
+      product: itemName,
+      quantity: parseInt(itemQTY) || 0,
+      price: parseFloat(itemPrice) || 0,
+      Discount: (itemDiscount) ,
+      total: total,
+    };
+
     try {
-      console.log("Adding " + newItem + " item to invoice...");
-
-      const response = await axios.put(
-        `http://localhost:8070/invoice/addItem?invoiceId=${InvoiceNumber}`, // URL with query parameter
-        newItem, // Request body
-        {
-          headers: {
-            "Content-Type": "application/json",
+      if (editingItem) {
+       
+        await axios.put(
+          "http://localhost:8070/invoice/updateItem",
+          {
+            invoiceId: InvoiceNumber,
+            itemId: editingItem._id,
+            ...newItem,
           },
-        }
-      );
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        alert("Item updated successfully!");
+        setEditingItem(null); 
+      } else {
+   
+        await axios.put(
+          `http://localhost:8070/invoice/addItem?invoiceId=${InvoiceNumber}`,
+          newItem,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        
+       
+      }
 
-      console.log(response.data); // Log response from the server
       setRefresh(refresh + 1);
+      
+      setItemName("");
+      setItemPrice("");
+      setItemQTY("");
+      setDiscount("");
     } catch (error) {
-      console.error("Error adding item:", error);
-      alert("Failed to add item to invoice!");
+   
+      alert("Failed to add/update item!");
     }
   };
 
@@ -48,11 +95,10 @@ export const InvoiceAddItem = () => {
             <input
               type="text"
               className="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-              onChange={(e) => {
-                setItemName(e.target.value);
-              }}
+              placeholder="Item Name"
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
+              required
             />
             <label>Item</label>
           </div>
@@ -62,11 +108,10 @@ export const InvoiceAddItem = () => {
             <input
               type="text"
               className="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-              onChange={(e) => {
-                setitemPrice(e.target.value);
-              }}
+              placeholder="Price"
+              value={itemPrice}
+              onChange={(e) => setItemPrice(e.target.value)}
+              required
             />
             <label>Price</label>
           </div>
@@ -76,11 +121,10 @@ export const InvoiceAddItem = () => {
             <input
               type="text"
               className="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-              onChange={(e) => {
-                setItemQTY(e.target.value);
-              }}
+              placeholder="Quantity"
+              value={itemQTY}
+              onChange={(e) => setItemQTY(e.target.value)}
+              required
             />
             <label>QTY</label>
           </div>
@@ -90,26 +134,49 @@ export const InvoiceAddItem = () => {
             <input
               type="text"
               className="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-              onChange={(e) => {
-                setitemTotal(e.target.value);
-              }}
+              placeholder="Discount"
+              value={itemDiscount}
+              onChange={(e) => setDiscount(e.target.value)}
+              required
             />
-            <label>total</label>
+            <label>Discount</label>
+          </div>
+        </div>
+        <div className="mb-3">
+          <div className="form-floating mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Total"
+              value={total}
+              disabled
+              required
+            />
+            <label>Total</label>
           </div>
         </div>
 
         <div className="text-end">
-          <button type="submit" className="btn btn-subtle me-2">
+          <button
+            type="button"
+            className="btn btn-subtle me-2"
+            onClick={() => {
+              
+              setEditingItem(null);
+              setItemName("");
+              setItemQTY("");
+              setDiscount("");
+              setItemPrice("");
+            }}
+          >
             Cancel
           </button>
           <button
             type="submit"
             className="btn btn-primary"
-            onClick={(e) => addItemToInvoice(e)}
+            onClick={(e) => handleSubmit(e)}
           >
-            Submit
+            {editingItem ? "Update" : "Submit"}
           </button>
         </div>
       </form>
