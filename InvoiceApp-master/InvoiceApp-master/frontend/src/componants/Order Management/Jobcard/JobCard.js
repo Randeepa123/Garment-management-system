@@ -1,7 +1,7 @@
 import React, { use, useEffect,useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import './JobCard.css'
-import logo from '../../../asserts/img/logo.png'
+import logo from '../../../../src/asserts/img/logo.png'
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 
