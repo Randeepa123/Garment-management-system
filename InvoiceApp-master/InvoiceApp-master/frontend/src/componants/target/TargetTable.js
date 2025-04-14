@@ -34,7 +34,7 @@ export const TargetTable = (props) => {
         const response = await axios.get(
           `http://localhost:8070/target/getSheet?SheetNo=${SheetNo}`
         );
-        console.log(response.data);
+        console.log("Targets", response.data);
         setTargets(response.data);
       } catch (error) {
         console.error("Error fetching targets:", error);
@@ -64,7 +64,7 @@ export const TargetTable = (props) => {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Operation</th>
+            <th scope="col">Operatoer</th>
             <th scope="col">Operatoer</th>
             <th scope="col">Hour Target</th>
           </tr>
