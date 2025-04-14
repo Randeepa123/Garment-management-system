@@ -6,19 +6,21 @@ const host = "localhost";
 const mongoose = require("mongoose");
 require("dotenv").config();
 const targetRouter = require("./routes/target");
+
 const orderRouter = require("./routes/order");
 const customerRouter = require("./routes/customerRouter")
 const invoiceRouter = require("./routes/invoiceRoute")
 const router = require("./routes/costEsti_Router")
 
+
 app.use(cors());
 app.use(express.json());
 
-const DbUrl = process.env.MONGODB_URL;
+const DbUrl = process.env.MONGODB_URI;
 
 const connect = async () => {
   try {
-    await mongoose.connect(DbUrl);
+   await mongoose.connect(DbUrl);
     console.log("Connected to DB");
   } catch (err) {
     console.log(err);
@@ -27,9 +29,12 @@ const connect = async () => {
 
 connect();
 
+
+
 const server = app.listen(port, host, () => {
   console.log(`Server is listening to http://${host}:${port}`);
 });
+
 
 app.use("/target", targetRouter);
 app.use("/order", orderRouter);
