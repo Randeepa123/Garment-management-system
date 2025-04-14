@@ -6,7 +6,11 @@ const host = "localhost";
 const mongoose = require("mongoose");
 require("dotenv").config();
 const targetRouter = require("./routes/target");
-const processManagement=require("./Process-Management/Backend/router");
+
+const orderRouter = require("./routes/order");
+const customerRouter = require("./routes/customerRouter")
+const invoiceRouter = require("./routes/invoiceRoute")
+const router = require("./routes/costEsti_Router")
 
 
 app.use(cors());
@@ -31,8 +35,13 @@ const server = app.listen(port, host, () => {
   console.log(`Server is listening to http://${host}:${port}`);
 });
 
-app.use("/target",targetRouter);
-app.use("",processManagement);
+
+app.use("/target", targetRouter);
+app.use("/order", orderRouter);
+app.use("/customer", customerRouter);
+app.use("/invoice", invoiceRouter);
+app.use("/api",router);
+
 
 
 /*const express = require("express");
