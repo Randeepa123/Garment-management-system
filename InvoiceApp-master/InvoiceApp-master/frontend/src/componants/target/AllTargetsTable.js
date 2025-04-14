@@ -10,7 +10,7 @@ export const AllTargetsTable = () => {
   const fetchOrders = async () => {
     try {
       console.log("Fetching orders...");
-      const response = await axios.get(`http://localhost:8070/order/orders`);
+      const response = await axios.get(`http://localhost:8070/orders`);
       setOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);

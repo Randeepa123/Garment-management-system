@@ -57,6 +57,10 @@ function OrderTable({rows, getOrders}) {
     console.log("Add Order");
     navigate("/addOrder");
   } 
+  const handleupdateOrder = () => {    
+    console.log("Update Order");
+    navigate("/updateorder");
+  } 
   
   const deleteOrder = (Id) => {
     const payload = {jobcardId: Id}
@@ -122,7 +126,10 @@ function OrderTable({rows, getOrders}) {
                   </Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
             
-                    <EditButton Id= {row.jobcardId}/>
+                    <EditButton 
+                    Id= {row.jobcardId}
+                    onClick={handleupdateOrder}
+                    />
                     <DeleteButton
                       id={row.jobcardId}
                       deleteOrder={deleteOrder}
