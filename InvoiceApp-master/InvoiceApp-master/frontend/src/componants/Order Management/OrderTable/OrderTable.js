@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import AddOrder from "../../../pages/Order_Management/AddOrder";
 import { Routes, Route,navigate, useNavigate} from 'react-router-dom';
 import { 

@@ -11,6 +11,8 @@ import logo from "../asserts/img/logo.png";
 import { UpdateTargets } from "./target/UpdateTargets";
 
 import { TargetDashboard } from "./target/TargetDashboard";
+import AddOrder from "./Order_Management/AddOrder";
+import UpdateOrder from "./Order_Management/UpdateOrder";
 
 
 export const Dashboard = () => {
@@ -49,6 +51,12 @@ export const Dashboard = () => {
               <Link to="targets">Target Dashboard</Link>
 
             </li>
+
+            <span className="fw-semibold">Orders</span>
+            <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
+              <PriceCheckIcon sx={{ fill: "#007EA4" }} />
+              <Link to="orders">Orders</Link>
+            </li>
           </ul>
         </div>
         <div className="m-3 content-section pl-5">
@@ -62,6 +70,9 @@ export const Dashboard = () => {
               path="/update-targets/:sheetNo"
               element={<UpdateTargets />}
             />
+             <Route path="/orders" element={<Order_Mainpage />} />
+             <Route path="/addOrder" element={<AddOrder/>} />
+             <Route path="/updateorder" element={<UpdateOrder/>} />
 
           </Routes>
         </div>
