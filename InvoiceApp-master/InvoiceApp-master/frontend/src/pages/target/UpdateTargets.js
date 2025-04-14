@@ -34,6 +34,7 @@ export const UpdateTargets = () => {
 
   return (
     <div>
+
       <UpdateTargetContex.Provider value={{ refresh, setRefresh }}>
         <TopicBar text="Update Targets" />
         <div className="d-flex justify-content-between top-button-row py-3 px-5">
@@ -68,6 +69,7 @@ export const UpdateTargets = () => {
                 placeholder="Username"
                 aria-label="Username"
                 aria-describedby="basic-addon1"
+
               />
             </div>
             <button type="button" className="btn btn-primary btn-md">
@@ -75,6 +77,7 @@ export const UpdateTargets = () => {
               Set Target
             </button>
           </div>
+
         </div>
         <UpdateTargetTable sheetNum={sheetNo} />
         <div className="row px-5">
@@ -104,6 +107,7 @@ export const UpdateTargets = () => {
                 <span>18.89%</span>
               </div>
               <span className="align-self-center">From last month</span>
+
             </div>
           </div>
           <div className="col target-card rounded-4 mx-2 p-3">
@@ -125,7 +129,9 @@ export const UpdateTargets = () => {
             <UpdateTargetForm sheetNum={sheetNo} />
           </div>
         </div>
+
       </UpdateTargetContex.Provider>
+
     </div>
   );
 };

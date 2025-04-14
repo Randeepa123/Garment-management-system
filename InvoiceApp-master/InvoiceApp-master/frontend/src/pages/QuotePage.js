@@ -11,6 +11,7 @@ import Axios from "axios";
 export const QuotePage = () => {
 
 
+
   const [activeTab, setActiveTab] = useState("history");
   const [expanded, setExpanded] = useState({ history: false, create: false });
 
@@ -79,6 +80,7 @@ export const QuotePage = () => {
       </Box>
     </Box>
   );
+
 };
 
 export default QuotePage;
