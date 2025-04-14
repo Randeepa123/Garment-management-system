@@ -8,6 +8,8 @@ import { TopicBar } from "../componants/TopicBar";
 export const InvoicePage = () => {
   const [InvoiceNumber, setInvoiceNumber] = useState("");
   const [refresh, setRefresh] = useState(0);
+  const [editingItem, setEditingItem] = useState(null);
+
   return (
     <div className="right-side">
       <TopicBar text="Invoice" />
@@ -16,11 +18,14 @@ export const InvoicePage = () => {
       >
         <InvoiceCustomerDetails />
         <div className="row mt-3 d-flex">
-          <div class="col-7 p-4">
-            <Invoice />
+          <div className="col-7 p-4">
+            <Invoice setEditingItem={setEditingItem} />
           </div>
-          <div class="col-5 p-4">
-            <InvoiceAddItem />
+          <div className="col-5 p-4">
+            <InvoiceAddItem
+              editingItem={editingItem}
+              setEditingItem={setEditingItem}
+            />
           </div>
         </div>
       </InvoiceContex.Provider>

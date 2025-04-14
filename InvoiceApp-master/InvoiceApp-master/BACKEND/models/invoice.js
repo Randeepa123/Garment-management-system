@@ -5,13 +5,13 @@ const Schema = mongoose.Schema;
 const invoiceSchema = new Schema({
   invoiceNumber: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
-    required: true,
+    required: false,
   },
   items: [
     {
@@ -23,9 +23,16 @@ const invoiceSchema = new Schema({
         type: Number,
         required: true,
       },
+  
       price: {
         type: Number,
         required: true,
+      },
+
+      Discount:{
+        type: Number,
+        required:false,
+        
       },
       total: {
         type: Number,
@@ -33,6 +40,7 @@ const invoiceSchema = new Schema({
       },
     },
   ],
+
   totalAmount: {
     type: Number,
     default: 0,

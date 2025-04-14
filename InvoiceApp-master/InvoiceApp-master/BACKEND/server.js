@@ -7,6 +7,9 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const targetRouter = require("./routes/target");
 const orderRouter = require("./routes/order");
+const customerRouter = require("./routes/customerRouter")
+const invoiceRouter = require("./routes/invoiceRoute")
+const router = require("./routes/costEsti_Router")
 
 app.use(cors());
 app.use(express.json());
@@ -30,6 +33,11 @@ const server = app.listen(port, host, () => {
 
 app.use("/target", targetRouter);
 app.use("/order", orderRouter);
+app.use("/customer", customerRouter);
+app.use("/invoice", invoiceRouter);
+app.use("/api",router);
+
+
 
 /*const express = require("express");
 const mongoose = require("mongoose");
