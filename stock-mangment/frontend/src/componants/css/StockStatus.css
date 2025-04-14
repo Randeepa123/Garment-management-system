@@ -4,7 +4,7 @@
   max-width: 600px;
   margin: auto;
   background: white;
-  padding: 20px;
+  height: 93%;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -13,7 +13,8 @@
 h2 {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-right: 20px; /* Adjust margin to create some space */
+  margin-right: 20px;
+  margin-left: 17px; /* Adjust margin to create some space */
 }
 
 /* Flexbox for aligning the header and search bar */
@@ -31,11 +32,12 @@ h2 {
   border: 1px solid #ccc;
   border-radius: 20px;
   outline: none;
+  margin-right: 10px;
 }
 
 /* Container for the table with scroll functionality */
 .table-scroll-container {
-  max-height: 300px;
+  max-height: 355px;
   overflow-y: auto; /* Enables vertical scrolling for the table */
   border-radius: 10px;
   position: relative; /* Ensure sticky header works */
@@ -134,3 +136,4 @@ td {
 .table-scroll-container.scrolled thead th {
   color: black; /* Change header text color to black */
 }
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "./PurchaseHistory.css";
+import "./css/PurchaseHistory.css";
 import { FaCalendarAlt } from "react-icons/fa";
 
 const PurchaseHistory = () => {
@@ -10,7 +10,7 @@ const PurchaseHistory = () => {
   // Fetch recent stocks with optional date filter
   const fetchRecentStocks = useCallback(async () => {
     try {
-      let url = "http://localhost:8070/api/purchase-history/recent";
+      let url = "http://localhost:8070/api/stock/recent";
       if (startDate && endDate) {
         url += `?startDate=${startDate}&endDate=${endDate}`;
       }
@@ -39,7 +39,7 @@ const PurchaseHistory = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8070/api/purchase-history/remove/${stockId}`, {
+      const response = await fetch(`http://localhost:8070/api/stock/remove/${stockId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itemName, category, quantity }),
@@ -50,7 +50,8 @@ const PurchaseHistory = () => {
       }
 
       alert("Stock item removed successfully!");
-      fetchRecentStocks(); // Refresh the stock list
+      fetchRecentStocks();// Refresh the stock listn 
+      
     } catch (error) {
       console.error("Error removing stock item:", error);
       alert("Failed to remove stock item. Please try again.");
@@ -70,7 +71,7 @@ const PurchaseHistory = () => {
           <FaCalendarAlt className="icon" />
           <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </div>
-        <button className="search-button" onClick={fetchRecentStocks}>Search</button>
+        
       </div>
 
       <div className="purchase-list">

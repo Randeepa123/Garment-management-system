@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { FormControl, InputLabel, MenuItem, Select, Typography, CircularProgress, Alert } from "@mui/material";
 import axios from "axios";
-import './StocChart.css';
+import './css/StocChart.css';
 
 const StockChart = () => {
   const [categories, setCategories] = useState([]);
@@ -15,7 +15,7 @@ const StockChart = () => {
 
   // Fetch material categories (excluding Fabric)
   useEffect(() => {
-    axios.get("http://localhost:8070/api/stock-chart/categories")
+    axios.get("http://localhost:8070/api/stock/categories")
       .then(res => setCategories(res.data))
       .catch(() => setError("Error fetching categories"));
   }, []);
@@ -26,7 +26,7 @@ const StockChart = () => {
     setLoading(true);
     setError("");
 
-    axios.get(`http://localhost:8070/api/stock-chart/category/${selectedCategory}`)
+    axios.get(`http://localhost:8070/api/stock/category/${selectedCategory}`)
       .then(res => {
         setChartData(res.data.chartData);
         setTotalQuantity(res.data.totalQuantity);
@@ -41,13 +41,13 @@ const StockChart = () => {
 
   return (
     <div className="stock-chart-container">
-      {/* Title and Dropdown in the same line */}
+    
       <div className="title-dropdown-container">
         <Typography variant="h5" className="stock-chart-title">
           {selectedCategory ? `Stock & Usage for ${selectedCategory}` : "Select a Category"}
         </Typography>
 
-        {/* Category Dropdown */}
+        {/* Category Dropdown  get data from datbase */}
         <FormControl className="category-dropdown">
           <InputLabel shrink={selectedCategory !== ""}>Select Category</InputLabel>
           <Select
@@ -61,16 +61,16 @@ const StockChart = () => {
         </FormControl>
       </div>
 
-      {/* Error message */}
+  
       {error && <Alert severity="error" className="error-alert">{error}</Alert>}
 
-      {/* Loading Spinner */}
+   
       {loading && <CircularProgress className="loading-spinner" />}
 
       {/* Line Chart */}
       {!loading && chartData.length > 0 && (
         <div className="chart-container">
-          <ResponsiveContainer width="100%" height={200}> {/* Updated height to 200px */}
+          <ResponsiveContainer width="100%" height={200}> 
             <LineChart data={chartData}>
               <XAxis dataKey="date" />
               <YAxis tickCount={5} domain={[0, totalQuantity]} interval={yAxisInterval} />

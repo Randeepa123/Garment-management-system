@@ -8,6 +8,7 @@ const StockSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   price: { type: Number, required: true }, 
   supplier: { type: String }, 
+  supplierCountry: {type: String},
   dateAdded: { type: Date, default: Date.now }
 });
 

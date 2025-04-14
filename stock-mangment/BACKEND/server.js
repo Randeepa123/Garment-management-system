@@ -25,20 +25,9 @@ connection.once("open", () => {
 });
 
 
-const stockRoutes = require("./routes/stockRoutes.js"); 
-const purchaseHistoryRoutes = require("./routes/PurchaseHistoryRoutes.js");
-const materialRoutes = require("./routes/materialRoutes.js");
-const stockLevelRoutes = require("./routes/stockLevelRoutes.js");
-const materialCategoryRoutes = require("./routes/materialCategoryRoutes.js");
-const stockChartRoutes = require("./routes/StockChartRoute.js"); 
+const stockRouter = require("./routes/StockRoute.js")
 
-app.use("/api/stock-chart", stockChartRoutes); 
-app.use("/api/material-category", materialCategoryRoutes);
-app.use("/api/purchase-history", purchaseHistoryRoutes);
-app.use("/api/stock", stockRoutes);
-app.use("/api/materials", materialRoutes);
-app.use("/api/stock-levels", stockLevelRoutes);
-
+app.use("/api/stock",stockRouter)
 
 
 app.listen(PORT, () => {

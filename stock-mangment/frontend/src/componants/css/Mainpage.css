@@ -1,0 +1,198 @@
+/* Main Container */
+.main-container {
+  display: flex;
+  height: 130vh;
+  background-color: #f5f5f5;
+}
+
+/* Side Menu */
+.side-menu {
+  width: 200px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+}
+
+
+
+
+.stock-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-right: 750px;
+
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* User Name */
+.user-name {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: -15px;
+  gap: 15px;
+}
+
+
+
+
+
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+  .top-bar {
+    background-color: #f5f5f5;
+    padding: 10px 20px;
+  
+  }
+  
+  
+  
+
+
+
+  .dashboard-container {
+    flex: 1;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+
+  .dashboard-section {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  .stock-chart-section {
+    grid-column: 1 / -1; 
+  }
+
+  .purchase-history-section {
+    grid-column: 1 / 2; 
+  }
+  
+
+  .stock-status-section {
+    grid-column: 2 / 3; 
+  }
+  
+  /* Responsive Layout */
+  @media (min-width: 768px) {
+    .dashboard-container {
+      grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
+    }
+  
+    .stock-chart-section {
+      grid-column: 1 / -1; /* Span full width */
+    }
+  }
+
+ 
+.dashboard-button {
+  background-color: #158e97; 
+  color: white;             
+  border: none;             
+  padding: 10px 20px;       
+  text-align: center;       
+  text-decoration: none;    
+  display: inline-block;    
+  font-size: 16px;          
+  margin: 10px 5px;         
+  cursor: pointer;         
+  border-radius: 10px;    
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease; 
+}
+
+
+.dashboard-button:hover {
+  background-color: #4572a0; 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.use-dashboard-button{
+  background-color: #D82A5E; 
+  color: white;             
+  border: none;             
+  padding: 10px 20px;       
+  text-align: center;       
+  text-decoration: none;    
+  display: inline-block;    
+  font-size: 16px;          
+  margin: 10px 5px;         
+  cursor: pointer;         
+  border-radius: 10px;    
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease; 
+}
+.use-dashboard-button:hover{
+  background-color: #4572a0; 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.chat-dashboard{
+  background-color: #41a3c7; 
+  color: white;             
+  border: none;             
+  padding: 10px 20px;       
+  text-align: center;       
+  text-decoration: none;    
+  display: inline-block;    
+  font-size: 16px;          
+  margin: 10px 5px;         
+  cursor: pointer;         
+  border-radius: 10px;    
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease; 
+}
+
+.chat-dashboard:hover{
+  background-color: #0e2a46; 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+
+
+/* Align button container items properly */
+.button-container {
+  display: flex;
+  align-items: right;
+  margin-left:400px;
+  gap: 10px;
+}
+
+/* Date Selection - Positioned Right */
+
+
+.date-selection input[type="date"] {
+  padding: 10px;
+  border: 2px solid #ccc;
+  
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 30px;
+  width: 100px
+}

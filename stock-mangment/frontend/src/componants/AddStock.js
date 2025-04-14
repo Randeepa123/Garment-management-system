@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./AddStock.css";
+import "./css/AddStock.css";
 
 const AddStock = () => {
   const [categories, setCategories] = useState({
@@ -15,17 +15,18 @@ const AddStock = () => {
     quantity: "",
     price: "",
     supplier: "",
+    supplierCountry: "",
   });
 
   const [newCategory, setNewCategory] = useState("");
   const [newItem, setNewItem] = useState("");
 
-  // Handle Stock Form Change
+  
   const handleStockChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle Submit Stock Form
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -38,7 +39,7 @@ const AddStock = () => {
       const data = await response.json();
       if (response.ok) {
         alert("Stock added successfully!");
-        setFormData({ category: "", itemName: "", quantity: "", price: "", supplier: "" });
+        setFormData({ category: "", itemName: "", quantity: "", price: "", supplier: "" , supplierCountry: "" });
       } else {
         alert(data.message);
       }
@@ -112,6 +113,11 @@ const AddStock = () => {
         <div className="form-group">
           <label>Supplier (Optional):</label>
           <input type="text" name="supplier" placeholder="Supplier" onChange={handleStockChange} value={formData.supplier} />
+        </div>
+
+        <div className="form-group">
+          <label>Supplier country :</label>
+          <input type="text" name="supplierCountry" placeholder="Supplier country" onChange={handleStockChange} value={formData.supplierCountry} />
         </div>
 
         <button type="submit">Add Stock</button>

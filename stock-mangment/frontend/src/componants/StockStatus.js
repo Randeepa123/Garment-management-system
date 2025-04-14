@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./StockStatus.css";
+import "./css/StockStatus.css";
 
 const StockStatus = () => {
   const [materials, setMaterials] = useState([]);
@@ -11,7 +11,7 @@ const StockStatus = () => {
 
   const fetchStockLevels = async () => {
     try {
-      const response = await fetch("http://localhost:8070/api/stock-levels");
+      const response = await fetch("http://localhost:8070/api/stock");
       if (!response.ok) throw new Error("Failed to fetch stock levels");
 
       const data = await response.json();

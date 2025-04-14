@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./UseMaterial.css"; // Import the CSS file
+import "./css/UseMaterial.css"; 
 
 const UseMaterial = () => {
   const [materials, setMaterials] = useState([]);
@@ -18,7 +18,7 @@ const UseMaterial = () => {
 
   const fetchMaterials = async () => {
     try {
-      const response = await fetch("http://localhost:8070/api/materials");
+      const response = await fetch("http://localhost:8070/api/stock");
       if (!response.ok) throw new Error("Failed to fetch materials");
 
       const data = await response.json();
@@ -31,11 +31,13 @@ const UseMaterial = () => {
 
   const fetchUsageRecords = async () => {
     try {
-      const response = await fetch("http://localhost:8070/api/materials/usage");
+      const response = await fetch("http://localhost:8070/api/stock/usage");
       if (!response.ok) throw new Error("Failed to fetch usage records");
 
       const data = await response.json();
-      setUsageRecords(data);
+      
+      const sortedData = data.sort((a, b) => b._id.localeCompare(a._id));
+      setUsageRecords(sortedData);
     } catch (error) {
       console.error("Error fetching usage records:", error);
       alert("Error fetching usage records.");
@@ -55,12 +57,12 @@ const UseMaterial = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8070/api/materials/use", {
+      const response = await fetch("http://localhost:8070/api/stock/use", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          quantityUsed: formData.quantity, // Send quantityUsed instead of quantity
+          quantityUsed: formData.quantity, 
         }),
       });
 
@@ -79,29 +81,47 @@ const UseMaterial = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:8070/api/materials/usage/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        alert("Usage record deleted successfully.");
-        fetchUsageRecords();
-      } else {
-        alert("Failed to delete usage record.");
+ 
+    const handleDelete = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:8070/api/stock/use/${id}`, {
+          method: "DELETE",
+        });
+        
+        console.log("Response status:", response.status);
+        console.log("Response headers:", [...response.headers.entries()]);
+        
+       
+        const responseText = await response.text();
+        console.log("Raw response:", responseText);
+        
+  
+        let data = {};
+        try {
+          if (responseText) {
+            data = JSON.parse(responseText);
+          }
+        } catch (e) {
+          console.error("Error parsing response as JSON:", e);
+        }
+        
+        if (response.ok) {
+          alert("Usage record deleted successfully.");
+          fetchUsageRecords();
+          fetchMaterials();
+        } else {
+          alert(`Failed to delete usage record: ${data.message || responseText || 'Unknown error'}`);
+        }
+      } catch (error) {
+        console.error("Error deleting record:", error);
+        alert(`An error occurred: ${error.message}`);
       }
-    } catch (error) {
-      console.error("Error deleting record:", error);
-      alert("An error occurred.");
-    }
-  };
-
+    };
   return (
     <div className="use-material-container">
       <h2>Use Material</h2>
       <form onSubmit={handleSubmit} className="use-material-form">
-        {/* Category Dropdown */}
+
         <div className="form-group">
           <label>Category:</label>
           <select
@@ -119,7 +139,7 @@ const UseMaterial = () => {
           </select>
         </div>
 
-        {/* Item Name Dropdown */}
+      
         <div className="form-group">
           <label>Item Name:</label>
           <select
@@ -140,7 +160,7 @@ const UseMaterial = () => {
           </select>
         </div>
 
-        {/* Quantity Input */}
+
         <div className="form-group">
           <label>Quantity:</label>
           <input
@@ -153,7 +173,7 @@ const UseMaterial = () => {
           />
         </div>
 
-        {/* Description Input */}
+        
         <div className="form-group">
           <label>Description:</label>
           <input
@@ -161,7 +181,7 @@ const UseMaterial = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            maxLength={20} // Set character limit to 20
+            maxLength={20} 
             placeholder="Enter description (max 20 characters)"
           />
         </div>

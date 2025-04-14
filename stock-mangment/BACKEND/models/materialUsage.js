@@ -6,10 +6,7 @@ const MaterialUsageSchema = new mongoose.Schema({
   itemName: { type: String, required: true },
   quantityUsed: { type: Number, required: true },
   description: { type: String, default: "No description provided" },
-  dateUsed: { 
-    type: Date, 
-    default: () => moment().tz("Asia/Colombo").toDate() 
-  }
+  dateUsed: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model("MaterialUsage", MaterialUsageSchema);
