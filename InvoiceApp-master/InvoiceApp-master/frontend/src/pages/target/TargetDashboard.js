@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { AllTargetsTable } from "../../componants/target/AllTargetsTable";
+import { OrderProgressTable } from "../../componants/target/OrderProgressTable";
 function CircleIconBox({ icon, color = "#007ea4", pwidth = 40 }) {
   return (
     <Box
@@ -33,8 +34,8 @@ export const TargetDashboard = () => {
             <div className="col target-card rounded-4 mx-2 p-3">
               <div className="d-flex justify-content-between">
                 <div className="d-flex flex-column gap-3">
-                  <span className="fs-5">Daily Target</span>
-                  <span className="fs-3">50/250</span>
+                  <span className="fs-5">Today Attendance</span>
+                  <span className="fs-3">20/25</span>
                 </div>
                 <div>
                   <CircleIconBox
@@ -62,8 +63,8 @@ export const TargetDashboard = () => {
               <div className="col target-card rounded-4 mx-2 p-3">
                 <div className="d-flex justify-content-between">
                   <div className="d-flex flex-column gap-3">
-                    <span className="fs-5">Daily Target</span>
-                    <span className="fs-3">50/250</span>
+                    <span className="fs-5">Total Orders in Prosess</span>
+                    <span className="fs-3">10</span>
                   </div>
                   <div>
                     <CircleIconBox
@@ -92,7 +93,7 @@ export const TargetDashboard = () => {
           <AllTargetsTable />
         </div>
         <div className="col-4">
-          <div className="col target-card rounded-4 mx-2 p-3">
+          <div className="col target-card rounded-4 my-2 p-3">
             <LineChart
               xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
               series={[
@@ -103,6 +104,9 @@ export const TargetDashboard = () => {
               width={400}
               height={300}
             />
+          </div>
+          <div className="col target-card rounded-4  p-3">
+            <OrderProgressTable />
           </div>
         </div>
       </div>
