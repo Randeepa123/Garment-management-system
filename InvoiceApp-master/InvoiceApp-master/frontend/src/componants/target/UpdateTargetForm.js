@@ -70,6 +70,9 @@ export const UpdateTargetForm = (props) => {
 
   const updatetargets = async (e) => {
     e.preventDefault();
+    if (numOfPcs < 0) {
+      return alert("Do not enter minus values for Number of pcs");
+    }
     try {
       console.log("Updating Target!!");
       const response = await axios.put(
