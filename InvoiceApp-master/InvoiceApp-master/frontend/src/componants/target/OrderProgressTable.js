@@ -8,7 +8,7 @@ export const OrderProgressTable = () => {
   const fetchOrders = async () => {
     try {
       console.log("Fetching orders...");
-      const response = await axios.get(`http://localhost:8070/order/orders`);
+      const response = await axios.get(`http://localhost:8070/orders`);
       console.log(response.data);
       setOrders(response.data);
     } catch (error) {
