@@ -25,6 +25,8 @@ export const InvoiceCustomerDetails = () => {
     };
 
     fetchCustomers();
+
+    
   }, []);
 
   useEffect(() => {
@@ -58,8 +60,8 @@ export const InvoiceCustomerDetails = () => {
       console.log("Adding New Invoice..." + newInvoice);
 
       const response = await axios.post(
-        `http://localhost:8070/invoice/add`, // URL with query parameter
-        newInvoice, // Request body
+        `http://localhost:8070/invoice/add`, 
+        newInvoice, 
         {
           headers: {
             "Content-Type": "application/json",
