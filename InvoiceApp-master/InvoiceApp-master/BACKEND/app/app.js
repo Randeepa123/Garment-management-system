@@ -53,3 +53,8 @@ app.get("/orders", (req, res, next) => {
   controller.getOrders(req, res, next);
   res.send();
 });
+
+app.get("/getOrder", (req, res, next) => {
+  controller.getOrder(req, res, next);
+  res.send();
+});

@@ -10,7 +10,8 @@ export const AllTargetsTable = () => {
   const fetchOrders = async () => {
     try {
       console.log("Fetching orders...");
-      const response = await axios.get(`http://localhost:8070/orders`);
+      const response = await axios.get(`http://localhost:8070/order/orders`);
+
       setOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -71,6 +72,7 @@ export const AllTargetsTable = () => {
               <th scope="col">Jobcard ID</th>
               <th scope="col">Description</th>
               <th scope="col">Proprity</th>
+              <th scope="col">Total Quantity</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -78,11 +80,16 @@ export const AllTargetsTable = () => {
             {orders.map((order) => {
               const shoeButton = !targetSheetJobcards.has(order.jobcardId);
               const newSheetNo = "T" + order.jobcardId;
+              const totalQty = Object.values(order.sizeDistribution).reduce(
+                (acc, val) => acc + val,
+                0
+              );
               return (
                 <tr key={order.jobcardId}>
                   <td>{order.jobcardId}</td>
                   <td>{order.description}</td>
                   <td>{order.priority}</td>
+                  <td>{totalQty}</td>
                   <td className="d-flex gap-2">
                     {shoeButton ? (
                       <button
