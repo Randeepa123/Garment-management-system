@@ -11,4 +11,19 @@ const getOrders = (req, res, next) => {
     });
 };
 
+const getOrder = (req, res, next) => {
+  const jobcardID = Number(req.query.jobcardId);
+
+  orders
+    .findOne({ jobcardId: jobcardID })
+    .then((order) => {
+      res.json(order);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch targets" });
+    });
+};
+
 exports.getOrders = getOrders;
+exports.getOrder = getOrder;

@@ -44,6 +44,10 @@ export const SetTargetForm = (props) => {
   };
 
   const addItemToInvoice = async (e) => {
+    if (newItem.OperationPg < 0) {
+      return alert("Opereration Per Garment cannot be minus");
+    }
+
     e.preventDefault();
     try {
       console.log("Adding " + refresh + " item to targets...");
