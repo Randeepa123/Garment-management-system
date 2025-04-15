@@ -67,6 +67,7 @@ export const UpdateTargets = () => {
                 <span>18.89%</span>
               </div>
               <span className="align-self-center">From last month</span>
+
             </div>
           </div>
           <div className="col target-card rounded-4 mx-2  p-3">
@@ -77,7 +78,9 @@ export const UpdateTargets = () => {
             <UpdateTargetForm sheetNum={sheetNo} />
           </div>
         </div>
+
       </UpdateTargetContex.Provider>
+
     </div>
   );
 };
