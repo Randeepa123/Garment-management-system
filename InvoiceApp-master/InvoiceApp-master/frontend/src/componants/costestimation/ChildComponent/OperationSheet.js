@@ -145,7 +145,8 @@ const OperationSheet = ({ selectedCostSheet, allowEdit = false, showSubmit = fal
    
       {showSubmit && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button variant="contained" color="primary" onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Box>
