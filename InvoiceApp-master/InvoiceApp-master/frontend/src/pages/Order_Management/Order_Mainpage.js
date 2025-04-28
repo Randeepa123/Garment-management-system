@@ -41,7 +41,9 @@ function Order_Mainpage() {
             rows={orders} 
             getOrders={getOrders}
           />
-          <OrderProgress className='OrderProgress'/>
+          <OrderProgress className='OrderProgress'
+          rows={orders} 
+          getOrders={getOrders}/>
         </Container>
         
     </>

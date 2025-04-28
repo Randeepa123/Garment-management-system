@@ -123,13 +123,14 @@ function UpdateOrder() {
         }
       }
     }
-    return axios.post('http://localhost:8070/orders/updateorder', payload)
+    return axios.post('http://localhost:8070/updateorder', payload)
     .then((response) => {
-      setUpdated(false);
+      setUpdated(true);
       return true;
     })
     .catch=(err)=> {
       console.log(err)
+      setUpdated(false);
     }
   }
 
@@ -141,7 +142,7 @@ function UpdateOrder() {
         <TopicBar text="Add Orders" userName="Vishwa Dissanayake"/>
         <UpdateJobCard 
           updateorder={updateorder} 
-          updated={updated} 
+          updated={setUpdated} 
           Id={Id}
           customer={order.customer}
           orderdate={order.orderDate || ''}
