@@ -12,8 +12,9 @@ const CreateCostEstimation = () => {
   const [editingItem, setEditingItem] = useState(null);
 
   // Function to handle refresh when cost breakdown is added
-  const handleBreakdownAdded = () => {
-    console.log("Cost breakdown added, refreshing operation sheet");
+  const handleBreakdownAdded = (breakdowns) => {
+    console.log("Cost breakdown added, refreshing operation sheet", breakdowns);
+    // Increment refresh counter to trigger re-fetch in OperationSheet
     setRefresh(prev => prev + 1);
   };
 

@@ -19,10 +19,15 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const addBreakdown = () => {
+  const addBreakdown = async () => {
     if (!Object.values(formData).every(field => field.trim() !== "")) {
       setError("Please fill all fields before adding.");
       setTimeout(() => setError(""), 3000);
+      return;
+    }
+
+    if (!currentCostSheetID) {
+      setError("Cost Sheet ID is missing!");
       return;
     }
 
@@ -32,15 +37,37 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown }) => {
       costPerUnit: parseFloat(formData.costPerUnit),
     };
 
-    setBreakdowns(prev => [...prev, newBreakdown]);
-    setFormData({
-      description: "",
-      supplierName: "",
-      unitType: "",
-      consumption: "",
-      costPerUnit: "",
-    });
-    setError("");
+    try {
+      console.log("Adding breakdown for sheet ID:", currentCostSheetID);
+      // Submit the single breakdown immediately
+      await axios.post(
+        `http://localhost:8070/api/cost-estimations/${currentCostSheetID}/cost-breakdown`,
+        { costBreakdown: [newBreakdown] }
+      );
+
+      // Add to local state for display
+      setBreakdowns(prev => [...prev, newBreakdown]);
+      
+      // Notify parent to refresh the operation sheet
+      onAddBreakdown([newBreakdown]);
+      
+      // Clear the form
+      setFormData({
+        description: "",
+        supplierName: "",
+        unitType: "",
+        consumption: "",
+        costPerUnit: "",
+      });
+      
+      setSuccess("Breakdown added successfully!");
+      setTimeout(() => setSuccess(""), 3000);
+      setError("");
+    } catch (error) {
+      console.error("Error adding breakdown:", error.response?.data || error.message);
+      setError(error.response?.data?.error || "Failed to add breakdown");
+      setTimeout(() => setError(""), 3000);
+    }
   };
 
   const submitBreakdown = async () => {
