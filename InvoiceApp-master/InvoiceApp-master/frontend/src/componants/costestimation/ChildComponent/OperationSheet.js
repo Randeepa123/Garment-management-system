@@ -25,11 +25,15 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
 
   useEffect(() => {
     const fetchCostSheet = async () => {
+      if (!CostSheetNumber) return; // Don't fetch if no CostSheetNumber is available
+      
       try {
+        console.log("Fetching cost sheet with ID:", CostSheetNumber);
         const response = await axios.get(
-          `http://localhost:8070/api/costEstimations?costSheetID=${CostSheetNumber}`
+          `http://localhost:8070/api/costEstimations/${CostSheetNumber}`
         );
-        setCostSheet(response.data);
+        console.log("Fetched cost sheet data:", response.data);
+        setCostSheet(response.data.data || {});
       } catch (error) {
         console.error("Error fetching cost estimation sheet:", error);
       }

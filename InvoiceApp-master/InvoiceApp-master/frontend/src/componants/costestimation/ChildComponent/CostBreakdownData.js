@@ -55,6 +55,7 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown }) => {
     }
 
     try {
+      console.log("Submitting cost breakdown for sheet ID:", currentCostSheetID);
       await axios.post(
         `http://localhost:8070/api/cost-estimations/${currentCostSheetID}/cost-breakdown`,
         { costBreakdown: breakdowns }

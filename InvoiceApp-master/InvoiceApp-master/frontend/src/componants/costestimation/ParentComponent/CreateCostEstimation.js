@@ -11,6 +11,12 @@ const CreateCostEstimation = () => {
   const [refresh, setRefresh] = useState(0);
   const [editingItem, setEditingItem] = useState(null);
 
+  // Function to handle refresh when cost breakdown is added
+  const handleBreakdownAdded = () => {
+    console.log("Cost breakdown added, refreshing operation sheet");
+    setRefresh(prev => prev + 1);
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <CostContext.Provider
@@ -25,7 +31,7 @@ const CreateCostEstimation = () => {
                 sx={{ backgroundColor: "#1976d2", color: "#fff" }}
               />
               <CardContent>
-                <CostEstiPrimaryData />
+                <CostEstiPrimaryData setCurrentCostSheetID={setCostSheetNumber} />
               </CardContent>
             </Card>
           </Box>
@@ -40,7 +46,10 @@ const CreateCostEstimation = () => {
                 sx={{ backgroundColor: "#2e7d32", color: "#fff" }}
               />
               <CardContent>
-                <CostBreakdownData />
+                <CostBreakdownData 
+                  currentCostSheetID={CostSheetNumber} 
+                  onAddBreakdown={handleBreakdownAdded} 
+                />
               </CardContent>
             </Card>
           </Box>
