@@ -1,66 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Box, Card, CardContent, CardHeader, Divider, Container } from "@mui/material";
+
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
 import CostBreakdownData from "../ChildComponent/CostBreakdownData";
 import OperationSheet from "../ChildComponent/OperationSheet";
-import { Divider, Box } from "@mui/material";
-//import { CostContext } from "../../../contex/CostContext";
+import { CostContext } from "../../../contex/CostContex";
 
-
-export const CreateCostEstimation = () => {
-
-  //const [Cost]
-  //const [refresh, setRefresh] = useState("");
-  const [currentCostSheetID, setCurrentCostSheetID] = useState(null);
-  const [selectedCostSheet, setSelectedCostSheet] = useState(null);
-
-  const handleAddBreakdown = (newBreakdowns) => {
-    if (!selectedCostSheet) return;
-
-    const updatedSheet = {
-      ...selectedCostSheet,
-      costBreakdown: [...selectedCostSheet.costBreakdown, ...newBreakdowns],
-    };
-
-    setSelectedCostSheet(updatedSheet);
-   
-  };
+const CreateCostEstimation = () => {
+  const [CostSheetNumber, setCostSheetNumber] = useState("");
+  const [refresh, setRefresh] = useState(0);
+  const [editingItem, setEditingItem] = useState(null);
 
   return (
-    <Box sx={{ display: "flex", p: 2, gap: 2 }}>
-      <Box sx={{ flex: 1 }}>
-    
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <CostContext.Provider
+        value={{ CostSheetNumber, setCostSheetNumber, refresh, setRefresh }}
+      >
+        <Box sx={{ display: "flex", gap: 2 }}>
+          {/* Project Info */}
+          <Box sx={{ flex: 1 }}>
+            <Card elevation={3}>
+              <CardHeader
+                title="Step 1: Project Information"
+                sx={{ backgroundColor: "#1976d2", color: "#fff" }}
+              />
+              <CardContent>
+                <CostEstiPrimaryData />
+              </CardContent>
+            </Card>
+          </Box>
 
-        <CostEstiPrimaryData 
-          setCurrentCostSheetID={setCurrentCostSheetID}
-          />
-     
-          
-       
-      </Box>
+          <Divider orientation="vertical" flexItem />
 
-      <Divider orientation="vertical" flexItem />
+          {/* Cost Breakdown */}
+          <Box sx={{ flex: 1 }}>
+            <Card elevation={3}>
+              <CardHeader
+                title="Step 2: Add Cost Breakdown"
+                sx={{ backgroundColor: "#2e7d32", color: "#fff" }}
+              />
+              <CardContent>
+                <CostBreakdownData />
+              </CardContent>
+            </Card>
+          </Box>
 
-      <Box sx={{ flex: 1 }}>
-      
-        <CostBreakdownData 
-          currentCostSheetID={currentCostSheetID}
-          onAddBreakdown={handleAddBreakdown} 
-        />
-         
-      </Box>
-    
+          <Divider orientation="vertical" flexItem />
 
-      <Divider orientation="vertical" flexItem />
-
-      <Box sx={{ flex: 2 }}>
-        <OperationSheet 
-          selectedCostSheet={selectedCostSheet}
-          allowEdit={true}
-          showSubmit={true}
-        />
-      </Box>
-    </Box>
+          {/* Operation Sheet */}
+          <Box sx={{ flex: 2 }}>
+            <Card elevation={3}>
+              <CardHeader
+                title="Step 3: Operation Sheet Overview"
+                sx={{ backgroundColor: "#9c27b0", color: "#fff" }}
+              />
+              <CardContent>
+                <OperationSheet setEditingItem={setEditingItem} />
+              </CardContent>
+            </Card>
+          </Box>
+        </Box>
+      </CostContext.Provider>
+    </Container>
   );
-  };
+};
 
 export default CreateCostEstimation;

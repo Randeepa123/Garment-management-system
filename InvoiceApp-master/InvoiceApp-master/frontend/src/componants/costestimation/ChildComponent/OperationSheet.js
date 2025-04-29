@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
 import {
   Box,
   Container,
@@ -15,22 +14,21 @@ import {
   Typography,
 } from "@mui/material";
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
+import { CostContext } from "../../../contex/CostContex";
 
-const OperationSheet = ({ selectedCostSheet, allowEdit = false, showSubmit = false }) => {
- 
-  
-  const [costSheet, setCostSheet] = useState(selectedCostSheet || {});
-  const [totalCost, setTotalCost] = useState(0);
+const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true }) => {
+  const { CostSheetNumber, refresh } = useContext(CostContext);
+
+  const [costSheet, setCostSheet] = useState({});
   const [selectedBreakdown, setSelectedBreakdown] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state for data fetch
+  const [totalCost, setTotalCost] = useState(0);
 
   useEffect(() => {
-    // Fetch updated cost estimation sheet when refresh is triggered or selectedCostSheet changes
     const fetchCostSheet = async () => {
       try {
-        const response = await axios.get
-        (`http://localhost:8070/api/costEstimations?costSheetID=${selectedCostSheet.costSheetID}
-`);
+        const response = await axios.get(
+          `http://localhost:8070/api/costEstimations?costSheetID=${CostSheetNumber}`
+        );
         setCostSheet(response.data);
       } catch (error) {
         console.error("Error fetching cost estimation sheet:", error);
@@ -38,7 +36,7 @@ const OperationSheet = ({ selectedCostSheet, allowEdit = false, showSubmit = fal
     };
 
     fetchCostSheet();
-  }, [selectedCostSheet?.costSheetID]);
+  }, [refresh, CostSheetNumber]);
 
   useEffect(() => {
     if (!costSheet?.costBreakdown) return;
@@ -49,40 +47,36 @@ const OperationSheet = ({ selectedCostSheet, allowEdit = false, showSubmit = fal
     setTotalCost(updatedTotalCost);
   }, [costSheet?.costBreakdown]);
 
-  const handleEditClick = (breakdown) => {
-    setSelectedBreakdown(breakdown);
+  const handleDeleteItem = async (breakdownId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8070/api/cost-estimations/${costSheet.costSheetID}/cost-breakdown/${breakdownId}`
+      );
+      setCostSheet((prevSheet) => ({
+        ...prevSheet,
+        costBreakdown: prevSheet.costBreakdown.filter((item) => item._id !== breakdownId),
+      }));
+    } catch (error) {
+      console.error("Error deleting breakdown:", error);
+    }
   };
 
   const handleSubmit = () => {
     alert("Cost Estimation Sheet Submitted!");
   };
 
-  if (loading) {
-    return <Typography>Loading...</Typography>; 
-  }
-
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2,border:"solid 1px" }}>
-      {/* Project Details Section */}
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2, border: "solid 1px" }}>
+      {/* Project Details */}
       <Container maxWidth="lg">
         <Typography variant="h6" gutterBottom>
           Project Details
         </Typography>
         <Box sx={{ mb: 2 }}>
-          <Typography>
-            <strong>Cost-Sheet ID:</strong> {costSheet?.costSheetID || "N/A"}
-          </Typography>
-          <Typography>
-            <strong>Product Name:</strong> {costSheet?.productName || "N/A"}
-          </Typography>
-          <Typography>
-            <strong>Estimated Start Date:</strong>{" "}
-            {costSheet?.estimatedStartDate?.slice(0, 10) || "N/A"}
-          </Typography>
-          <Typography>
-            <strong>Estimated End Date:</strong>{" "}
-            {costSheet?.estimatedEndDate?.slice(0, 10) || "N/A"}
-          </Typography>
+          <Typography><strong>Cost-Sheet ID:</strong> {costSheet?.costSheetID || "N/A"}</Typography>
+          <Typography><strong>Product Name:</strong> {costSheet?.productName || "N/A"}</Typography>
+          <Typography><strong>Estimated Start Date:</strong> {costSheet?.estimatedStartDate?.slice(0, 10) || "N/A"}</Typography>
+          <Typography><strong>Estimated End Date:</strong> {costSheet?.estimatedEndDate?.slice(0, 10) || "N/A"}</Typography>
         </Box>
       </Container>
 
@@ -117,15 +111,18 @@ const OperationSheet = ({ selectedCostSheet, allowEdit = false, showSubmit = fal
                 <TableCell>{breakdown.totalCost?.toFixed(2) || "N/A"}</TableCell>
                 {allowEdit && (
                   <TableCell>
-                    <Button variant="contained" color="error" sx={{ mr: 1 }}>
-                      Delete
-                    </Button>
                     <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleEditClick(breakdown)}
+                      className="btn btn-warning"
+                      onClick={() => setEditingItem(breakdown)}
+                      sx={{ color: "white" }}
                     >
                       Edit
+                    </Button>
+                    <Button
+                      className="btn btn-danger ms-2"
+                      onClick={() => handleDeleteItem(breakdown._id)}
+                    >
+                      Delete
                     </Button>
                   </TableCell>
                 )}
@@ -140,13 +137,13 @@ const OperationSheet = ({ selectedCostSheet, allowEdit = false, showSubmit = fal
         Total Cost: ${totalCost.toFixed(2)}
       </Typography>
 
+      {/* Primary Data */}
       {selectedBreakdown && <CostEstiPrimaryData breakdown={selectedBreakdown} />}
 
-   
+      {/* Submit Button */}
       {showSubmit && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}
-          >
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
             Submit
           </Button>
         </Box>

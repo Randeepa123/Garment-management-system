@@ -37,17 +37,18 @@ Cost_app.post('/cost-estimations', (req, res) => {
     });
 });
 
-Cost_app.post('/cost-estimations/:costId/cost-breakdown', (req, res) => {
-    const costId = req.params.costId;
-    const breakdownData = req.body;
+// Suggested DELETE endpoint in your backend
+Cost_app.delete('/cost-estimations/:costId/cost-breakdown/:breakdownId', (req, res) => {
+    const { costId, breakdownId } = req.params;
 
-    Cost_controller.addCostBreakdown(costId, breakdownData, (error, result) => {
+    Cost_controller.deleteCostBreakdown(costId, breakdownId, (error, result) => {
         if (error) {
-            return res.status(500).json({ error: "Error adding cost breakdown" });
+            return res.status(500).json({ error: "Error deleting cost breakdown" });
         }
-        res.status(201).json({ message: "Cost breakdown created successfully", data: result });
+        res.status(200).json({ message: "Cost breakdown deleted successfully", data: result });
     });
 });
+
 
 
 
