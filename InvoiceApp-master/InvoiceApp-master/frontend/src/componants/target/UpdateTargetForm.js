@@ -85,7 +85,6 @@ export const UpdateTargetForm = (props) => {
         }
       );
 
-      console.log(response.data);
       load();
     } catch (error) {
       console.error("Error adding item:", error);
