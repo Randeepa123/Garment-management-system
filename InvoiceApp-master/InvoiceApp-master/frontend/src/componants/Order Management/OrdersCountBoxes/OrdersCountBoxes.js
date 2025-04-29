@@ -33,7 +33,7 @@ function OrdersCountBoxes() {
         { title: 'Pending Orders', count: 50, icon: <Inventory2OutlinedIcon /> },
         { title: 'Completed Orders', count: 49, icon: <Inventory2OutlinedIcon /> },
         { title: 'Urgent Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
-        { title: 'Cancelled Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Delayed Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
       ];
   return (
     <Grid container spacing={3} sx={{ mb: 4 }}>
