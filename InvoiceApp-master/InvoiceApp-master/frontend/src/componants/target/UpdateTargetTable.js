@@ -21,7 +21,7 @@ export const UpdateTargetTable = (props) => {
       const response = await axios.get(
         `http://localhost:8070/target/getSheet?SheetNo=${SheetNo}`
       );
-      console.log("targets", response.data);
+
       setTargets(response.data);
     } catch (error) {
       console.error("Error fetching customers:", error);

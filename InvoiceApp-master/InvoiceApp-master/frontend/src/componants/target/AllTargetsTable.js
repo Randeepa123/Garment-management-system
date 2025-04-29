@@ -11,7 +11,7 @@ export const AllTargetsTable = () => {
     try {
       console.log("Fetching orders...");
       const response = await axios.get(`http://localhost:8070/orders`);
-      console.log("From orders", response.data);
+
       setOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -22,7 +22,7 @@ export const AllTargetsTable = () => {
     try {
       console.log("Fetching targets...");
       const response = await axios.get(`http://localhost:8070/target/getAll`);
-      console.log("From targets", response.data);
+
       setTargetSheets(response.data);
     } catch (error) {
       console.error("Error fetching targets:", error);
@@ -51,7 +51,6 @@ export const AllTargetsTable = () => {
         }
       );
 
-      console.log(response.data);
       navigate(`/set-targets/${sheetNum}`);
     } catch (error) {
       console.error("Error adding Invoice:", error);
@@ -79,16 +78,9 @@ export const AllTargetsTable = () => {
           </thead>
           <tbody>
             {orders.map((order) => {
-              console.log(
-                "target sheet jobcards",
-                targetSheetJobcards,
-                "orders ids",
-                order.jobcardId
-              );
               const shoeButton = !targetSheetJobcards.has(
                 String(order.jobcardId)
               );
-              console.log(shoeButton);
               const newSheetNo = "T" + order.jobcardId;
               const totalQty = Object.values(order.sizeDistribution).reduce(
                 (acc, val) => acc + val,
