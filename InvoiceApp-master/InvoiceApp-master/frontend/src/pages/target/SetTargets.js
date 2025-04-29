@@ -7,7 +7,7 @@ import { TargetContex } from "../../contex/TargetContex";
 
 import { TopicBar } from "../../componants/TopicBar";
 
-import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
+import { LineTargetEstimation } from "../../componants/target/LineTargetEstimation";
 
 export const SetTargets = () => {
   const [refresh, setRefresh] = useState(0);
@@ -25,22 +25,7 @@ export const SetTargets = () => {
         </div>
       </div>
       <div className="displaylineTargetContainer py-5">
-        <div className="d-flex justify-content-between p-5 rounded shadow displaylinetarget">
-          <button type="button" className="btn btn-md btn-primary">
-            <ArrowOutwardOutlinedIcon />
-            Set Target
-          </button>
-          <div className="d-flex align-items-center gap-3">
-            <span className="align-middle fs-3 fw-semibold">Line Target: </span>
-            <span>125pcs/Day</span>
-          </div>
-          <div className="d-flex align-items-center gap-3">
-            <span className="align-middle fs-3 fw-semibold">
-              Estimamet Delivary:
-            </span>
-            <span>5 Days 5th May 2025</span>
-          </div>
-        </div>
+        <LineTargetEstimation sheetNum={sheetNo} />
       </div>
     </div>
   );

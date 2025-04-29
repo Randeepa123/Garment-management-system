@@ -34,7 +34,7 @@ export const TargetTable = (props) => {
         const response = await axios.get(
           `http://localhost:8070/target/getSheet?SheetNo=${SheetNo}`
         );
-        console.log("Targets", response.data);
+
         setTargets(response.data);
       } catch (error) {
         console.error("Error fetching targets:", error);
@@ -52,7 +52,6 @@ export const TargetTable = (props) => {
         `http://localhost:8070/target/deleteTarget?objId=${id}` // URL with query parameter
       );
       setRefresh(refresh + 1);
-      console.log(response.data);
     } catch (error) {
       console.error("Error adding item:", error);
       alert("Failed to add item to invoice!");

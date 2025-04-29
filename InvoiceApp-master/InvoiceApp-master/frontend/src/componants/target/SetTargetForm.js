@@ -77,7 +77,7 @@ export const SetTargetForm = (props) => {
       setTimeForOperation(0);
       return alert("Do not enter minus numbers!!");
     }
-    const pcs = ((60 / timeForOperation) * 70) / 100;
+    const pcs = (60 / timeForOperation) * (70 / 100);
     setNoOpForHr(pcs);
   };
 
