@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 function UpdateJobCard({
     updateorder,
+    updated,
     Id,    
     orderdate,
     deliverydate,
@@ -139,17 +140,40 @@ function UpdateJobCard({
         const [qcLabelsAndTags1, setQcLabelsAndTags] = useState('');
         const [qcNotes1, setQcNotes] = useState('');
 
+
+       const orderdatenew=orderdate.slice(0,10);
+       const deliverydatenew=deliverydate.slice(0,10);
+       const patternMakingStartDatenew=patternMakingStartDate.slice(0,10);
+       const patternMakingEndDatenew=patternMakingEndDate.slice(0,10);
+       const cuttingStartDatenew=cuttingStartDate.slice(0,10);
+       const cuttingEndDatenew=cuttingEndDate.slice(0,10);
+       const printingStartDatenew=printingStartDate.slice(0,10);
+       const printingEndDatenew=printingEndDate.slice(0,10);
+       const sewingStartDatenew=sewingStartDate.slice(0,10);
+       const sewingEndDatenew=sewingEndDate.slice(0,10);
+       const finishingStartDatenew=finishingStartDate.slice(0,10);
+       const finishingEndDatenew=finishingEndDate.slice(0,10);
+       const qualityControlStartDatenew=qualityControlStartDate.slice(0,10);
+       const qualityControlEndDatenew=qualityControlEndDate.slice(0,10);
+       const packagingStartDatenew=packagingStartDate.slice(0,10);
+       const packagingEndDatenew=packagingEndDate.slice(0,10);
+
+       
+
+
+
+
         useEffect(() => {
             // Set order details
-            if (orderdate !== undefined) setOrderdate(orderdate);
-            if (deliverydate !== undefined) setDeliverydate(deliverydate);
+            if (orderdate !== undefined) setOrderdate(orderdatenew);
+            if (deliverydate !== undefined) setDeliverydate(deliverydatenew);
             if (customer !== undefined) setCustomer(customer);
             if (priority !== undefined) setPriority(priority);
             if (styleNumber !== undefined) setStyleNumber(styleNumber);
             if (totalQuantity !== undefined) setTotalQuantity(totalQuantity);
             if (description !== undefined) setDescription(description);
             
-            // Set fabric and sizing details
+            // Set fabric and sizing detail
             if (fabricDetails !== undefined) setFabricDetails(fabricDetails);
             if (color !== undefined) setColor(color);
             if (wait !== undefined) setwait(wait);
@@ -169,44 +193,44 @@ function UpdateJobCard({
             if (backDesignNotes !== undefined) setBackDesignNotes(backDesignNotes);
             
             // Set pattern making details
-            if (patternMakingStartDate !== undefined) setPatternMakingStartDate(patternMakingStartDate);
-            if (patternMakingEndDate !== undefined) setPatternMakingEndDate(patternMakingEndDate);
+            if (patternMakingStartDate !== undefined) setPatternMakingStartDate(patternMakingStartDatenew);
+            if (patternMakingEndDate !== undefined) setPatternMakingEndDate(patternMakingEndDatenew);
             if (patternMakingSupervisor !== undefined) setPatternMakingSupervisor(patternMakingSupervisor);
             if (patternMakingStatus !== undefined) setPatternMakingStatus(patternMakingStatus);
             
             // Set cutting details
-            if (cuttingStartDate !== undefined) setCuttingStartDate(cuttingStartDate);
-            if (cuttingEndDate !== undefined) setCuttingEndDate(cuttingEndDate);
+            if (cuttingStartDate !== undefined) setCuttingStartDate(cuttingStartDatenew);
+            if (cuttingEndDate !== undefined) setCuttingEndDate(cuttingEndDatenew);
             if (cuttingSupervisor !== undefined) setCuttingSupervisor(cuttingSupervisor);
             if (cuttingStatus !== undefined) setCuttingStatus(cuttingStatus);
             
             // Set printing details
-            if (printingStartDate !== undefined) setPrintingStartDate(printingStartDate);
-            if (printingEndDate !== undefined) setPrintingEndDate(printingEndDate);
+            if (printingStartDate !== undefined) setPrintingStartDate(printingStartDatenew);
+            if (printingEndDate !== undefined) setPrintingEndDate(printingEndDatenew);
             if (printingSupervisor !== undefined) setPrintingSupervisor(printingSupervisor);
             if (printingStatus !== undefined) setPrintingStatus(printingStatus);
             
             // Set sewing details
-            if (sewingStartDate !== undefined) setSewingStartDate(sewingStartDate);
-            if (sewingEndDate !== undefined) setSewingEndDate(sewingEndDate);
+            if (sewingStartDate !== undefined) setSewingStartDate(sewingStartDatenew);
+            if (sewingEndDate !== undefined) setSewingEndDate(sewingEndDatenew);
             if (sewingSupervisor !== undefined) setSewingSupervisor(sewingSupervisor);
             if (sewingStatus !== undefined) setSewingStatus(sewingStatus);
             
             // Set finishing details
-            if (finishingStartDate !== undefined) setFinishingStartDate(finishingStartDate);
-            if (finishingEndDate !== undefined) setFinishingEndDate(finishingEndDate);
+            if (finishingStartDate !== undefined) setFinishingStartDate(finishingStartDatenew);
+            if (finishingEndDate !== undefined) setFinishingEndDate(finishingEndDatenew);
             if (finishingSupervisor !== undefined) setFinishingSupervisor(finishingSupervisor);
             if (finishingStatus !== undefined) setFinishingStatus(finishingStatus);
             
             // Set quality control details
-            if (qualityControlStartDate !== undefined) setQualityControlStartDate(qualityControlStartDate);
-            if (qualityControlEndDate !== undefined) setQualityControlEndDate(qualityControlEndDate);
+            if (qualityControlStartDate !== undefined) setQualityControlStartDate(qualityControlStartDatenew);
+            if (qualityControlEndDate !== undefined) setQualityControlEndDate(qualityControlEndDatenew);
             if (qualityControlSupervisor !== undefined) setQualityControlSupervisor(qualityControlSupervisor);
             if (qualityControlStatus !== undefined) setQualityControlStatus(qualityControlStatus);
             
             // Set packaging details
-            if (packagingStartDate !== undefined) setPackagingStartDate(packagingStartDate);
-            if (packagingEndDate !== undefined) setPackagingEndDate(packagingEndDate);
+            if (packagingStartDate !== undefined) setPackagingStartDate(packagingStartDatenew);
+            if (packagingEndDate !== undefined) setPackagingEndDate(packagingEndDatenew);
             if (packagingSupervisor !== undefined) setPackagingSupervisor(packagingSupervisor);
             if (packagingStatus !== undefined) setPackagingStatus(packagingStatus);
             
@@ -349,6 +373,61 @@ function UpdateJobCard({
         );
         settotal1(caltotal)
     }, [sizeDistributionS1, sizeDistributionM1, sizeDistributionL1, sizeDistributionXL1, sizeDistribution2XL1, sizeDistribution3XL1])
+
+    const patternMakingDisabled=patternMakingStatus1!=="Completed"
+    const cuttingStartDisabled=cuttingStatus1!=="Completed"
+    const printingStartDisabled=printingStatus1!=="Completed"
+    const sewingStartDisabled=sewingStatus1!=="Completed"
+    const finishingStartDisabled=finishingStatus1!=="Completed"
+    const qualityControlStartDisabled=qualityControlStatus1!=="Completed"
+    const packagingStartDisabled=packagingStatus1=="Completed"
+
+    const getOverallStatus = () => {
+        const statuses = [
+            patternMakingStatus1,
+            cuttingStatus1,
+            printingStatus1,
+            sewingStatus1,
+            finishingStatus1,
+            qualityControlStatus1,
+            packagingStatus1
+        ];
+    
+        if (statuses.every(status => status === "Completed")) return "Completed";
+        if (statuses.some(status => status === "In Progress")) return "In Progress";
+        if (statuses.some(status => status === "Delayed")) return "Delayed";
+        return "Pending"; // default if none started
+
+        
+    };
+
+    const getPercentage=()=>{
+        const status = [
+            patternMakingStatus1,
+            cuttingStatus1,
+            printingStatus1,
+            sewingStatus1,
+            finishingStatus1,
+            qualityControlStatus1,
+            packagingStatus1
+        ];
+
+        const processes = [
+            patternMakingStatus1,
+            cuttingStatus1,
+            printingStatus1,
+            sewingStatus1,
+            finishingStatus1,
+            qualityControlStatus1,
+            packagingStatus1
+          ];
+
+        const completedCount = processes.filter(status => status === "Completed").length;
+        const totalCount = processes.length;
+        const progressPercentage = (completedCount / totalCount) * 100;
+
+        return progressPercentage;
+    }
 
   return (
     <>
@@ -742,30 +821,37 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setPatternMakingStartDate(e.target.value)
                                 }}
+                                
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={patternMakingEndDate1}
                                     onChange={(e)=>{
                                         setPatternMakingEndDate(e.target.value)
                                 }}
+                               
+                               
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={patternMakingSupervisor1}
                                     onChange={(e)=>{
                                         setPatternMakingSupervisor(e.target.value)
                                 }}
+                                
                                 /></td>
                                 <td><select 
                                     className="form-select"
-                                    value={patternMakingStatus1} // Ensure this is correctly set in state
+                                    value={patternMakingStatus1} 
                                     onChange={(e) => setPatternMakingStatus(e.target.value)}
+                                    
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
                                     <option value="Completed">Completed</option>
                                     <option value="Delayed">Delayed</option>
                                 </select></td>
+                                
                             </tr>
+
                             <tr>
                                 <td>Cutting</td>
                                 <td>Cutting</td>
@@ -774,23 +860,27 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setCuttingStartDate(e.target.value)
                                 }}
+                                disabled={patternMakingDisabled}
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={cuttingEndDate1}
                                     onChange={(e)=>{
                                         setCuttingEndDate(e.target.value)
                                 }}
+                                disabled={patternMakingDisabled}
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={cuttingSupervisor1}
                                     onChange={(e)=>{
                                         setCuttingSupervisor(e.target.value)
                                 }}
+                                disabled={patternMakingDisabled}
                                 /></td>
                                 <td><select 
                                     className="form-select"
                                     value={cuttingStatus1} 
                                     onChange={(e) => setCuttingStatus(e.target.value)}
+                                    disabled={patternMakingDisabled}
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
@@ -806,23 +896,27 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setPrintingStartDate(e.target.value)
                                 }}
+                                disabled={cuttingStartDisabled}
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={printingEndDate1}
                                     onChange={(e)=>{
                                         setPrintingEndDate(e.target.value)
                                 }}
+                                disabled={cuttingStartDisabled}
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={printingSupervisor1}
                                     onChange={(e)=>{
                                         setPrintingSupervisor(e.target.value)
                                 }}
+                                disabled={cuttingStartDisabled}
                                 /></td>
                                 <td><select 
                                     className="form-select"
                                     value={printingStatus1} // Ensure this is correctly set in state
                                     onChange={(e) => setPrintingStatus(e.target.value)}
+                                    disabled={cuttingStartDisabled}
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
@@ -838,23 +932,27 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setSewingStartDate(e.target.value)
                                 }}
+                                disabled={printingStartDisabled}
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={sewingEndDate1}
                                     onChange={(e)=>{
                                         setPrintingEndDate(e.target.value)
                                 }}
+                                disabled={printingStartDisabled}
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={sewingSupervisor1}
                                     onChange={(e)=>{
                                         setSewingSupervisor(e.target.value)
                                 }}
+                                disabled={printingStartDisabled}
                                 /></td>
                                 <td><select 
                                     className="form-select"
                                     value={sewingStatus1} // Ensure this is correctly set in state
                                     onChange={(e) => setSewingStatus(e.target.value)}
+                                    disabled={printingStartDisabled}
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
@@ -870,23 +968,27 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setFinishingStartDate(e.target.value)
                                 }}
+                                disabled={sewingStartDisabled}
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={finishingEndDate1}
                                     onChange={(e)=>{
                                         setFinishingEndDate(e.target.value)
                                 }}
+                                disabled={sewingStartDisabled}
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={finishingSupervisor1}
                                     onChange={(e)=>{
                                         setFinishingSupervisor(e.target.value)
                                 }}
+                                disabled={sewingStartDisabled}
                                 /></td>
                                 <td><select 
                                     className="form-select"
                                     value={finishingStatus1} // Ensure this is correctly set in state
                                     onChange={(e) => setFinishingStatus(e.target.value)}
+                                    disabled={sewingStartDisabled}
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
@@ -902,23 +1004,27 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setQualityControlStartDate(e.target.value)
                                 }}
+                                disabled={finishingStartDisabled}
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={qualityControlEndDate1}
                                     onChange={(e)=>{
                                         setQualityControlEndDate(e.target.value)
                                 }}
+                                disabled={finishingStartDisabled}
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={qualityControlSupervisor1}
                                     onChange={(e)=>{
                                         setQualityControlSupervisor(e.target.value)
                                 }}
+                                disabled={finishingStartDisabled}
                                 /></td>
                                 <td><select 
                                     className="form-select"
                                     value={qualityControlStatus1} // Ensure this is correctly set in state
                                     onChange={(e) => setQualityControlStatus(e.target.value)}
+                                    disabled={finishingStartDisabled}
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
@@ -934,29 +1040,39 @@ function UpdateJobCard({
                                     onChange={(e)=>{
                                         setPackagingStartDate(e.target.value)
                                 }}
+                                disabled={qualityControlStartDisabled}
                                 /></td>
                                 <td><input type="date"class="value"
                                     value={packagingEndDate1}
                                     onChange={(e)=>{
                                         setPackagingEndDate(e.target.value)
                                 }}
+                                disabled={qualityControlStartDisabled}
                                 /></td>
                                 <td><input type="text"class="value"
                                     value={packagingSupervisor1}
                                     onChange={(e)=>{
                                         setPackagingSupervisor(e.target.value)
                                 }}
+                                disabled={qualityControlStartDisabled}
                                 /></td>
                                 <td><select 
                                     className="form-select"
                                     value={packagingStatus1} // Ensure this is correctly set in state
                                     onChange={(e) => setPackagingStatus(e.target.value)}
+                                    disabled={qualityControlStartDisabled}
                                 >
                                     <option value="Pending">Pending</option>
                                     <option value="In Progress">In Progress</option>
                                     <option value="Completed">Completed</option>
                                     <option value="Delayed">Delayed</option>
                                 </select></td>
+                            </tr>
+                            <tr>
+                                <td colSpan="6" className="text-center">
+                                    <strong>Overall Status: {getOverallStatus()}</strong>
+                                    <p>Progress: {getPercentage().toFixed(2)}%</p>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1052,17 +1168,8 @@ function UpdateJobCard({
                     </div>
                 </div>
             </div>
-            
-            <div class="card-body border-top text-center pt-4">
-                <div class="barcode-img">
-                    BARCODE value
-                </div>
-            </div>
             <div style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }}>
-            <button type="button" class="btn btn-danger"
-                onClick={() => cancell()} 
-                  
-            >Cancell</button>
+            
             <button type="button" class="btn btn-success"  
                 onClick={()=>{
                     if (validateForm()) {
@@ -1151,7 +1258,8 @@ function UpdateJobCard({
                         total: total1
                         };
                     
-                    const stat=updateorder(data);
+                    updateorder(data);
+                    const stat=updated;
                     if (stat) {
                         Swal.fire({
                             icon: "success",
@@ -1170,6 +1278,10 @@ function UpdateJobCard({
       
                     
                 }}}>Update</button>
+                <button type="button" class="btn btn-danger"
+                onClick={() => cancell()} 
+                  
+            >Cancell</button>
 
                 
             </div>

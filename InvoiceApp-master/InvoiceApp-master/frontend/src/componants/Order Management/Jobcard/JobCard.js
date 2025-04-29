@@ -893,16 +893,8 @@ function JobCard({
                     </div>
                 </div>
             </div>
-            
-            <div class="card-body border-top text-center pt-4">
-                <div class="barcode-img">
-                    BARCODE value
-                </div>
-                
-            
-                
-                <button type="button" class="btn btn-success" style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }} 
-                            
+            <div style= {{display: "flex", gap: "10px", marginTop: "20px", marginBottom: "20px" }}>
+                <button type="button" class="btn btn-success" style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }}        
                 onClick={()=> {
                     if (validateForm()) {
                         console.log(orderdate1)
@@ -1015,12 +1007,11 @@ function JobCard({
                 
                 
                 >Submit</button>
-                <button type="button" class="btn btn-danger" style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }}
+                <button type="button" class="btn btn-danger"style={ {display: "flex", gap: "10px", marginTop: "20px", marginBottom: "20px" }} 
                 onClick={() => cancell()} 
                   
                 >Cancell</button>
-                
-            </div>
+            </div>              
         </div>
         </div>
     </>
