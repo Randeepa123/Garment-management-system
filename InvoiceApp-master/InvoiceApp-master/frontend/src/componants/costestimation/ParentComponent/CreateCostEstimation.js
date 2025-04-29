@@ -16,6 +16,8 @@ const CreateCostEstimation = () => {
     console.log("Cost breakdown added, refreshing operation sheet", breakdowns);
     // Increment refresh counter to trigger re-fetch in OperationSheet
     setRefresh(prev => prev + 1);
+    // Clear editing item after successful update or addition
+    setEditingItem(null);
   };
 
   // Function to handle cost sheet ID change
@@ -32,11 +34,11 @@ const CreateCostEstimation = () => {
   }, [CostSheetNumber]);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4 ,width:"1150px", overflowX:"auto" }}>
       <CostContext.Provider
         value={{ CostSheetNumber, setCostSheetNumber, refresh, setRefresh }}
       >
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2}}>
           {/* Project Info */}
           <Box sx={{ flex: 1 }}>
             <Card elevation={3}>
@@ -62,7 +64,8 @@ const CreateCostEstimation = () => {
               <CardContent>
                 <CostBreakdownData 
                   currentCostSheetID={CostSheetNumber} 
-                  onAddBreakdown={handleBreakdownAdded} 
+                  onAddBreakdown={handleBreakdownAdded}
+                  editingItem={editingItem}
                 />
               </CardContent>
             </Card>

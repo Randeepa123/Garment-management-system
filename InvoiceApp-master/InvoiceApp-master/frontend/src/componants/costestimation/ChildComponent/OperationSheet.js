@@ -12,16 +12,23 @@ import {
   Paper,
   Button,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
 import { CostContext } from "../../../contex/CostContex";
 
 const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true }) => {
-  const { CostSheetNumber, refresh } = useContext(CostContext);
+  const { CostSheetNumber, refresh, setRefresh } = useContext(CostContext);
 
   const [costSheet, setCostSheet] = useState({});
   const [selectedBreakdown, setSelectedBreakdown] = useState(null);
   const [totalCost, setTotalCost] = useState(0);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     const fetchCostSheet = async () => {
@@ -51,18 +58,71 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
     setTotalCost(updatedTotalCost);
   }, [costSheet?.costBreakdown]);
 
-  const handleDeleteItem = async (breakdownId) => {
+  const handleEditItem = (breakdown) => {
+    console.log("Editing breakdown:", breakdown);
+    setEditingItem({
+      _id: breakdown._id,
+      description: breakdown.description,
+      supplierName: breakdown.supplierName,
+      unitType: breakdown.unitType,
+      consumption: breakdown.consumption,
+      costPerUnit: breakdown.costPerUnit,
+      totalCost: breakdown.totalCost
+    });
+  };
+
+  const handleDeleteClick = (breakdown) => {
+    setItemToDelete(breakdown);
+    setDeleteDialogOpen(true);
+    setDeleteError("");
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!itemToDelete || !itemToDelete._id) {
+      console.error("No item selected for deletion or missing ID");
+      setDeleteDialogOpen(false);
+      return;
+    }
+
     try {
-      await axios.delete(
-        `http://localhost:8070/api/cost-estimations/${costSheet.costSheetID}/cost-breakdown/${breakdownId}`
+      console.log("Deleting breakdown with ID:", itemToDelete._id);
+      console.log("Cost Sheet ID:", costSheet.costSheetID);
+      
+      // Send the data in the request body as expected by the backend
+      const response = await axios.delete(
+        `http://localhost:8070/api/cost-estimations/${costSheet.costSheetID}/cost-breakdown/${itemToDelete._id}`,
+        {
+          data: {
+            costSheetID: costSheet.costSheetID,
+            breakdownId: itemToDelete._id
+          }
+        }
       );
+      
+      console.log("Delete response:", response.data);
+      
+      // Update local state
       setCostSheet((prevSheet) => ({
         ...prevSheet,
-        costBreakdown: prevSheet.costBreakdown.filter((item) => item._id !== breakdownId),
+        costBreakdown: prevSheet.costBreakdown.filter((item) => item._id !== itemToDelete._id),
       }));
+      
+      // Trigger refresh
+      setRefresh(prev => prev + 1);
+      
+      // Close dialog
+      setDeleteDialogOpen(false);
+      setItemToDelete(null);
     } catch (error) {
-      console.error("Error deleting breakdown:", error);
+      console.error("Error deleting breakdown:", error.response?.data || error);
+      setDeleteError(error.response?.data?.error || "Failed to delete breakdown. Please try again.");
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setItemToDelete(null);
+    setDeleteError("");
   };
 
   const handleSubmit = () => {
@@ -89,52 +149,60 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
         Cost-Breakdowns
       </Typography>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><strong>No</strong></TableCell>
-              <TableCell><strong>Description</strong></TableCell>
-              <TableCell><strong>Supplier</strong></TableCell>
-              <TableCell><strong>Unit Type</strong></TableCell>
-              <TableCell><strong>Consumption</strong></TableCell>
-              <TableCell><strong>Cost/Unit</strong></TableCell>
-              <TableCell><strong>Total</strong></TableCell>
-              {allowEdit && <TableCell><strong>Actions</strong></TableCell>}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {costSheet?.costBreakdown?.map((breakdown, index) => (
-              <TableRow key={breakdown._id || index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{breakdown.description || "N/A"}</TableCell>
-                <TableCell>{breakdown.supplierName || "N/A"}</TableCell>
-                <TableCell>{breakdown.unitType || "N/A"}</TableCell>
-                <TableCell>{breakdown.consumption || "N/A"}</TableCell>
-                <TableCell>{breakdown.costPerUnit?.toFixed(2) || "N/A"}</TableCell>
-                <TableCell>{breakdown.totalCost?.toFixed(2) || "N/A"}</TableCell>
-                {allowEdit && (
-                  <TableCell>
-                    <Button
-                      className="btn btn-warning"
-                      onClick={() => setEditingItem(breakdown)}
-                      sx={{ color: "white" }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      className="btn btn-danger ms-2"
-                      onClick={() => handleDeleteItem(breakdown._id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                )}
+      {/* Wrap the table in a Box with horizontal scrolling */}
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 800 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell><strong>No</strong></TableCell>
+                <TableCell><strong>Description</strong></TableCell>
+                <TableCell><strong>Supplier</strong></TableCell>
+                <TableCell><strong>Unit Type</strong></TableCell>
+                <TableCell><strong>Consumption</strong></TableCell>
+                <TableCell><strong>Cost/Unit</strong></TableCell>
+                <TableCell><strong>Total</strong></TableCell>
+                {allowEdit && <TableCell><strong>Actions</strong></TableCell>}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {costSheet?.costBreakdown?.map((breakdown, index) => (
+                <TableRow key={breakdown._id || index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{breakdown.description || "N/A"}</TableCell>
+                  <TableCell>{breakdown.supplierName || "N/A"}</TableCell>
+                  <TableCell>{breakdown.unitType || "N/A"}</TableCell>
+                  <TableCell>{breakdown.consumption || "N/A"}</TableCell>
+                  <TableCell>{breakdown.costPerUnit?.toFixed(2) || "N/A"}</TableCell>
+                  <TableCell>{breakdown.totalCost?.toFixed(2) || "N/A"}</TableCell>
+                  {allowEdit && (
+                    <TableCell>
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                          variant="contained"
+                          color="warning"
+                          size="small"
+                          onClick={() => handleEditItem(breakdown)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                          onClick={() => handleDeleteClick(breakdown)}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       {/* Total Cost */}
       <Typography variant="h6" sx={{ mt: 2 }}>
@@ -152,6 +220,37 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
           </Button>
         </Box>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete this cost breakdown?
+          </Typography>
+          {itemToDelete && (
+            <Box sx={{ mt: 2 }}>
+              <Typography><strong>Description:</strong> {itemToDelete.description}</Typography>
+              <Typography><strong>Supplier:</strong> {itemToDelete.supplierName}</Typography>
+              <Typography><strong>Total Cost:</strong> ${itemToDelete.totalCost?.toFixed(2)}</Typography>
+            </Box>
+          )}
+          {deleteError && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {deleteError}
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

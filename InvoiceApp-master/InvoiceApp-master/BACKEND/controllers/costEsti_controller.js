@@ -229,6 +229,64 @@ const deleteCostBreakdown = async (req, res, next) => {
   }
 };
 
+const updateCostBreakdown = async (req, res) => {
+  try {
+    const { costId, breakdownId } = req.params;
+    const updatedBreakdown = req.body;
+
+    if (!costId || !breakdownId) {
+      return res.status(400).json({ error: "Cost Sheet ID and Breakdown ID are required" });
+    }
+
+    // Find the cost estimation document
+    const costEstimation = await CostEstimation.findOne({ costSheetID: costId });
+
+    if (!costEstimation) {
+      return res.status(404).json({ error: "Cost Sheet not found" });
+    }
+
+    // Find the index of the breakdown to update
+    const breakdownIndex = costEstimation.costBreakdown.findIndex(
+      (item) => item._id.toString() === breakdownId
+    );
+
+    if (breakdownIndex === -1) {
+      return res.status(404).json({ error: "Breakdown not found" });
+    }
+
+    // Calculate the new total cost
+    const totalCost = updatedBreakdown.consumption * updatedBreakdown.costPerUnit;
+
+    // Update the breakdown
+    costEstimation.costBreakdown[breakdownIndex] = {
+      ...costEstimation.costBreakdown[breakdownIndex],
+      description: updatedBreakdown.description,
+      supplierName: updatedBreakdown.supplierName,
+      unitType: updatedBreakdown.unitType,
+      consumption: updatedBreakdown.consumption,
+      costPerUnit: updatedBreakdown.costPerUnit,
+      totalCost: totalCost,
+    };
+
+    // Recalculate the total cost sum
+    costEstimation.totalCostSum = costEstimation.costBreakdown.reduce(
+      (sum, breakdown) => sum + breakdown.totalCost,
+      0
+    );
+
+    // Save the updated document
+    await costEstimation.save();
+
+    res.status(200).json({
+      message: "Cost breakdown updated successfully",
+      data: costEstimation,
+    });
+  } catch (error) {
+    console.error("Error updating cost breakdown:", error);
+    res.status(500).json({ error: "Server error while updating cost breakdown" });
+  }
+};
+
 exports.getAllCostEstimationSheets = getAllCostEstimationSheets;
 exports.getSingleCostEstimationSheet = getSingleCostEstimationSheet;
 exports.addCostEstimation = addCostEstimation;
@@ -236,3 +294,4 @@ exports.addCostBreakdown = addCostBreakdown;
 exports.updateCostEstimation = updateCostEstimation;
 exports.deleteCostEstimation = deleteCostEstimation;
 exports.deleteCostBreakdown = deleteCostBreakdown;
+exports.updateCostBreakdown = updateCostBreakdown;
