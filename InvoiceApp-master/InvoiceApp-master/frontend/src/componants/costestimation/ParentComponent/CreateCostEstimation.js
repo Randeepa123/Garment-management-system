@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Card, CardContent, CardHeader, Divider, Container } from "@mui/material";
 
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
@@ -18,6 +18,19 @@ const CreateCostEstimation = () => {
     setRefresh(prev => prev + 1);
   };
 
+  // Function to handle cost sheet ID change
+  const handleCostSheetIDChange = (id) => {
+    console.log("Cost sheet ID changed to:", id);
+    setCostSheetNumber(id);
+    // Trigger a refresh to fetch the data for the new cost sheet ID
+    setRefresh(prev => prev + 1);
+  };
+
+  // Effect to log when CostSheetNumber changes
+  useEffect(() => {
+    console.log("CostSheetNumber updated:", CostSheetNumber);
+  }, [CostSheetNumber]);
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <CostContext.Provider
@@ -32,7 +45,7 @@ const CreateCostEstimation = () => {
                 sx={{ backgroundColor: "#1976d2", color: "#fff" }}
               />
               <CardContent>
-                <CostEstiPrimaryData setCurrentCostSheetID={setCostSheetNumber} />
+                <CostEstiPrimaryData setCurrentCostSheetID={handleCostSheetIDChange} />
               </CardContent>
             </Card>
           </Box>

@@ -180,18 +180,7 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown }) => {
           <Button sx={{height:"50px"}} variant="contained" color="primary" onClick={addBreakdown}>
             Add Breakdown
           </Button>
-          <Button sx={{
-            position:"relative",
-            right:"124px",
-            top:"70px"
-          }}
-            variant="contained" 
-            color="secondary" 
-            onClick={submitBreakdown}
-            disabled={breakdowns.length === 0}
-          >
-            Submit
-          </Button>
+          
         </Box>
       </Box>
 
