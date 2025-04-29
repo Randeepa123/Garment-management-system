@@ -35,7 +35,7 @@ import {
             </Typography>
           </Box>
           <Typography variant="body2" fontWeight={500}>
-            {row.progress}%
+          {parseFloat(row.progress).toFixed(2)}%
           </Typography>
         </ProgressLabel>
         <LinearProgress 

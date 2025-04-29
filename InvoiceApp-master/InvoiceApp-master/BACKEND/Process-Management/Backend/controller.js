@@ -63,6 +63,9 @@ const addOrder = (req, res, next) => {
     color: req.body.color,
     wait: req.body.wait,
     sizeRange: req.body.sizeRange,
+    isCancelled:req.body.isCancelled,
+    progress:req.body.progress,
+    status:req.body.status,
 
     // Size Distribution - accessing the correct nested structure
     sizeDistribution: {
@@ -179,6 +182,9 @@ const updateOrder = (req, res, next) => {
         color: req.body.color,
         wait: req.body.wait,
         sizeRange: req.body.sizeRange,
+        isCancelled:req.body.isCancelled,
+        progress:req.body.progress,
+        status:req.body.status,
 
         // Size Distribution - accessing the correct nested structure
         sizeDistribution: {

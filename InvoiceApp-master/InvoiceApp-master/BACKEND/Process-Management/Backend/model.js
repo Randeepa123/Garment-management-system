@@ -16,6 +16,9 @@ const orderSchema=new Schema({
   color: { type: String, required: true },
   wait:{type:String},
   sizeRange: { type: String, required: true },
+  isCancelled:{type:Boolean,default:false},
+  progress:{type:Number},
+  status:{String},
 
   // Size Distribution (Embedded Object)
   sizeDistribution: {

@@ -50,6 +50,10 @@ function UpdateOrder() {
       color: data.color,
       wait:data.wait,
       sizeRange: data.sizeRange,
+      isCancelled:data.isCancelled,
+      progress:data.progress,
+      status:data.status,
+
       sizeDistribution: {
         sizeDistributionS: data.sizeDistribution.S,
         sizeDistributionM: data.sizeDistribution.M,
@@ -155,6 +159,10 @@ function UpdateOrder() {
           color={order.color || ''}
           wait={order.wait || ''}
           sizeRange={order.sizeRange || ''}
+          isCancelled={order.isCancelled || ''}
+          progress={order.progress || ''}
+          status={order.status || ''}
+        
           
           // Size distribution (nested object in API response)
           sizeDistributionS={order.sizeDistribution?.sizeDistributionS || 0}

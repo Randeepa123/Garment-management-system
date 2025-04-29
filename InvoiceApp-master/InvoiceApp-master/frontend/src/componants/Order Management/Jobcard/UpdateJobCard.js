@@ -23,6 +23,9 @@ function UpdateJobCard({
     color,
     wait,
     sizeRange,
+    isCancelled,
+    progress,
+    status,
     sizeDistributionS,
     sizeDistributionM,
     sizeDistributionL,
@@ -91,6 +94,9 @@ function UpdateJobCard({
         const [color1, setColor] = useState('');
         const [wait1, setwait] = useState('');
         const [sizeRange1, setSizeRange] = useState('');
+        const [isCancelled1,setisCancelled]=useState('')
+        const [progress1,setprogress]=useState(0)
+        const [status1,setstatus]=useState('')
         const [sizeDistributionS1, setSizeDistributionS] = useState(0);
         const [sizeDistributionM1, setSizeDistributionM] = useState(0);
         const [sizeDistributionL1, setSizeDistributionL] = useState(0);
@@ -178,6 +184,9 @@ function UpdateJobCard({
             if (color !== undefined) setColor(color);
             if (wait !== undefined) setwait(wait);
             if (sizeRange !== undefined) setSizeRange(sizeRange);
+            if(isCancelled!==undefined) setisCancelled(isCancelled);
+            if(progress!==undefined) setprogress(progress);
+            if(status!==undefined) setstatus(status);
             if (sizeDistributionS !== undefined) setSizeDistributionS(sizeDistributionS);
             if (sizeDistributionM !== undefined) setSizeDistributionM(sizeDistributionM);
             if (sizeDistributionL !== undefined) setSizeDistributionL(sizeDistributionL);
@@ -356,6 +365,7 @@ function UpdateJobCard({
          }
 
          
+         
 
 
         
@@ -427,7 +437,37 @@ function UpdateJobCard({
         const progressPercentage = (completedCount / totalCount) * 100;
 
         return progressPercentage;
-    }
+    };
+
+    useEffect(() => {
+        const value = getPercentage(); 
+        setprogress(value);
+    }, [
+        patternMakingStatus1,
+        cuttingStatus1,
+        printingStatus1,
+        sewingStatus1,
+        finishingStatus1,
+        qualityControlStatus1,
+        packagingStatus1
+    ]);
+
+    useEffect(() => {
+        const statusgetter = getOverallStatus(); 
+        setstatus(statusgetter);
+    }, [
+        patternMakingStatus1,
+        cuttingStatus1,
+        printingStatus1,
+        sewingStatus1,
+        finishingStatus1,
+        qualityControlStatus1,
+        packagingStatus1
+    ]);
+
+
+
+
 
   return (
     <>
@@ -1070,7 +1110,9 @@ function UpdateJobCard({
                             </tr>
                             <tr>
                                 <td colSpan="6" className="text-center">
-                                    <strong>Overall Status: {getOverallStatus()}</strong>
+                                    <strong>
+                                        Overall Status:{getOverallStatus()}
+                                    </strong>
                                     <p>Progress: {getPercentage().toFixed(2)}%</p>
                                 </td>
                             </tr>
@@ -1184,6 +1226,8 @@ function UpdateJobCard({
                         color: color1,
                         wait: wait1,
                         sizeRange: sizeRange1,
+                        progress:progress1,
+                        status:status1,
                         sizeDistribution: {
                             S: sizeDistributionS1,
                             M: sizeDistributionM1,
