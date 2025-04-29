@@ -34,7 +34,7 @@ const CreateCostEstimation = () => {
   }, [CostSheetNumber]);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 ,width:"1150px", overflowX:"auto" }}>
+    <Container maxWidth="xl" sx={{ py: 4 ,width:"1300px", overflowX:"auto" }}>
       <CostContext.Provider
         value={{ CostSheetNumber, setCostSheetNumber, refresh, setRefresh }}
       >

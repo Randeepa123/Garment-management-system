@@ -231,7 +231,7 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
 
 
   return (
-    <Box sx={{ maxWidth: 800, margin: "auto", p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "#fff" }}>
+    <Box sx={{ maxWidth: 800, margin: "auto", p: 1, boxShadow: 3, borderRadius: 2, bgcolor: "#fff" }}>
       <Typography variant="h5" sx={{ mb: 2 }}>
         {isEditing ? "Edit Cost Breakdown" : "Cost Breakdown Data"}
       </Typography>
@@ -248,7 +248,7 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
         </Typography>
       )}
 
-      <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2,height:"600px" }}>
+      <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: -1,height:"450px" }}>
         <TextField
           label="Description"
           name="description"

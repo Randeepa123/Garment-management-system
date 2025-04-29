@@ -177,7 +177,7 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
                   <TableCell>{breakdown.totalCost?.toFixed(2) || "N/A"}</TableCell>
                   {allowEdit && (
                     <TableCell>
-                      <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Box sx={{ display: 'flex', flexDirection:"column",gap: 1 }}>
                         <Button
                           variant="contained"
                           color="warning"
