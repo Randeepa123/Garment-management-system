@@ -13,15 +13,12 @@
   padding: 20px;
 }
 
-
-
-
+/* Top Bar Title */
 .stock-title {
   font-size: 30px;
   font-weight: bold;
   color: #2c3e50;
   margin-right: 750px;
-
 }
 
 /* User Info */
@@ -37,162 +34,216 @@
   color: #333;
 }
 
-/* Button Container */
+/* Button Container (for stock/stock prediction/usage) */
 .button-container {
   display: flex;
-  justify-content: center;
-  margin-top: -15px;
-  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 250px; /* Adjusted margin-left */
+  gap: 10px;
+  margin-top: -30px;
 }
 
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
+/* Top Bar */
+.top-bar {
+  background-color: #f5f5f5;
+  padding: 10px 20px;
+  display: flex; /* To align items within the top bar */
+  justify-content: space-between; /* Space out items */
+  align-items: center; /* Vertically align items */
+}
 
+/* Dashboard Layout */
+.dashboard-container {
+  flex: 1;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
 
+.dashboard-section {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.stock-chart-section {
+  grid-column: 1 / -1;
+}
 
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
+.purchase-history-section {
+  grid-column: 1 / 2;
+}
 
-  .top-bar {
-    background-color: #f5f5f5;
-    padding: 10px 20px;
-  
-  }
-  
-  
-  
+.stock-status-section {
+  grid-column: 2 / 3;
+}
 
-
-
+/* Responsive Dashboard */
+@media (min-width: 768px) {
   .dashboard-container {
-    flex: 1;
-    padding: 5px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr 1fr;
   }
-  
-
-  .dashboard-section {
-    background-color: white;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-
   .stock-chart-section {
-    grid-column: 1 / -1; 
+    grid-column: 1 / -1;
   }
-
-  .purchase-history-section {
-    grid-column: 1 / 2; 
-  }
-  
-
-  .stock-status-section {
-    grid-column: 2 / 3; 
-  }
-  
-  /* Responsive Layout */
-  @media (min-width: 768px) {
-    .dashboard-container {
-      grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
-    }
-  
-    .stock-chart-section {
-      grid-column: 1 / -1; /* Span full width */
-    }
-  }
-
- 
-.dashboard-button {
-  background-color: #158e97; 
-  color: white;             
-  border: none;             
-  padding: 10px 20px;       
-  text-align: center;       
-  text-decoration: none;    
-  display: inline-block;    
-  font-size: 16px;          
-  margin: 10px 5px;         
-  cursor: pointer;         
-  border-radius: 10px;    
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease; 
 }
 
-
-.dashboard-button:hover {
-  background-color: #4572a0; 
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+/* Dashboard Buttons */
+.dashboard-button,
+.use-dashboard-button,
+.chat-dashboard {
+  background-color: #158e97; /* Same as dashboard-button */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 10px 5px;
+  height: 40px; /* Adjusted height */
+  min-width: 120px; /* Adjusted min-width */
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.use-dashboard-button{
-  background-color: #D82A5E; 
-  color: white;             
-  border: none;             
-  padding: 10px 20px;       
-  text-align: center;       
-  text-decoration: none;    
-  display: inline-block;    
-  font-size: 16px;          
-  margin: 10px 5px;         
-  cursor: pointer;         
-  border-radius: 10px;    
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease; 
-}
-.use-dashboard-button:hover{
-  background-color: #4572a0; 
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+/* Special Buttons keep their own color */
+.use-dashboard-button {
+  background-color: #D82A5E;
 }
 
-.chat-dashboard{
-  background-color: #41a3c7; 
-  color: white;             
-  border: none;             
-  padding: 10px 20px;       
-  text-align: center;       
-  text-decoration: none;    
-  display: inline-block;    
-  font-size: 16px;          
-  margin: 10px 5px;         
-  cursor: pointer;         
-  border-radius: 10px;    
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease; 
+.chat-dashboard {
+  background-color: #41a3c7;
 }
 
-.chat-dashboard:hover{
-  background-color: #0e2a46; 
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+/* Hover Effects */
+.dashboard-button:hover,
+.use-dashboard-button:hover,
+.chat-dashboard:hover {
+  background-color: #4572a0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Report Section Styling */
+.report-section {
+  padding: 20px;
+  display: flex; /* Align items in the report section */
+  align-items: center; /* Vertically center items */
+  gap: 20px; /* Space between date pickers and button */
+}
 
-
-/* Align button container items properly */
-.button-container {
+/* Container for date pickers */
+.date-selectors {
   display: flex;
-  align-items: right;
-  margin-left:400px;
   gap: 10px;
 }
 
-/* Date Selection - Positioned Right */
+/* Each date selector styling */
+.date-selection {
+  display: flex;
+  flex-direction: column;
+}
 
+.date-selection label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
 
 .date-selection input[type="date"] {
-  padding: 10px;
-  border: 2px solid #ccc;
-  
-  border-radius: 5px;
-  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Rounded input */
+  outline: none;
+  font-size: 14px; /* Adjusted font size */
+  width: 120px; /* Adjusted width */
+}
+
+
+.report-button {
+  padding: 10px 15px;
+  background-color: #1ed4a7; 
+  color: white; 
+  border: none;
+  border-radius: 10px; 
   cursor: pointer;
-  border-radius: 30px;
-  width: 100px
+  font-weight: 600;
+  font-size: 14px; 
+  transition: background-color 0.3s;
+  height: 40px; 
+}
+
+/* Button hover effect */
+.report-button:hover {
+  background-color: #06470a; 
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Popup window for displaying the report */
+.report-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Rounded popup */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 80%;
+  max-height: 80vh;
+  overflow: auto;
+}
+
+/* Buttons inside the popup */
+.popup-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-buttons button {
+  margin-left: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #007bff; /* ✅ POPUP BUTTON COLOR (Blue) */
+  color: white;
+  border: none;
+  border-radius: 5px; /* Rounded popup buttons */
+  font-weight: 600;
+  font-size: 14px; /* Adjusted font size */
+}
+
+/* Popup buttons hover */
+.popup-buttons button:hover {
+  background-color: #0056b3; /* ✅ POPUP BUTTON HOVER COLOR (Darker Blue) */
+}
+
+/* Style the date and generate report section to be on the right */
+.top-bar > div { /* Target the container holding the buttons and report */
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.top-bar > div > .button-container {
+  margin-left: 0; /* Reset margin for the buttons within this context */
 }

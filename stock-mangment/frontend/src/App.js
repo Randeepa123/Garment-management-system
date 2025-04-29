@@ -4,6 +4,8 @@ import MainPage from "./componants/mainpage";
 import AddStock from "./componants/AddStock";
 import UseMaterial from "./componants/UseMaterial";
 import PurchaseHistory from "./componants/PurchaseHistory";
+import StockPredictionPage from "./componants/StockPredictionPage";
+
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
         <Route path="/add-stock" element={<AddStock />} />
         <Route path="/use-material" element={<UseMaterial />} />
         <Route path="/purchase-history" element={<PurchaseHistory />} />
+        <Route path="/stock-prediction" element={<StockPredictionPage />} />
       </Routes>
     </Router>
   );

@@ -4,10 +4,9 @@ const Material = require("../models/material");
 const Stock = require("../models/stock");
 const MaterialUsage = require("../models/materialUsage");
 const moment = require("moment");
-
-
-
 const controller = require("../controller/Stockcontroller");
+
+
 
 router.post("/add", controller.addStock);
 
@@ -29,6 +28,9 @@ router.get("/usage",controller.materialuseHistory);
 
 router.get("/usage/:id",controller.useRecordDelete);
 
+router.post("/predict", controller.predictStock);
+
+router.post("/get-report-data", controller.getReportData);
 
 
 module.exports = router;

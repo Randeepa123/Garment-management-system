@@ -2,6 +2,12 @@ const Material = require("../models/material");
 const Stock = require("../models/stock");
 const MaterialUsage = require("../models/materialUsage");
 const moment = require("moment");
+const geminiPromptFormatterModule = require('../utils/geminiPromptFormatter'); // Import the entire module
+const formatGeminiPrompt = geminiPromptFormatterModule;
+const { formatGeminiReportPrompt } = require("../utils/geminiReportPromptFormatter");
+const { generateGeminiResponse } = require("../utils/gemini");
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 
 // this is for add stock part
 const addStock = async (req, res, next) => {
@@ -250,14 +256,303 @@ const useRecordDelete = async (req, res, next) =>{
       res.status(500).json({ message: "Server error", error });
     }
   };
+ 
+  
+//predict stock part
+const predictStock = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
 
-exports.useRecordDelete = useRecordDelete;
-exports.materialuseHistory = materialuseHistory;
-exports.materialuse = materialuse;
-exports.getallmaterial = getallmaterial;
-exports.removestock = removestock;    
-exports.PurchaseHistory = PurchaseHistory;
-exports.chart_data = chart_data;
-exports.selectCatogary = selectCatogary;
-exports.stocklevel =stocklevel;
-exports.addStock = addStock;
+    if (!startDate || !endDate) {
+      console.error("Prediction Error: Missing start or end date");
+      return res.status(400).json({ message: "Start and end dates are required" });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Get data from exactly one year prior
+    const lastYearStart = new Date(start);
+    lastYearStart.setFullYear(start.getFullYear() - 1);
+    const lastYearEnd = new Date(end);
+    lastYearEnd.setFullYear(end.getFullYear() - 1);
+
+    console.log("Prediction: Fetching historical data...");
+    const [lastYearStock, lastYearUsage] = await Promise.all([
+      Stock.find({ dateAdded: { $gte: lastYearStart, $lte: lastYearEnd } }),
+      MaterialUsage.find({ dateUsed: { $gte: lastYearStart, $lte: lastYearEnd } }),
+    ]);
+    console.log("Prediction: Historical stock data:", lastYearStock);
+    console.log("Prediction: Historical usage data:", lastYearUsage);
+
+    if (!lastYearStock.length && !lastYearUsage.length) {
+      console.warn("Prediction Warning: No historical data found for prediction");
+      return res.status(404).json({ message: "No historical data found for prediction" });
+    }
+
+    console.log("Prediction: Formatting Gemini prompt...");
+    const prompt = formatGeminiPrompt(lastYearStock, lastYearUsage, startDate, endDate);
+    console.log("Prediction: Gemini prompt:", prompt);
+
+    console.log("Prediction: Calling generateGeminiResponse...");
+    let geminiResponse;
+    try {
+      geminiResponse = await generateGeminiResponse(prompt);
+      console.log("Prediction: Gemini response:", geminiResponse);
+    } catch (geminiError) {
+      console.error("Prediction Error: Error calling Gemini API:", geminiError);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to get response from AI.",
+        error: geminiError.message,
+      });
+    }
+
+    console.log("Prediction: Parsing Gemini response...");
+    try {
+      const prediction = parseGeminiResponse(geminiResponse);
+      console.log("Prediction: Parsed prediction:", prediction);
+      res.status(200).json({ success: true, prediction });
+    } catch (parseError) {
+      console.error("Prediction Error: Failed to parse Gemini response:", parseError);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to process prediction from AI.",
+        error: parseError.message,
+      });
+    }
+  } catch (error) {
+    console.error("Prediction Error: General error in predictStock:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate prediction",
+      error: error.message,
+    });
+  }
+};
+
+// Helper function to parse Gemini's response
+function parseGeminiResponse(text) {
+  try {
+    const jsonStart = text.indexOf('{');
+    const jsonEnd = text.lastIndexOf('}') + 1;
+    const jsonString = text.slice(jsonStart, jsonEnd);
+    const data = JSON.parse(jsonString);
+    const totalBudget = data.details.reduce((sum, item) => sum + (item.Price || 0), 0);
+    return { details: data.details, totalBudget };
+  } catch (e) {
+    console.error("Failed to parse Gemini response:", e);
+    throw new Error("Invalid prediction format from AI");
+  }
+}
+
+const getReportData = async (req, res) => {
+    try {
+        const { startDate, endDate } = req.body;
+
+        // Validation
+        if (!startDate || !endDate) {
+            return res.status(400).json({
+                success: false,
+                message: "Start and end dates are required"
+            });
+        }
+
+        if (new Date(endDate) < new Date(startDate)) {
+            return res.status(400).json({
+                success: false,
+                message: "End date must be after start date"
+            });
+        }
+
+        // Fetch data
+        const [stockData, usageData] = await Promise.all([
+            Stock.find({
+                dateAdded: {
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate)
+                }
+            }).limit(5000),
+            MaterialUsage.find({
+                dateUsed: {
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate)
+                }
+            }).limit(5000)
+        ]);
+
+        if (!stockData.length && !usageData.length) {
+            return res.status(404).json({
+                success: false,
+                message: "No data found for selected period"
+            });
+        }
+
+        // Generate report prompt
+        const prompt = formatGeminiReportPrompt(stockData, usageData, startDate, endDate);
+
+        // Get response from Gemini
+        const geminiResponse = await generateGeminiResponse(prompt);
+
+        // Generate structured PDF from Gemini's response
+        const pdfBuffer = await generateClearStructuredPDF(geminiResponse, startDate, endDate);
+
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename=stock_report_${startDate}_to_${endDate}.pdf`
+        });
+        res.send(pdfBuffer);
+
+    } catch (error) {
+        console.error("Report generation error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to generate report",
+            error: error.message
+        });
+    }
+};
+
+async function generateClearStructuredPDF(reportText, startDate, endDate) {
+    return new Promise((resolve, reject) => {
+        const doc = new PDFDocument({ size: 'A4', margin: 50 });
+        const buffers = [];
+
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => resolve(Buffer.concat(buffers)));
+        doc.on('error', reject);
+
+        doc.fontSize(16).font('Helvetica-Bold').text('Stock Report', { align: 'center' }).moveDown(0.5);
+        doc.fontSize(10).text(`Period: ${startDate} to ${endDate}`, { align: 'center' }).moveDown(1);
+
+        const lines = reportText.split('\n');
+        let currentSectionTitle = null;
+        const boldRegex = /\*\*(.*?)\*\*/g;
+
+        const table = {
+            headers: [],
+            rows: []
+        };
+        let inTable = false;
+
+        lines.forEach(line => {
+            line = line.trim();
+
+            // Handle Section Titles
+            if (line.startsWith('**') && line.endsWith('**')) {
+                if (currentSectionTitle) {
+                    doc.moveDown(1); // Add space after the previous section
+                }
+                currentSectionTitle = line.substring(2, line.length - 2).trim();
+                doc.fontSize(14).font('Helvetica-Bold').text(currentSectionTitle).font('Helvetica').fontSize(10).moveDown(0.5);
+                inTable = false;
+                table.headers = [];
+                table.rows = [];
+            }
+            // Handle Table Rows
+            else if (line.startsWith('|') && line.endsWith('|')) {
+                const columns = line.split('|').map(col => col.trim());
+                if (columns.length > 2) {
+                    if (columns[1].startsWith(':---')) {
+                        inTable = true;
+                        renderTable(doc, table);
+                        table.headers = [];
+                        table.rows = [];
+                        doc.moveDown(0.7);
+                    } else if (!inTable) {
+                        table.headers = columns.slice(1, -1).map(header => header.replace(boldRegex, '$1')); // Remove bold markers from headers
+                    } else {
+                        table.rows.push(columns.slice(1, -1).map(cell => cell.replace(boldRegex, '$1'))); // Remove bold markers from cells
+                    }
+                }
+            }
+            // Handle List Items
+            else if (line.startsWith('* ')) {
+                const text = line.substring(2).replace(boldRegex, (match, p1) => p1); // Remove bold markers from list items
+                doc.text(`• ${text}`).moveDown(0.3);
+            }
+            // Handle Regular Text (Paragraphs)
+            else if (line.length > 0) {
+                const formattedLine = line.replace(boldRegex, (match, p1) => {
+                    doc.font('Helvetica-Bold').text(p1, { continued: true }).font('Helvetica');
+                    return ''; // Remove the bold markers from the original line
+                });
+                doc.text(formattedLine).moveDown(0.4); // Add a bit more space between sentences/ideas
+            }
+        });
+
+        if (table.rows.length > 0) {
+            renderTable(doc, table);
+        }
+
+        doc.end();
+    });
+}
+
+function renderTable(doc, table) {
+    const startX = doc.x;
+    let y = doc.y;
+    const columnWidths = Array(table.headers.length).fill(0);
+    const padding = 5;
+    const lineHeight = 12;
+
+    // Calculate column widths
+    [table.headers, ...table.rows].forEach(row => {
+        row.forEach((cell, i) => {
+            const width = doc.widthOfString(cell);
+            if (width > columnWidths[i]) {
+                columnWidths[i] = width;
+            }
+        });
+    });
+
+    // Draw header
+    doc.font('Helvetica-Bold');
+    let currentX = startX;
+    table.headers.forEach((header, i) => {
+        doc.text(header, currentX + padding, y);
+        currentX += columnWidths[i] + 2 * padding;
+    });
+    doc.moveDown(lineHeight / 2);
+    doc.lineWidth(0.5).moveTo(startX, doc.y).lineTo(currentX, doc.y).stroke();
+    doc.font('Helvetica');
+    doc.moveDown(lineHeight / 2);
+    y = doc.y;
+
+    // Draw rows
+    table.rows.forEach(row => {
+        currentX = startX;
+        row.forEach((cell, i) => {
+            doc.text(cell, currentX + padding, y);
+            currentX += columnWidths[i] + 2 * padding;
+        });
+        y += lineHeight;
+    });
+}
+
+  module.exports = {
+    useRecordDelete,
+    materialuseHistory,
+    materialuse,
+    getallmaterial,
+    removestock,
+    PurchaseHistory,
+    chart_data,
+    selectCatogary,
+    stocklevel,
+    addStock,
+    predictStock,
+    getReportData,
+  };
+  
+
+// exports.useRecordDelete = useRecordDelete;
+// exports.materialuseHistory = materialuseHistory;
+// exports.materialuse = materialuse;
+// exports.getallmaterial = getallmaterial;
+// exports.removestock = removestock;    
+// exports.PurchaseHistory = PurchaseHistory;
+// exports.chart_data = chart_data;
+// exports.selectCatogary = selectCatogary;
+// exports.stocklevel =stocklevel;
+// exports.addStock = addStock;
