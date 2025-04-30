@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { TextField, Button, Typography, Box, List, ListItem, ListItemText } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 
-
-const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) => {
+const CostBreakdownData = ({
+  currentCostSheetID,
+  onAddBreakdown,
+  editingItem,
+}) => {
   const [breakdowns, setBreakdowns] = useState([]);
   const [formData, setFormData] = useState({
     description: "",
@@ -48,9 +59,9 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Helper function to validate form data
+
+  
   const validateFormData = () => {
-    // Check text fields
     if (!formData.description || formData.description.trim() === "") {
       setError("Description is required");
       return false;
@@ -63,8 +74,7 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
       setError("Unit Type is required");
       return false;
     }
-    
-    // Check numeric fields
+
     if (!formData.consumption || isNaN(parseFloat(formData.consumption))) {
       setError("Consumption must be a valid number");
       return false;
@@ -73,9 +83,9 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
       setError("Cost Per Unit must be a valid number");
       return false;
     }
-    
+
     return true;
-  };
+  }
 
   const addBreakdown = async () => {
     if (!validateFormData()) {
@@ -96,18 +106,17 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
 
     try {
       console.log("Adding breakdown for sheet ID:", currentCostSheetID);
-      // Submit the single breakdown immediately
       await axios.post(
         `http://localhost:8070/api/cost-estimations/${currentCostSheetID}/cost-breakdown`,
         { costBreakdown: [newBreakdown] }
       );
 
       // Add to local state for display
-      setBreakdowns(prev => [...prev, newBreakdown]);
-      
+      setBreakdowns((prev) => [...prev, newBreakdown]);
+
       // Notify parent to refresh the operation sheet
       onAddBreakdown([newBreakdown]);
-      
+
       // Clear the form
       setFormData({
         description: "",
@@ -116,12 +125,15 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
         consumption: "",
         costPerUnit: "",
       });
-      
+
       setSuccess("Breakdown added successfully!");
       setTimeout(() => setSuccess(""), 3000);
       setError("");
     } catch (error) {
-      console.error("Error adding breakdown:", error.response?.data || error.message);
+      console.error(
+        "Error adding breakdown:",
+        error.response?.data || error.message
+      );
       setError(error.response?.data?.error || "Failed to add breakdown");
       setTimeout(() => setError(""), 3000);
     }
@@ -153,18 +165,18 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
       console.log("Updating breakdown with ID:", editingId);
       console.log("Cost Sheet ID:", currentCostSheetID);
       console.log("Updated breakdown data:", updatedBreakdown);
-      
+
       // Update the breakdown
       const response = await axios.put(
         `http://localhost:8070/api/cost-estimations/${currentCostSheetID}/cost-breakdown/${editingId}`,
         updatedBreakdown
       );
-      
+
       console.log("Update response:", response.data);
-      
+
       // Notify parent to refresh the operation sheet
       onAddBreakdown([updatedBreakdown]);
-      
+
       // Reset the form and editing state
       setFormData({
         description: "",
@@ -175,17 +187,25 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
       });
       setIsEditing(false);
       setEditingId(null);
-      
+
       setSuccess("Breakdown updated successfully!");
       setTimeout(() => setSuccess(""), 3000);
       setError("");
     } catch (error) {
-      console.error("Error updating breakdown:", error.response?.data || error.message);
-      setError(error.response?.data?.error || "Failed to update breakdown. Please try again.");
+      console.error(
+        "Error updating breakdown:",
+        error.response?.data || error.message
+      );
+      setError(
+        error.response?.data?.error ||
+          "Failed to update breakdown. Please try again."
+      );
       setTimeout(() => setError(""), 3000);
     }
   };
 
+
+  //Done
   const cancelEdit = () => {
     setFormData({
       description: "",
@@ -210,7 +230,10 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
     }
 
     try {
-      console.log("Submitting cost breakdown for sheet ID:", currentCostSheetID);
+      console.log(
+        "Submitting cost breakdown for sheet ID:",
+        currentCostSheetID
+      );
       await axios.post(
         `http://localhost:8070/api/cost-estimations/${currentCostSheetID}/cost-breakdown`,
         { costBreakdown: breakdowns }
@@ -219,19 +242,29 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
       onAddBreakdown(breakdowns); // Notify parent about new breakdowns
       setSuccess("Cost breakdown submitted successfully!");
       setBreakdowns([]);
-      
+
       setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       console.error("Submission error:", error.response?.data || error.message);
-      setError(error.response?.data?.error || "Failed to submit cost breakdown");
-      
+      setError(
+        error.response?.data?.error || "Failed to submit cost breakdown"
+      );
+
       setTimeout(() => setError(""), 3000);
     }
   };
 
-
   return (
-    <Box sx={{ maxWidth: 800, margin: "auto", p: 1, boxShadow: 3, borderRadius: 2, bgcolor: "#fff" }}>
+    <Box
+      sx={{
+        maxWidth: 800,
+        margin: "auto",
+        p: 1,
+        boxShadow: 3,
+        borderRadius: 2,
+        bgcolor: "#fff",
+      }}
+    >
       <Typography variant="h5" sx={{ mb: 2 }}>
         {isEditing ? "Edit Cost Breakdown" : "Cost Breakdown Data"}
       </Typography>
@@ -248,7 +281,15 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
         </Typography>
       )}
 
-      <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: -1,height:"450px" }}>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: -1,
+          height: "450px",
+        }}
+      >
         <TextField
           label="Description"
           name="description"
@@ -258,72 +299,84 @@ const CostBreakdownData = ({ currentCostSheetID, onAddBreakdown, editingItem }) 
           variant="outlined"
           required
         />
-                  <TextField
-            label="Supplier Name"
-            name="supplierName"
-            value={formData.supplierName}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            required
-            />
+        <TextField
+          label="Supplier Name"
+          name="supplierName"
+          value={formData.supplierName}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          variant="outlined"
+          required
+        />
 
-            <TextField
-            label="Unit Type"
-            name="unitType"
-            value={formData.unitType}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            required
-            />
+        <TextField
+          label="Unit Type"
+          name="unitType"
+          value={formData.unitType}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          variant="outlined"
+          required
+        />
 
-            <TextField
-            label="Consumption"
-            name="consumption"
-            type="number"
-            value={formData.consumption}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            required
-            />
+        <TextField
+          label="Consumption"
+          name="consumption"
+          type="number"
+          value={formData.consumption}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          variant="outlined"
+          required
+        />
 
-            <TextField
-            label="Cost Per Unit"
-            name="costPerUnit"
-            type="number"
-            value={formData.costPerUnit}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            required
-            />
+        <TextField
+          label="Cost Per Unit"
+          name="costPerUnit"
+          type="number"
+          value={formData.costPerUnit}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          variant="outlined"
+          required
+        />
 
-        <Box sx={{justifyContent: "space-between", mt: 2 }}>
+        <Box sx={{ justifyContent: "space-between", mt: 2 }}>
           {isEditing ? (
             <>
-              <Button sx={{height:"50px"}} variant="contained" color="primary" onClick={updateBreakdown}>
+              <Button
+                sx={{ height: "50px" }}
+                variant="contained"
+                color="primary"
+                onClick={updateBreakdown}
+              >
                 Update Breakdown
               </Button>
-              <Button sx={{height:"50px"}} variant="outlined" color="secondary" onClick={cancelEdit}>
+              <Button
+                sx={{ height: "50px" }}
+                variant="outlined"
+                color="secondary"
+                onClick={cancelEdit}
+              >
                 Cancel
               </Button>
             </>
           ) : (
-            <Button sx={{height:"50px"}} variant="contained" color="primary" onClick={addBreakdown}>
+            <Button
+              sx={{ height: "50px" }}
+              variant="contained"
+              color="primary"
+              onClick={addBreakdown}
+            >
               Add Breakdown
             </Button>
           )}
-       
         </Box>
       </Box>
-
-    
     </Box>
   );
 };

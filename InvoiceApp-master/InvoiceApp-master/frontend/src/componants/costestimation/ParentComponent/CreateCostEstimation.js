@@ -11,6 +11,7 @@ const CreateCostEstimation = () => {
   const [refresh, setRefresh] = useState(0);
   const [editingItem, setEditingItem] = useState(null);
 
+
   // Function to handle refresh when cost breakdown is added
   const handleBreakdownAdded = (breakdowns) => {
     console.log("Cost breakdown added, refreshing operation sheet", breakdowns);
@@ -39,11 +40,11 @@ const CreateCostEstimation = () => {
         value={{ CostSheetNumber, setCostSheetNumber, refresh, setRefresh }}
       >
         <Box sx={{ display: "flex", gap: 2}}>
-          {/* Project Info */}
+        {/*primary data*/}
           <Box sx={{ flex: 1 }}>
             <Card elevation={3}>
               <CardHeader
-                title="Step 1: Project Information"
+                title=" Primary Information"
                 sx={{ backgroundColor: "#1976d2", color: "#fff" }}
               />
               <CardContent>
@@ -58,8 +59,8 @@ const CreateCostEstimation = () => {
           <Box sx={{ flex: 1 }}>
             <Card elevation={3}>
               <CardHeader
-                title="Step 2: Add Cost Breakdown"
-                sx={{ backgroundColor: "#2e7d32", color: "#fff" }}
+                title=" Add Cost Breakdown"
+                sx={{ backgroundColor: "#1976d2", color: "#fff" }}
               />
               <CardContent>
                 <CostBreakdownData 
@@ -76,10 +77,6 @@ const CreateCostEstimation = () => {
           {/* Operation Sheet */}
           <Box sx={{ flex: 2 }}>
             <Card elevation={3}>
-              <CardHeader
-                title="Step 3: Operation Sheet Overview"
-                sx={{ backgroundColor: "#9c27b0", color: "#fff" }}
-              />
               <CardContent>
                 <OperationSheet setEditingItem={setEditingItem} />
               </CardContent>

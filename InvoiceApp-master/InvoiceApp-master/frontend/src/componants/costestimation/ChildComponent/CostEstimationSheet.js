@@ -12,7 +12,7 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData"; // Import the Edit component
+import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData"; 
 
 const CostEstimationSheet = ({ rows, allowEdit = false, showSubmit = false }) => {
   const [selectedBreakdown, setSelectedBreakdown] = useState(null); // Store selected breakdown to pass to Edit component
@@ -38,6 +38,7 @@ const CostEstimationSheet = ({ rows, allowEdit = false, showSubmit = false }) =>
         padding: 1,
         marginLeft: "10px",
         backgroundColor: "#f4f6f6",
+        
       }}
     >
       {/* Project Details Section */}

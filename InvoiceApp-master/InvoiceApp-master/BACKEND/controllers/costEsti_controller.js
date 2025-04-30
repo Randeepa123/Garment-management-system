@@ -238,6 +238,7 @@ const updateCostBreakdown = async (req, res) => {
       return res.status(400).json({ error: "Cost Sheet ID and Breakdown ID are required" });
     }
 
+    
     // Find the cost estimation document
     const costEstimation = await CostEstimation.findOne({ costSheetID: costId });
 
@@ -267,6 +268,7 @@ const updateCostBreakdown = async (req, res) => {
       costPerUnit: updatedBreakdown.costPerUnit,
       totalCost: totalCost,
     };
+
 
     // Recalculate the total cost sum
     costEstimation.totalCostSum = costEstimation.costBreakdown.reduce(

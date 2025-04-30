@@ -20,7 +20,13 @@ import {
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
 import { CostContext } from "../../../contex/CostContex";
 
-const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true }) => {
+
+
+const OperationSheet = ({
+  setEditingItem,
+  allowEdit = true,
+  showSubmit = true,
+}) => {
   const { CostSheetNumber, refresh, setRefresh } = useContext(CostContext);
 
   const [costSheet, setCostSheet] = useState({});
@@ -32,8 +38,8 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
 
   useEffect(() => {
     const fetchCostSheet = async () => {
-      if (!CostSheetNumber) return; // Don't fetch if no CostSheetNumber is available
-      
+      if (!CostSheetNumber) return; 
+
       try {
         console.log("Fetching cost sheet with ID:", CostSheetNumber);
         const response = await axios.get(
@@ -67,7 +73,7 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
       unitType: breakdown.unitType,
       consumption: breakdown.consumption,
       costPerUnit: breakdown.costPerUnit,
-      totalCost: breakdown.totalCost
+      totalCost: breakdown.totalCost,
     });
   };
 
@@ -87,35 +93,40 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
     try {
       console.log("Deleting breakdown with ID:", itemToDelete._id);
       console.log("Cost Sheet ID:", costSheet.costSheetID);
-      
+
       // Send the data in the request body as expected by the backend
       const response = await axios.delete(
         `http://localhost:8070/api/cost-estimations/${costSheet.costSheetID}/cost-breakdown/${itemToDelete._id}`,
         {
           data: {
             costSheetID: costSheet.costSheetID,
-            breakdownId: itemToDelete._id
-          }
+            breakdownId: itemToDelete._id,
+          },
         }
       );
-      
+
       console.log("Delete response:", response.data);
-      
+
       // Update local state
       setCostSheet((prevSheet) => ({
         ...prevSheet,
-        costBreakdown: prevSheet.costBreakdown.filter((item) => item._id !== itemToDelete._id),
+        costBreakdown: prevSheet.costBreakdown.filter(
+          (item) => item._id !== itemToDelete._id
+        ),
       }));
-      
+
       // Trigger refresh
-      setRefresh(prev => prev + 1);
-      
+      setRefresh((prev) => prev + 1);
+
       // Close dialog
       setDeleteDialogOpen(false);
       setItemToDelete(null);
     } catch (error) {
       console.error("Error deleting breakdown:", error.response?.data || error);
-      setDeleteError(error.response?.data?.error || "Failed to delete breakdown. Please try again.");
+      setDeleteError(
+        error.response?.data?.error ||
+          "Failed to delete breakdown. Please try again."
+      );
     }
   };
 
@@ -130,17 +141,36 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2, border: "solid 1px" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        p: 2,
+        border: "solid 1px",
+      }}
+    >
       {/* Project Details */}
       <Container maxWidth="lg">
         <Typography variant="h6" gutterBottom>
           Project Details
         </Typography>
+  
         <Box sx={{ mb: 2 }}>
-          <Typography><strong>Cost-Sheet ID:</strong> {costSheet?.costSheetID || "N/A"}</Typography>
-          <Typography><strong>Product Name:</strong> {costSheet?.productName || "N/A"}</Typography>
-          <Typography><strong>Estimated Start Date:</strong> {costSheet?.estimatedStartDate?.slice(0, 10) || "N/A"}</Typography>
-          <Typography><strong>Estimated End Date:</strong> {costSheet?.estimatedEndDate?.slice(0, 10) || "N/A"}</Typography>
+          <Typography>
+            <strong>Cost-Sheet ID:</strong> {costSheet?.costSheetID || "N/A"}
+          </Typography>
+          <Typography>
+            <strong>Product Name:</strong> {costSheet?.productName || "N/A"}
+          </Typography>
+          <Typography>
+            <strong>Estimated Start Date:</strong>{" "}
+            {costSheet?.estimatedStartDate?.slice(0, 10) || "N/A"}
+          </Typography>
+          <Typography>
+            <strong>Estimated End Date:</strong>{" "}
+            {costSheet?.estimatedEndDate?.slice(0, 10) || "N/A"}
+          </Typography>
         </Box>
       </Container>
 
@@ -149,20 +179,24 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
         Cost-Breakdowns
       </Typography>
 
-      {/* Wrap the table in a Box with horizontal scrolling */}
-      <Box sx={{ width: '100%', overflowX: 'auto' }}>
+     
+      <Box sx={{ width: "100%", overflowX: "auto" }}>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 800 }}>
+          <Table sx={{ minWidth: 100 }}>
             <TableHead>
               <TableRow>
                 <TableCell><strong>No</strong></TableCell>
                 <TableCell><strong>Description</strong></TableCell>
-                <TableCell><strong>Supplier</strong></TableCell>
-                <TableCell><strong>Unit Type</strong></TableCell>
-                <TableCell><strong>Consumption</strong></TableCell>
-                <TableCell><strong>Cost/Unit</strong></TableCell>
-                <TableCell><strong>Total</strong></TableCell>
-                {allowEdit && <TableCell><strong>Actions</strong></TableCell>}
+                <TableCell><strong>Supplier</strong> </TableCell>
+                  <TableCell> <strong>Unit Type</strong> </TableCell>
+                <TableCell> <strong>Consumption</strong></TableCell>
+                 <TableCell><strong>Cost/Unit</strong> </TableCell>
+                  <TableCell> <strong>Total</strong>  </TableCell>
+                 
+                {allowEdit && (
+                  <TableCell> <strong>Actions</strong> </TableCell>
+                   
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -173,11 +207,21 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
                   <TableCell>{breakdown.supplierName || "N/A"}</TableCell>
                   <TableCell>{breakdown.unitType || "N/A"}</TableCell>
                   <TableCell>{breakdown.consumption || "N/A"}</TableCell>
-                  <TableCell>{breakdown.costPerUnit?.toFixed(2) || "N/A"}</TableCell>
-                  <TableCell>{breakdown.totalCost?.toFixed(2) || "N/A"}</TableCell>
+                  <TableCell>
+                    {breakdown.costPerUnit?.toFixed(2) || "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {breakdown.totalCost?.toFixed(2) || "N/A"}
+                  </TableCell>
                   {allowEdit && (
                     <TableCell>
-                      <Box sx={{ display: 'flex', flexDirection:"column",gap: 1 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 1,
+                        }}
+                      >
                         <Button
                           variant="contained"
                           color="warning"
@@ -210,7 +254,9 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
       </Typography>
 
       {/* Primary Data */}
-      {selectedBreakdown && <CostEstiPrimaryData breakdown={selectedBreakdown} />}
+      {selectedBreakdown && (
+        <CostEstiPrimaryData breakdown={selectedBreakdown} />
+      )}
 
       {/* Submit Button */}
       {showSubmit && (
@@ -222,10 +268,7 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
       )}
 
       {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-      >
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <Typography>
@@ -233,9 +276,16 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
           </Typography>
           {itemToDelete && (
             <Box sx={{ mt: 2 }}>
-              <Typography><strong>Description:</strong> {itemToDelete.description}</Typography>
-              <Typography><strong>Supplier:</strong> {itemToDelete.supplierName}</Typography>
-              <Typography><strong>Total Cost:</strong> ${itemToDelete.totalCost?.toFixed(2)}</Typography>
+              <Typography>
+                <strong>Description:</strong> {itemToDelete.description}
+              </Typography>
+              <Typography>
+                <strong>Supplier:</strong> {itemToDelete.supplierName}
+              </Typography>
+              <Typography>
+                <strong>Total Cost:</strong> $
+                {itemToDelete.totalCost?.toFixed(2)}
+              </Typography>
             </Box>
           )}
           {deleteError && (
@@ -246,7 +296,11 @@ const OperationSheet = ({ setEditingItem, allowEdit = true, showSubmit = true })
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+          >
             Delete
           </Button>
         </DialogActions>
