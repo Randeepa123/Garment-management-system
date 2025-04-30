@@ -1,11 +1,12 @@
 import React from "react";
 import { TopicBar } from "../../componants/TopicBar";
-import { LineChart } from "@mui/x-charts/LineChart";
+
 import Box from "@mui/material/Box";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { AllTargetsTable } from "../../componants/target/AllTargetsTable";
 import { OrderProgressTable } from "../../componants/target/OrderProgressTable";
+import { OutAnalysisGraph } from "../../componants/target/OutAnalysisGraph";
 function CircleIconBox({ icon, color = "#007ea4", pwidth = 40 }) {
   return (
     <Box
@@ -94,16 +95,7 @@ export const TargetDashboard = () => {
         </div>
         <div className="col-4">
           <div className="col target-card rounded-4 my-2 p-3">
-            <LineChart
-              xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-              series={[
-                {
-                  data: [2, 5.5, 2, 8.5, 1.5, 5],
-                },
-              ]}
-              width={400}
-              height={300}
-            />
+            <OutAnalysisGraph />
           </div>
           <div className="col target-card rounded-4  p-3">
             <OrderProgressTable />

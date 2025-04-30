@@ -37,6 +37,7 @@ export const AllTargetsTable = () => {
     const newSheet = {
       SheetNo: sheetNum,
       jobcardId: jobId,
+      DailyTarget: 0,
     };
     try {
       console.log("Creating target sheet..." + newSheet);
