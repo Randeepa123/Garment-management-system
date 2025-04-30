@@ -7,6 +7,7 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { AllTargetsTable } from "../../componants/target/AllTargetsTable";
 import { OrderProgressTable } from "../../componants/target/OrderProgressTable";
 import { OutAnalysisGraph } from "../../componants/target/OutAnalysisGraph";
+import { ProcessSchedule } from "../../componants/target/ProcessSchedule";
 function CircleIconBox({ icon, color = "#007ea4", pwidth = 40 }) {
   return (
     <Box
@@ -101,6 +102,9 @@ export const TargetDashboard = () => {
             <OrderProgressTable />
           </div>
         </div>
+      </div>
+      <div className="schedule row">
+        <ProcessSchedule />
       </div>
     </div>
   );
