@@ -8,6 +8,7 @@ router.get('/costEstimations/:costSheetID',controllers.getSingleCostEstimationSh
 router.post('/cost-estimations', controllers.addCostEstimation)
 router.post('/cost-estimations/:costId/cost-breakdown', controllers.addCostBreakdown);
 router.put('/updateCostEstimation', controllers.updateCostEstimation);
+router.put('/cost-estimations/:costId/cost-breakdown/:breakdownId', controllers.updateCostBreakdown);
 router.delete('/deleteCostEstimation', controllers.deleteCostEstimation);
 router.delete('/cost-estimations/:costId/cost-breakdown/:breakdownId', controllers.deleteCostBreakdown);
 

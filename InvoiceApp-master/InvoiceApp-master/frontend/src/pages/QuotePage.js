@@ -21,7 +21,7 @@ export const QuotePage = () => {
   };
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ padding: 1 }}>
       <Box sx={{ display: "block", justifyContent: "space-between", mb: 2 }}>
         <Button
           variant="contained"
@@ -71,7 +71,7 @@ export const QuotePage = () => {
         }}
       ></Divider>
 
-      <Box sx={{ width: "300px" }}>
+      <Box sx={{ width: "00px" }}>
         {activeTab === "history" ? (
           <CostEstimationHistory />
         ) : (

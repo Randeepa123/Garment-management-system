@@ -40,7 +40,7 @@ const CostEstimationHistory = () => {
         Cost-Estimation History
       </Typography>
 
-      {/* Search Bar */}
+  
       <TextField
         label="Search by Cost Sheet ID"
         variant="outlined"
@@ -68,10 +68,10 @@ const CostEstimationHistory = () => {
                     } // Product name and total cost as the secondary info
                   />
                 </ListItem>
-                {/* Divider with custom styling */}
+              
                 <Divider sx={{ my: 2, borderColor: '#b2b8b8', borderWidth: 1 }} />
 
-                {/* Toggle to show full details if the current item is expanded */}
+              
                 {expandedSheet === costSheet._id && (
                   <Box sx={{ marginTop: 2 }}>
                     <Typography variant="h6">Full Cost Estimation Details</Typography>
