@@ -22,7 +22,7 @@ export const OrderProgressTable = () => {
 
   useEffect(() => {
     const filteredOrders = orders.filter(
-      (order) => order.productionTracking.sewing.status === "In-Progress"
+      (order) => order.productionTracking.sewing.status === "In Progress"
     );
     setInProgressOrders(filteredOrders);
   }, [orders]);

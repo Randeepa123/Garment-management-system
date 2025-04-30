@@ -58,3 +58,8 @@ app.get("/getOrder", (req, res, next) => {
   controller.getOrder(req, res, next);
   res.send();
 });
+
+app.post("/gen-schelude", (req, res, next) => {
+  controller.scheduleGen(req, res, next);
+  res.send();
+});

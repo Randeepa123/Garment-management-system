@@ -41,6 +41,20 @@ const getTargetSheet = (req, res, next) => {
     });
 };
 
+const getTarget = (req, res, next) => {
+  const SheetNum = req.query.SheetNo;
+
+  Target.findOne({ SheetNo: SheetNum })
+    .populate("Targets.EmployeeId")
+    .then((targetSheet) => {
+      res.json(targetSheet);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch targets" });
+    });
+};
+
 const getTargetsByEmployee = async (req, res, next) => {
   try {
     const SheetNum = req.query.SheetNo;
@@ -71,10 +85,12 @@ const getTargetsByEmployee = async (req, res, next) => {
 const addTargetSheet = (req, res, next) => {
   const SheetNo = req.body.SheetNo;
   const jobcardId = req.body.jobcardId;
+  const DailyTarget = req.body.DailyTarget;
 
   const newTargetSheet = new Target({
     SheetNo,
     jobcardId,
+    DailyTarget,
   });
 
   // Save the invoice to the database
@@ -180,6 +196,27 @@ const deleteTarget = (req, res, next) => {
     });
 };
 
+const updateDailyTarget = (req, res) => {
+  const sheetNo = req.query.SheetNo; // Get SheetNo from query string
+  const newDailyTarget = req.body.DailyTarget; // New value from request body
+
+  Target.findOneAndUpdate(
+    { SheetNo: sheetNo },
+    { $set: { DailyTarget: newDailyTarget } },
+    { new: true } // return the updated document
+  )
+    .then((updatedTarget) => {
+      if (!updatedTarget) {
+        return res.status(404).json({ error: "Target Sheet not found" });
+      }
+      res.json({ message: "DailyTarget updated successfully", updatedTarget });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Failed to update DailyTarget" });
+    });
+};
+
 exports.getTargetSheet = getTargetSheet;
 exports.getTargetsByEmployee = getTargetsByEmployee;
 exports.addTargetSheet = addTargetSheet;
@@ -188,3 +225,5 @@ exports.updateTarget = updateTarget;
 exports.deleteTarget = deleteTarget;
 exports.getAllOperators = getAllOperators;
 exports.getAll = getAll;
+exports.updateDailyTarget = updateDailyTarget;
+exports.getTarget = getTarget;
