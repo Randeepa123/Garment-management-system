@@ -1,0 +1,167 @@
+/* Container */
+.use-material-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Form */
+  .use-material-form {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .use-material-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #d4d4d4;
+    text-align: center;
+  }
+  
+  /* Form Groups */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .form-group select,
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .form-group select:focus,
+  .form-group input:focus {
+    border-color: #4cacaf;
+    box-shadow: 0 0 8px rgba(76, 165, 175, 0.3);
+    outline: none;
+  }
+  
+  .form-group select:disabled {
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+  }
+  
+  /* Submit Button */
+  .submit-button {
+    background-color: #48acb9;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+  }
+  
+  .submit-button:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+  }
+  
+  .submit-button:hover:not(:disabled) {
+    background-color: #19456a;
+    transform: translateY(-2px);
+  }
+  
+  /* Usage History Section */
+  .usage-history-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .usage-history-list h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .usage-record {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 2fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .usage-record:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .record-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .record-label {
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .record-value {
+    color: #333;
+  }
+  
+  /* Delete Button */
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .usage-record {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 15px;
+    }
+  
+    .record-field {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .delete-button {
+      width: 100%;
+      margin-top: 10px;
+    }
+  }

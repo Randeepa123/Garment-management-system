@@ -1,0 +1,100 @@
+.prediction-container {
+    max-width: 900px;
+    margin: 200px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  
+  .prediction-title {
+    color: #4572a0;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  
+  .input-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .input-group label {
+    font-weight: 600;
+    margin-right: 5px;
+  }
+  
+  .input-group input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .input-group button {
+    background-color: #4572a0;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .input-group button:hover {
+    background-color: #365c80;
+  }
+  
+  .loading-text,
+  .error-text,
+  .no-data-text {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  .error-text {
+    color: red;
+  }
+  
+  .result-card {
+    margin-top: 30px;
+  }
+  
+  .prediction-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .prediction-table th,
+  .prediction-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .prediction-table th {
+    background-color: #f0f6fc;
+    color: #4572a0;
+    font-weight: bold;
+  }
+  
+  .text-right {
+    text-align: right;
+  }
+  
+  .total-label {
+    font-weight: bold;
+    background-color: #f9f9f9;
+  }
+  
+  .total-value {
+    font-weight: bold;
+    background-color: #f9f9f9;
+    color: #2b5e8b;
+  }
+  
