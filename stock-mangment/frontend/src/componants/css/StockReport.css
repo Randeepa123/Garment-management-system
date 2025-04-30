@@ -1,5 +1,6 @@
 .report-section {
     padding: 20px;
+    width: 300px;
 }
 
 /* Container for date pickers and button */
@@ -8,20 +9,23 @@
     align-items: center;
     gap: 15px;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Responsive: stack on small screens */
+    flex-wrap: nowrap; /* Prevent wrapping onto a new line */
 }
 
 /* Each date selector styling */
 .date-selection {
     display: flex;
     flex-direction: column;
+    flex: 1; /* Ensure inputs take up available space */
 }
 
+/* Date input labels styling */
 .date-selection label {
     font-weight: 600;
     margin-bottom: 5px;
 }
 
+/* Date input styling */
 .date-selection input[type="date"] {
     padding: 8px;
     border: 1px solid #ccc;
@@ -31,23 +35,30 @@
     min-width: 20px;
 }
 
+/* Wrapper for the button, ensuring it aligns in the same row */
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
 /* Report generation button styling */
 .report-button {
     padding: 10px 20px;
-    background-color: #301184; /* ✅ BUTTON BACKGROUND COLOR (Green) */
-    color: white;              /* ✅ BUTTON TEXT COLOR */
+    background-color: #1bbe85; /* Button background color */
+    color: white;              /* Button text color */
     border: none;
-    border-radius: 30px; /* Rounded button */
+    border-radius: 10px; /* Rounded button */
     cursor: pointer;
+    margin-top: 20px;
     font-weight: 600;
     font-size: 16px;
-    margin-top: 20px;
     transition: background-color 0.3s;
 }
 
 /* Button hover effect */
 .report-button:hover {
-    background-color: #19611d; /* ✅ BUTTON HOVER COLOR (Darker Green) */
+    background-color: #0f4253; /* Darker button color on hover */
 }
 
 /* Error message styling */
@@ -85,7 +96,7 @@
     margin-left: 10px;
     padding: 8px 15px;
     cursor: pointer;
-    background-color: #007bff; /* ✅ POPUP BUTTON COLOR (Blue) */
+    background-color: #007bff; /* Blue button color */
     color: white;
     border: none;
     border-radius: 10px; /* Rounded popup buttons */
@@ -95,5 +106,5 @@
 
 /* Popup buttons hover */
 .popup-buttons button:hover {
-    background-color: #0056b3; /* ✅ POPUP BUTTON HOVER COLOR (Darker Blue) */
+    background-color: #0056b3; /* Darker blue on hover */
 }

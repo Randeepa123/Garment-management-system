@@ -63,35 +63,37 @@ const StockReport = () => {
 
     return (
         <div className="report-section">
-            <div className="date-button-row">
+    <div className="date-button-row">
+    <div className="button-wrapper">
             <button
-                    className="report-button"
-                    onClick={handleGenerateReport}
-                    disabled={reportLoading}
-                >
-                    {reportLoading ? "Generating..." : "Generate Report"}
-                </button>
-                <div className="date-selection">
-                    
-                    <label htmlFor="start-date">Start Date:</label>
-                    <input
-                        type="date"
-                        id="start-date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                    />
-                </div>
-                <div className="date-selection">
-                    <label htmlFor="end-date">End Date:</label>
-                    <input
-                        type="date"
-                        id="end-date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
-                </div>
-              
-            </div>
+                className="report-button"
+                onClick={handleGenerateReport}
+                disabled={reportLoading}
+            >
+                {reportLoading ? "Generating..." : "Generate Report"}
+            </button>
+        </div>
+        <div className="date-selection">
+            <label htmlFor="start-date">Start Date:</label>
+            <input
+                type="date"
+                id="start-date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+            />
+        </div>
+        <div className="date-selection">
+            <label htmlFor="end-date">End Date:</label>
+            <input
+                type="date"
+                id="end-date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+            />
+        </div>
+       
+    </div>
+
 
             {reportError && <p className="error-message">{reportError}</p>}
 

@@ -191,7 +191,7 @@ const UseMaterial = () => {
           disabled={!formData.category || !formData.itemName || !formData.quantity}
           className="submit-button"
         >
-          Use Material
+          Retrieve stock
         </button>
       </form>
 

@@ -90,6 +90,7 @@
 /* Remove Button Positioned Right */
 .remove-button {
     background-color: #d9534f;
+    width: 100px;
     color: white;
     padding: 5px 10px;
     border: none;

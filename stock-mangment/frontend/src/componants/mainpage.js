@@ -30,7 +30,7 @@ const MainPage = () => {
                         className="use-dashboard-button"
                         onClick={() => navigate("/use-material")}
                     >
-                        Use Material
+                        Retrieve stock
                     </button>
                     <button
                         className="chat-dashboard"

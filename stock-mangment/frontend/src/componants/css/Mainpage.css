@@ -1,7 +1,7 @@
 /* Main Container */
 .main-container {
   display: flex;
-  height: 130vh;
+  height: 135vh;
   background-color: #f5f5f5;
 }
 
@@ -39,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-left: 250px; /* Adjusted margin-left */
+  margin-left: 200px; /* Adjusted margin-left */
   gap: 10px;
   margin-top: -30px;
 }
@@ -112,7 +112,7 @@
   font-size: 14px;
   margin: 10px 5px;
   height: 40px; /* Adjusted height */
-  min-width: 120px; /* Adjusted min-width */
+  max-width: 150px; /* Adjusted min-width */
   cursor: pointer;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -136,105 +136,11 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Report Section Styling */
-.report-section {
-  padding: 20px;
-  display: flex; /* Align items in the report section */
-  align-items: center; /* Vertically center items */
-  gap: 20px; /* Space between date pickers and button */
-}
-
-/* Container for date pickers */
-.date-selectors {
-  display: flex;
-  gap: 10px;
-}
-
-/* Each date selector styling */
-.date-selection {
-  display: flex;
-  flex-direction: column;
-}
-
-.date-selection label {
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.date-selection input[type="date"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 10px; /* Rounded input */
-  outline: none;
-  font-size: 14px; /* Adjusted font size */
-  width: 120px; /* Adjusted width */
-}
-
-
-.report-button {
-  padding: 10px 15px;
-  background-color: #1ed4a7; 
-  color: white; 
-  border: none;
-  border-radius: 10px; 
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px; 
-  transition: background-color 0.3s;
-  height: 40px; 
-}
-
-/* Button hover effect */
-.report-button:hover {
-  background-color: #06470a; 
-}
-
 /* Error message styling */
 .error-message {
   color: red;
   font-weight: bold;
   margin-top: 10px;
-}
-
-/* Popup window for displaying the report */
-.report-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px; /* Rounded popup */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: 80%;
-  max-height: 80vh;
-  overflow: auto;
-}
-
-/* Buttons inside the popup */
-.popup-buttons {
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.popup-buttons button {
-  margin-left: 10px;
-  padding: 8px 15px;
-  cursor: pointer;
-  background-color: #007bff; /* ✅ POPUP BUTTON COLOR (Blue) */
-  color: white;
-  border: none;
-  border-radius: 5px; /* Rounded popup buttons */
-  font-weight: 600;
-  font-size: 14px; /* Adjusted font size */
-}
-
-/* Popup buttons hover */
-.popup-buttons button:hover {
-  background-color: #0056b3; /* ✅ POPUP BUTTON HOVER COLOR (Darker Blue) */
 }
 
 /* Style the date and generate report section to be on the right */
@@ -245,5 +151,6 @@
 }
 
 .top-bar > div > .button-container {
-  margin-left: 0; /* Reset margin for the buttons within this context */
+  margin-left: 0;
+
 }

@@ -546,13 +546,3 @@ function renderTable(doc, table) {
   };
   
 
-// exports.useRecordDelete = useRecordDelete;
-// exports.materialuseHistory = materialuseHistory;
-// exports.materialuse = materialuse;
-// exports.getallmaterial = getallmaterial;
-// exports.removestock = removestock;    
-// exports.PurchaseHistory = PurchaseHistory;
-// exports.chart_data = chart_data;
-// exports.selectCatogary = selectCatogary;
-// exports.stocklevel =stocklevel;
-// exports.addStock = addStock;
