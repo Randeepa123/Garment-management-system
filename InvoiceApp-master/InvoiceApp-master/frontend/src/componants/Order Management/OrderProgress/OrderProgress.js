@@ -16,7 +16,7 @@ import {
     marginBottom: '5px',
   });
 
-  function OrderProgress({getOrders,rows}) {
+  function OrderProgress({rows}) {
   return (
     <Paper sx={{ p: 3, borderRadius: '10px', height: '100%',width: '50%' }}>
     <Typography variant="h6" sx={{ fontWeight: 500, mb: 3 }}>

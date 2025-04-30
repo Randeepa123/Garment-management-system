@@ -81,6 +81,8 @@ function OrderTable({rows, getOrders}) {
     return <FaShoppingCart fontSize="small" />;
   };
 
+  console.log("Rows in table:",rows)
+
   return (
     <Paper sx={{ p: 0, borderRadius: '10px',width: '50%' }}>
       {/* Table header */}

@@ -4,6 +4,7 @@ import './JobCard.css'
 import logo from '../../../asserts/img/logo.png'
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+import html2pdf from 'html2pdf.js'
 
 
 
@@ -465,13 +466,14 @@ function UpdateJobCard({
         packagingStatus1
     ]);
 
-
-
-
+    const download=()=>{
+        //const pdf=document.querySelector('#form');
+        //html2pdf(pdf);
+    }
 
   return (
     <>
-    <div class="container py-4">
+    <div class="container py-4" id='form'>
         <div class="card shadow-sm">
             <div class="card-header bg-white py-4">
                 <div class="row align-items-center">
@@ -1325,7 +1327,9 @@ function UpdateJobCard({
                 <button type="button" class="btn btn-danger"
                 onClick={() => cancell()} 
                   
-            >Cancell</button>
+                >Cancell</button>
+
+                <button type="button" class="btn btn-primary"onClick={() => download()} >Download</button>
 
                 
             </div>

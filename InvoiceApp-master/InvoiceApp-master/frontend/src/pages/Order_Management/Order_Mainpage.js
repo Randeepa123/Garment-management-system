@@ -34,7 +34,9 @@ function Order_Mainpage() {
   return (
     <>
         <TopicBar text="Order Management" userName="Vishwa Dissanayake" />
-        <OrdersCountBoxes/>
+        <OrdersCountBoxes
+          rows={orders} 
+        />
 
         <Container className='main-container'>
           <OrderTable 
@@ -42,8 +44,7 @@ function Order_Mainpage() {
             getOrders={getOrders}
           />
           <OrderProgress className='OrderProgress'
-          rows={orders} 
-          getOrders={getOrders}/>
+          rows={orders} />
         </Container>
         
     </>

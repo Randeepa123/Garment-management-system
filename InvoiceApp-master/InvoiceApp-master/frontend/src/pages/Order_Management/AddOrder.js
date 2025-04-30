@@ -22,6 +22,10 @@ function AddOrder() {
       color: data.color,
       wait:data.wait,
       sizeRange: data.sizeRange,
+      isCancelled:data.isCancelled,
+      progress:data.progress,
+      status:data.status,
+      
       sizeDistribution: {
         sizeDistributionS: data.sizeDistribution.S,
         sizeDistributionM: data.sizeDistribution.M,

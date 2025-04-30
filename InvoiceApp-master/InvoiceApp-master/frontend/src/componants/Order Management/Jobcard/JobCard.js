@@ -23,6 +23,9 @@ function JobCard({
         const [fabricDetails1, setFabricDetails] = useState();
         const [color1, setColor] = useState();
         const [sizeRange1, setSizeRange] = useState();
+        const [isCancelled1,setisCancelled]=useState('')
+        const [progress1,setprogress]=useState(0)
+        const [status1,setstatus]=useState('')
         const [sizeDistributionS1, setSizeDistributionS] = useState(0);
         const [sizeDistributionM1, setSizeDistributionM] = useState(0);
         const [sizeDistributionL1, setSizeDistributionL] = useState(0);
@@ -189,6 +192,80 @@ function JobCard({
     useEffect(() => {
         console.log("Status:", submitted)
     }, [submitted])
+
+    const getOverallStatus = () => {
+            const statuses = [
+                patternMakingStatus1,
+                cuttingStatus1,
+                printingStatus1,
+                sewingStatus1,
+                finishingStatus1,
+                qualityControlStatus1,
+                packagingStatus1
+            ];
+        
+            if (statuses.every(status => status === "Completed")) return "Completed";
+            if (statuses.some(status => status === "In Progress")) return "In Progress";
+            if (statuses.some(status => status === "Delayed")) return "Delayed";
+            return "Pending"; // default if none started
+    
+            
+        };
+    
+        const getPercentage=()=>{
+            const status = [
+                patternMakingStatus1,
+                cuttingStatus1,
+                printingStatus1,
+                sewingStatus1,
+                finishingStatus1,
+                qualityControlStatus1,
+                packagingStatus1
+            ];
+    
+            const processes = [
+                patternMakingStatus1,
+                cuttingStatus1,
+                printingStatus1,
+                sewingStatus1,
+                finishingStatus1,
+                qualityControlStatus1,
+                packagingStatus1
+              ];
+    
+            const completedCount = processes.filter(status => status === "Completed").length;
+            const totalCount = processes.length;
+            const progressPercentage = (completedCount / totalCount) * 100;
+    
+            return progressPercentage;
+        };
+    
+        useEffect(() => {
+            const value = getPercentage(); 
+            setprogress(value);
+        }, [
+            patternMakingStatus1,
+            cuttingStatus1,
+            printingStatus1,
+            sewingStatus1,
+            finishingStatus1,
+            qualityControlStatus1,
+            packagingStatus1
+        ]);
+    
+        useEffect(() => {
+            const statusgetter = getOverallStatus(); 
+            setstatus(statusgetter);
+        }, [
+            patternMakingStatus1,
+            cuttingStatus1,
+            printingStatus1,
+            sewingStatus1,
+            finishingStatus1,
+            qualityControlStatus1,
+            packagingStatus1
+        ]);
+
 
   return (
     <>
@@ -799,6 +876,14 @@ function JobCard({
                                     <option value="Delayed">Delayed</option>
                                 </select></td>
                             </tr>
+                            <tr>
+                                <td colSpan="6" className="text-center">
+                                    <strong>
+                                        Overall Status:{getOverallStatus()}
+                                    </strong>
+                                    <p>Progress: {getPercentage().toFixed(2)}%</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -910,6 +995,8 @@ function JobCard({
                             color: color1,
                             wait:wait,
                             sizeRange: sizeRange1,
+                            progress:progress1,
+                            status:status1,
                             sizeDistribution: {
                                 S: sizeDistributionS1,
                                 M: sizeDistributionM1,

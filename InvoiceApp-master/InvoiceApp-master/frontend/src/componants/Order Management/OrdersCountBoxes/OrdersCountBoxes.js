@@ -28,12 +28,22 @@ const ArrowForwardIcon = () => (
   );
 
 
-function OrdersCountBoxes() {
+function OrdersCountBoxes({rows}) {
+
+  console.log("Rows in boxes:",rows)
+
+  const pendingCount = rows.filter(row => row.status === 'Pending').length;
+  const completedCount = rows.filter(row => row.status === 'Completed').length;
+  const urgentCount = rows.filter(row => row.priority === 'High').length;
+  const delayedCount = rows.filter(row => row.status === 'Delayed').length;
+
+  console.log("Delayed count:",pendingCount)
+
     const orderSummary = [
-        { title: 'Pending Orders', count: 50, icon: <Inventory2OutlinedIcon /> },
-        { title: 'Completed Orders', count: 49, icon: <Inventory2OutlinedIcon /> },
-        { title: 'Urgent Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
-        { title: 'Delayed Orders', count: 10, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Pending Orders', count: pendingCount, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Completed Orders', count: completedCount, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Urgent Orders', count: urgentCount, icon: <Inventory2OutlinedIcon /> },
+        { title: 'Delayed Orders', count: delayedCount, icon: <Inventory2OutlinedIcon /> },
       ];
   return (
     <Grid container spacing={3} sx={{ mb: 4 }}>
