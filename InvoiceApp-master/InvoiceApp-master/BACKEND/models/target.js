@@ -34,6 +34,9 @@ const TargetSchema = new Schema({
       ],
     },
   ],
+  DailyTarget: {
+    type: Number,
+  },
 });
 
 const Target = mongoose.model("Target", TargetSchema);

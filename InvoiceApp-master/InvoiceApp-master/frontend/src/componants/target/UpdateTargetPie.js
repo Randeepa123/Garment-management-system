@@ -8,6 +8,7 @@ export const UpdateTargetPie = ({ sheetNum }) => {
   const jobcardId = sheetNum.replaceAll("T", "");
 
   const [targets, setTargets] = useState([]);
+  const [target, setTarget] = useState();
   const [order, setOrder] = useState(null);
   const [totalOperationPg, setTotalOperationPg] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
@@ -15,7 +16,7 @@ export const UpdateTargetPie = ({ sheetNum }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchTargets(), fetchOrder()]);
+      await Promise.all([fetchTargets(), fetchOrder(), fetchTargetSheet()]);
     };
     fetchData();
   }, [refresh, jobcardId]);
@@ -26,6 +27,18 @@ export const UpdateTargetPie = ({ sheetNum }) => {
         `http://localhost:8070/target/getSheet?SheetNo=${sheetNum}`
       );
       setTargets(res.data || []);
+    } catch (error) {
+      console.error("Error fetching targets:", error);
+    }
+  };
+
+  const fetchTargetSheet = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8070/target/getTarget?SheetNo=${sheetNum}`
+      );
+      console.log(res.data.DailyTarget);
+      setTarget(res.data);
     } catch (error) {
       console.error("Error fetching targets:", error);
     }
@@ -55,10 +68,16 @@ export const UpdateTargetPie = ({ sheetNum }) => {
   useEffect(() => {
     if (!order || !order.sizeDistribution) return;
 
-    const qty = Object.values(order.sizeDistribution).reduce(
-      (acc, val) => acc + (val || 0),
-      0
-    );
+    // const qty = Object.values(order.sizeDistribution).reduce(
+    //   (acc, val) => acc + (val || 0),
+    //   0
+    // );
+
+    let qty = 0;
+    if (target != null) {
+      qty = target.DailyTarget;
+      console.log("Daily targets is", target.DailyTarget);
+    }
     setTotalQty(qty);
 
     const totalOps = totalOperationPg * qty;
