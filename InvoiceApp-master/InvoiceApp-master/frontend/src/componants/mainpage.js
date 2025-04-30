@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PurchaseHistory from "./PurchaseHistory";
 import StockStatus from "./StockStatus";
 import StockChart from "./StockChart";
-import { TopicBar } from "./topicBar";
+import { TopicBar } from "./TopicBar";
 import StockReport from "./StockReport"; // <-- Import here
 import "./css/Mainpage.css";
 
@@ -12,9 +12,7 @@ const MainPage = () => {
 
     return (
         <div className="main-container">
-            <div className="side-menu">
-                {/* Your side menu */}
-            </div>
+          
             <div className="main-content">
                 <div className="top-bar">
                     <TopicBar />

@@ -14,6 +14,13 @@ import { TargetDashboard } from "./target/TargetDashboard";
 import AddOrder from "./Order_Management/AddOrder";
 import UpdateOrder from "./Order_Management/UpdateOrder";
 
+//ishan
+import MainPage from "../componants/mainpage";
+import AddStock from "../componants/AddStock";
+import UseMaterial from "../componants/UseMaterial";
+import PurchaseHistory from "../componants/PurchaseHistory";
+import StockPredictionPage from "../componants/StockPredictionPage";
+
 
 export const Dashboard = () => {
   return (
@@ -57,6 +64,12 @@ export const Dashboard = () => {
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
               <Link to="orders">Orders</Link>
             </li>
+
+            <span className="fw-semibold">Stocks</span>
+            <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
+              <PriceCheckIcon sx={{ fill: "#007EA4" }} />
+              <Link to="stock">Stocks</Link>
+            </li>
           </ul>
         </div>
         <div className="m-3 content-section pl-5">
@@ -73,6 +86,13 @@ export const Dashboard = () => {
              <Route path="/orders" element={<Order_Mainpage />} />
              <Route path="/addOrder" element={<AddOrder/>} />
              <Route path="/updateorder" element={<UpdateOrder/>} />
+
+             {/*ishan*/}
+               <Route path="/stock" element={<MainPage />} />
+                <Route path="/add-stock" element={<AddStock />} />
+                <Route path="/use-material" element={<UseMaterial />} />
+                <Route path="/purchase-history" element={<PurchaseHistory />} />
+                <Route path="/stock-prediction" element={<StockPredictionPage />} />
 
           </Routes>
         </div>
