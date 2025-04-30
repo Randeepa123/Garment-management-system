@@ -466,14 +466,49 @@ function UpdateJobCard({
         packagingStatus1
     ]);
 
-    const download=()=>{
-        //const pdf=document.querySelector('#form');
-        //html2pdf(pdf);
-    }
+    //Pdf generation
+    const handleDownloadPDF = () => {
+        // Clone the content
+        const element = document.getElementById('jobcard-content');
+        const clonedElement = element.cloneNode(true);
+      
+        // Replace inputs, selects, and checkboxes with their values
+        const replaceFormElements = (container) => {
+          // Replace input values
+          container.querySelectorAll('input').forEach(input => {
+            const text = document.createElement('span');
+            if (input.type === 'checkbox') {
+              text.textContent = input.checked ? '✔️' : '❌';
+            } else {
+              text.textContent = input.value;
+            }
+            input.parentNode.replaceChild(text, input);
+          });
+      
+          // Replace select values
+          container.querySelectorAll('select').forEach(select => {
+            const text = document.createElement('span');
+            text.textContent = select.value;
+            select.parentNode.replaceChild(text, select);
+          });
+        };
+      
+        replaceFormElements(clonedElement);
+        
+        // Now convert to PDF
+        html2pdf().set({
+          margin:       0,
+          filename:     `JobCard-GRM-${Id}.pdf`,
+          image:        { type: 'jpeg', quality: 1 },
+          html2canvas:  { scale: 2,useCORS: true},
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['avoid-all'] }
+        }).from(clonedElement).save();
+      };
 
   return (
     <>
-    <div class="container py-4" id='form'>
+    <div class="container py-4" id='jobcard-content'>
         <div class="card shadow-sm">
             <div class="card-header bg-white py-4">
                 <div class="row align-items-center">
@@ -1212,7 +1247,7 @@ function UpdateJobCard({
                     </div>
                 </div>
             </div>
-            <div style={ {display: "flex", gap: "10px", marginLeft: "900px", marginTop: "20px", marginBottom: "20px" }}>
+            <div style={ {display: "flex", gap: "10px", marginLeft: "820px", marginTop: "20px", marginBottom: "20px" }}>
             
             <button type="button" class="btn btn-success"  
                 onClick={()=>{
@@ -1329,7 +1364,7 @@ function UpdateJobCard({
                   
                 >Cancell</button>
 
-                <button type="button" class="btn btn-primary"onClick={() => download()} >Download</button>
+                <button type="button" class="btn btn-primary"onClick={handleDownloadPDF} >Download</button>
 
                 
             </div>
