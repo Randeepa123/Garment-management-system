@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
 import { CostContext } from "../../../contex/CostContex";
+import emailjs from '@emailjs/browser';
 
 
 
@@ -35,6 +36,7 @@ const OperationSheet = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteError, setDeleteError] = useState("");
+  
 
   useEffect(() => {
     const fetchCostSheet = async () => {
@@ -137,9 +139,38 @@ const OperationSheet = ({
   };
 
   const handleSubmit = () => {
-    alert("Cost Estimation Sheet Submitted!");
+    if (!costSheet?.customerEmail || !costSheet?.costSheetID) {
+      alert("Missing customer email or estimation ID");
+      return;
+    }
+  
+    sendEstimationEmail(costSheet.customerEmail,costSheet,CostSheetNumber);
   };
 
+  //mailing part
+
+
+  const sendEstimationEmail = async (customerEmail, estimationData, estimationId) => {
+    const templateParams = {
+      to_email: customerEmail,
+      estimation_id: estimationId,
+      estimation_data: JSON.stringify(estimationData, null, 2),
+      approve_link: `https://localhost:8070/api/costEstimations/response?id=${estimationId}&action=approve`,
+      decline_link: `https://localhost:8070/api/costEstimations/response?id=${estimationId}&action=decline`,
+    };
+  
+    try {
+      await emailjs.send(
+        'service_i2v3i9i',
+        'template_on9h3jd',
+        templateParams,
+        'qyUkudv6sfdzHVF-Y'
+      );
+      alert("Estimation email sent to customer!");
+    } catch (error) {
+      console.error("Email sending failed:", error);
+    }
+  };
   return (
     <Box
       sx={{
@@ -261,7 +292,9 @@ const OperationSheet = ({
       {/* Submit Button */}
       {showSubmit && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button variant="contained" color="primary" onClick={handleSubmit }
+
+          >
             Submit
           </Button>
         </Box>

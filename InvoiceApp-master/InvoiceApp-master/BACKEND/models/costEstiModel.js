@@ -11,6 +11,10 @@ const costEstimationSchema = new Schema({
     type: String,
     required: true, 
   },
+  Email: {
+    type: String,
+    required: true, 
+  },
   estimatedStartDate: {
     type: Date,
     required: true, 
@@ -38,6 +42,10 @@ const costEstimationSchema = new Schema({
   totalCostSum: {
     type: Number,
     default: 0, 
+  },
+  isApproved: {
+    type: Boolean,
+    default: null, // null = pending, true = approved, false = declined
   },
   date: {
     type: Date,

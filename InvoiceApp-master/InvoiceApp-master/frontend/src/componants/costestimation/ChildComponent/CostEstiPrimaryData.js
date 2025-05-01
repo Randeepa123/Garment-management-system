@@ -9,6 +9,7 @@ const CostEstiPrimaryData = ({ setCurrentCostSheetID }) => {
     productName: "",
     estimatedStartDate: "",
     estimatedEndDate: "",
+    Email: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +38,7 @@ const CostEstiPrimaryData = ({ setCurrentCostSheetID }) => {
           productName: existingData.productName || "",
           estimatedStartDate: existingData.estimatedStartDate || "",
           estimatedEndDate: existingData.estimatedEndDate || "",
+          Email: existingData.Email || "",
         });
         
         // Mark as existing cost sheet
@@ -115,6 +117,7 @@ const CostEstiPrimaryData = ({ setCurrentCostSheetID }) => {
       productName: "",
       estimatedStartDate: "",
       estimatedEndDate: "",
+      Email:""
     });
     setIsExisting(false);
     setError("");
@@ -171,6 +174,7 @@ const CostEstiPrimaryData = ({ setCurrentCostSheetID }) => {
             shrink: true,
           }}
         />
+        
         <TextField 
           sx={{marginTop:"15px", display:"flex" , width:"200px"}}
           label="Estimated End Date" 
@@ -180,6 +184,19 @@ const CostEstiPrimaryData = ({ setCurrentCostSheetID }) => {
           onChange={handleInputChange} 
           required 
           disabled={isLoading || isExisting}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+
+        <TextField 
+          sx={{marginTop:"15px",width:"200px"}}
+          label="Customer Email" 
+          name="Email"  
+          value={costData.Email} 
+          onChange={handleInputChange} 
+          required 
+          disabled={isExisting}
           InputLabelProps={{
             shrink: true,
           }}

@@ -44,6 +44,7 @@ const addCostEstimation = (req, res, next) => {
     productName,
     estimatedStartDate,
     estimatedEndDate,
+    Email,
     costBreakdown,
   } = req.body;
 
@@ -66,6 +67,7 @@ const addCostEstimation = (req, res, next) => {
     estimatedStartDate,
     estimatedEndDate,
     costBreakdown,
+    Email
   });
 
   // Save the new cost estimation
