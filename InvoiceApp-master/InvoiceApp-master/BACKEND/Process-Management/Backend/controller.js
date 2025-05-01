@@ -290,9 +290,42 @@ const deleteOrder = (req, res, next) => {
     });
 };
 
+const updateSewingEndDate = async (req, res) => {
+  try {
+    const { jobcardId, endDate } = req.body;
+    const [month, day, year] = endDate.split("/");
+
+    const fixedDate = new Date(year, month - 1, day);
+    fixedDate.setHours(0, 0, 0, 0);
+
+    if (!jobcardId || !endDate) {
+      return res
+        .status(400)
+        .json({ error: "jobcardId and endDate are required" });
+    }
+
+    const parsedDate = new Date(fixedDate); // Convert string to Date
+
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ error: "Invalid date format" });
+    }
+
+    const result = await orders.updateOne(
+      { jobcardId: jobcardId },
+      { $set: { "productionTracking.sewing.endDate": parsedDate } }
+    );
+
+    res.json(result);
+  } catch (err) {
+    console.error("Error updating sewing end date:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 exports.getOrders = getOrders;
 exports.addOrder = addOrder;
 exports.updateOrder = updateOrder;
 exports.deleteOrder = deleteOrder;
 exports.findOrderById = getOrderById;
 exports.getOrder = getOrder;
+exports.updateSewingEndDate = updateSewingEndDate;

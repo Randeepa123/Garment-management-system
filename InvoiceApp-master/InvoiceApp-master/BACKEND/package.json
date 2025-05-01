@@ -14,9 +14,9 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongodb": "^6.15.0",
-    "mongoose": "^8.13.2",
+    "mongoose": "^8.14.1",
     "mongoose-sequence": "^6.0.1",
     "nodemon": "^3.1.9",
-    "openai": "^4.96.0"
+    "openai": "^4.96.2"
   }
 }

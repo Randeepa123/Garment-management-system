@@ -8,5 +8,6 @@ router.post("/addorder", controller.addOrder);
 router.post("/findOrderById", controller.findOrderById);
 router.post("/updateorder", controller.updateOrder);
 router.post("/deleteorder", controller.deleteOrder);
+router.put("/updateSewingEnd", controller.updateSewingEndDate);
 
 module.exports = router;

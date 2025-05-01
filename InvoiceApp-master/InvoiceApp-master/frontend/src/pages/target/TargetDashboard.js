@@ -103,7 +103,7 @@ export const TargetDashboard = () => {
           </div>
         </div>
       </div>
-      <div className="schedule row">
+      <div className="schedule col target-card rounded-4 row m-2 p-3">
         <ProcessSchedule />
       </div>
     </div>
