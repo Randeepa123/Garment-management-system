@@ -40,7 +40,6 @@ app.use("", processManagement);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
 app.use("/api",router);
-app.use("/api/estimation", router);
 
 
 

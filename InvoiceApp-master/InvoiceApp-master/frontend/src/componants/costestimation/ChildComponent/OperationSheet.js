@@ -138,39 +138,67 @@ const OperationSheet = ({
     setDeleteError("");
   };
 
-  const handleSubmit = () => {
-    if (!costSheet?.customerEmail || !costSheet?.costSheetID) {
-      alert("Missing customer email or estimation ID");
-      return;
-    }
+  // Modified handleSubmit function
+const handleSubmit = () => {
+  // Add console logs to debug the values
+  console.log("Customer Email:", costSheet?.customerEmail);
+  console.log("Cost Sheet Number:", CostSheetNumber);
   
-    sendEstimationEmail(costSheet.customerEmail,costSheet,CostSheetNumber);
+  if (!costSheet?.Email) {
+    console.error("Missing customer email in costSheet:", costSheet);
+    alert("Missing customer email. Please check customer details.");
+    return;
+  }
+  
+  if (!CostSheetNumber) {
+    console.error("Missing CostSheetNumber from context");
+    alert("Missing estimation ID. Please ensure a cost sheet is selected.");
+    return;
+  }
+
+  // Proceed with sending email
+  sendEstimationEmail(costSheet.Email, costSheet,CostSheetNumber);
+};
+
+// Modified email sending function
+const sendEstimationEmail = async (customerEmail, estimationData, CostSheetNumber) => {
+  console.log("Sending email with:", { customerEmail, CostSheetNumber });
+  
+  // Make sure we have valid data
+  if (!customerEmail || !CostSheetNumber) {
+    console.error("Missing required email parameters:", { customerEmail, CostSheetNumber });
+    alert("Cannot send email: missing customer email or estimation ID");
+    return;
+  }
+  
+  const templateParams = {
+    to_email: customerEmail,
+    estimation_id: CostSheetNumber,
+    estimation_data: JSON.stringify({
+      productName: estimationData.productName,
+      costSheetID: estimationData.costSheetID,
+      totalCost: totalCost.toFixed(2),
+      // Don't send the entire object as it might be too large
+    }, null, 2),
+    approve_link: `http://localhost:8070/api/response?id=${CostSheetNumber}&action=approve`,
+    decline_link: `http://localhost:8070/api/response?id=${CostSheetNumber}&action=decline`,
   };
 
-  //mailing part
-
-
-  const sendEstimationEmail = async (customerEmail, estimationData, estimationId) => {
-    const templateParams = {
-      to_email: customerEmail,
-      estimation_id: estimationId,
-      estimation_data: JSON.stringify(estimationData, null, 2),
-      approve_link: `https://localhost:8070/api/costEstimations/response?id=${estimationId}&action=approve`,
-      decline_link: `https://localhost:8070/api/costEstimations/response?id=${estimationId}&action=decline`,
-    };
-  
-    try {
-      await emailjs.send(
-        'service_i2v3i9i',
-        'template_on9h3jd',
-        templateParams,
-        'qyUkudv6sfdzHVF-Y'
-      );
-      alert("Estimation email sent to customer!");
-    } catch (error) {
-      console.error("Email sending failed:", error);
-    }
-  };
+  try {
+    console.log("Email template params:", templateParams);
+    const result = await emailjs.send(
+      'service_i2v3i9i',
+      'template_8y76bqs',
+      templateParams,
+      'qyUkudv6sfdzHVF-Y'
+    );
+    console.log("Email sent successfully:", result);
+    alert("Estimation email sent to customer!");
+  } catch (error) {
+    console.error("Email sending failed:", error);
+    alert(`Failed to send email: ${error.message}`);
+  }
+};
   return (
     <Box
       sx={{
