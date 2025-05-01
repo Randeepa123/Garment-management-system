@@ -4,10 +4,20 @@
   max-width: 600px;
   margin: auto;
   background: white;
-  height: 93%;
+  height: 100%;
   border-radius: 10px;
+
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+.search-bar {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  margin-right: 10px;
+}
+
 
 /* Heading style */
 h2 {
@@ -17,27 +27,39 @@ h2 {
   margin-left: 17px; /* Adjust margin to create some space */
 }
 
-/* Flexbox for aligning the header and search bar */
 .search-bar-container {
   display: flex;
-  justify-content: space-between; /* Align both elements on the same horizontal line */
-  align-items: center; /* Vertically align the items */
-  margin-bottom: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* allows wrapping on small screens */
 }
 
-/* Search bar styling */
-.search-bar {
-  width: 50%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-  margin-right: 10px;
+.search-bar-container h2 {
+  margin: 0;
+  white-space: nowrap;
+  margin-top: 10px;
+margin-left: 60px;
+  font-size: 25px;
+  flex-shrink: 0; /* Prevents the heading from shrinking */
 }
+
+.search-bar {
+  flex: 1; /* Allows the search bar to take available space */
+  min-width: 100px;
+  max-width: 300px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
 
 /* Container for the table with scroll functionality */
 .table-scroll-container {
-  max-height: 355px;
+  max-height: 547px;
   overflow-y: auto; /* Enables vertical scrolling for the table */
   border-radius: 10px;
   position: relative; /* Ensure sticky header works */
