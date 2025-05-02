@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { TopicBar } from '../../componants/TopicBar'
 import OrderTable from '../../componants/Order Management/OrderTable/OrderTable'
+import CostEstimationsTable from '../../componants/Order Management/CostEstimationsTable/CostEstimationsTable'
 import OrdersCountBoxes from '../../componants/Order Management/OrdersCountBoxes/OrdersCountBoxes'
 import { Container } from '@mui/material'
 import OrderProgress from '../../componants/Order Management/OrderProgress/OrderProgress'
@@ -45,6 +46,9 @@ function Order_Mainpage() {
           />
           <OrderProgress className='OrderProgress'
           rows={orders} />
+        </Container>
+        <Container className='EstimationTableOrder'>
+          <CostEstimationsTable/>
         </Container>
         
     </>

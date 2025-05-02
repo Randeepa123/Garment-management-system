@@ -15,6 +15,10 @@ const costEstimationSchema = new Schema({
     type: String,
     required: true, 
   },
+  jobcardCreated: {
+    type: Boolean,
+    default: false
+  },
   estimatedStartDate: {
     type: Date,
     required: true, 

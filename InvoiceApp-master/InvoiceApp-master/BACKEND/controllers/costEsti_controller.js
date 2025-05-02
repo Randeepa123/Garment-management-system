@@ -52,6 +52,15 @@ const getEmailResponse = async (req, res) => {
   }
 };
 
+const getcostEstimationsApproved = async (req, res) => {
+  try {
+    const approvedEstimates = await CostEstimation.find({ isApproved: true, jobcardCreated: false });
+    res.json(approvedEstimates);
+  } catch (err) {
+    res.status(500).json({ error: 'Server Error' });
+  }
+};
+
 
 const getAllCostEstimationSheets = (req, res, next) => {
   CostEstimation.find()
@@ -354,3 +363,4 @@ exports.deleteCostEstimation = deleteCostEstimation;
 exports.deleteCostBreakdown = deleteCostBreakdown;
 exports.updateCostBreakdown = updateCostBreakdown;
 exports.getEmailResponse=getEmailResponse;
+exports.getcostEstimationsApproved=getcostEstimationsApproved;
