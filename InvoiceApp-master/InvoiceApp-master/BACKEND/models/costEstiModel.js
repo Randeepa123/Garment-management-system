@@ -15,9 +15,9 @@ const costEstimationSchema = new Schema({
     type: String,
     required: true, 
   },
-  jobcardCreated: {
-    type: Boolean,
-    default: false
+  jobcardId: { // <- Added reference to jobcard
+    type: Number,
+    default: null
   },
   estimatedStartDate: {
     type: Date,

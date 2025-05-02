@@ -4,6 +4,7 @@ import './JobCard.css'
 import logo from '../../../../src/asserts/img/logo.png'
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -11,6 +12,9 @@ import { useNavigate } from 'react-router-dom';
 
 function JobCard({
     addOrder,submitted}) {
+
+        const location = useLocation();
+        const costEstimationId = location.state?.costEstimationId;
 
         const [orderdate1, setOrderdate] = useState();
         const [deliverydate1, setDeliverydate] = useState();
@@ -265,6 +269,8 @@ function JobCard({
             qualityControlStatus1,
             packagingStatus1
         ]);
+
+        console.log("CostEstiID:",costEstimationId);
 
 
   return (
@@ -985,6 +991,7 @@ function JobCard({
                         console.log(orderdate1)
                         console.log(deliverydate1)
                         const data = {
+                            costEstimationId:costEstimationId,
                             orderDate: orderdate1,
                             deliveryDate: deliverydate1,
                             customer: customer1,

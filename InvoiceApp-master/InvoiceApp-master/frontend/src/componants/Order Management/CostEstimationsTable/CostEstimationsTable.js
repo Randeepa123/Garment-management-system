@@ -19,9 +19,9 @@ const CostEstimationsTable = () => {
   };
 
   const navigate = useNavigate();
-  const handleAddOrder = () => {    
+  const handleAddOrder = (id) => {    
     console.log("Add Order");
-    navigate("/addOrder");
+    navigate("/addOrder", { state: { costEstimationId:id} });
   }
 
   return (
@@ -45,7 +45,7 @@ const CostEstimationsTable = () => {
               <td>{new Date(est.estimatedStartDate).toDateString()} - {new Date(est.estimatedEndDate).toDateString()}</td>
               <td>{est.totalCostSum}</td>
               <td>
-                <button onClick={handleAddOrder}>Create Jobcard</button>
+                <button onClick={() => handleAddOrder(est._id)}>Create Jobcard</button>
               </td>
             </tr>
           ))}
