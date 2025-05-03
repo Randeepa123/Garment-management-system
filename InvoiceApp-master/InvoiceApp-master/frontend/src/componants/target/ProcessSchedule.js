@@ -42,6 +42,7 @@ export const ProcessSchedule = () => {
   useEffect(() => {
     console.log("Orders:", orders);
     const result = orders.map((order) => {
+      console.log("Order:", order);
       const matchingTarget = targets.find(
         (target) => String(target.jobcardId) === String(order.jobcardId)
       );
@@ -49,11 +50,23 @@ export const ProcessSchedule = () => {
         (sum, val) => sum + (Number(val) || 0),
         0
       );
-      const startDate = new Date(order.productionTracking.sewing.startDate);
-      const formattedstartDate = startDate.toISOString().slice(0, 10);
 
-      const dueDate = new Date(order.deliveryDate);
-      const formatteddueDate = dueDate.toISOString().slice(0, 10);
+      let formattedstartDate = null;
+      if (order?.productionTracking?.sewing?.startDate) {
+        const startDate = new Date(order.productionTracking.sewing.startDate);
+        if (!isNaN(startDate)) {
+          formattedstartDate = startDate.toISOString().slice(0, 10);
+        }
+      }
+
+      let formatteddueDate = null;
+      if (order?.deliveryDate) {
+        const dueDate = new Date(order.deliveryDate);
+        if (!isNaN(dueDate)) {
+          formatteddueDate = dueDate.toISOString().slice(0, 10);
+        }
+      }
+
       return {
         jobcardID: order.jobcardId,
         start_date: formattedstartDate,

@@ -7,11 +7,11 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const targetRouter = require("./routes/target");
 
-const processManagement=require("./Process-Management/Backend/router")
-const customerRouter = require("./routes/customerRouter")
-const invoiceRouter = require("./routes/invoiceRoute")
-const router = require("./routes/costEsti_Router")
-
+const processManagement = require("./Process-Management/Backend/router");
+const customerRouter = require("./routes/customerRouter");
+const invoiceRouter = require("./routes/invoiceRoute");
+const router = require("./routes/costEsti_Router");
+const EmployeeRouter = require("./routes/employee");
 
 app.use(cors());
 app.use(express.json());
@@ -20,7 +20,7 @@ const DbUrl = process.env.MONGODB_URI;
 
 const connect = async () => {
   try {
-   await mongoose.connect(DbUrl);
+    await mongoose.connect(DbUrl);
     console.log("Connected to DB");
   } catch (err) {
     console.log(err);
@@ -29,20 +29,16 @@ const connect = async () => {
 
 connect();
 
-
-
 const server = app.listen(port, host, () => {
   console.log(`Server is listening to http://${host}:${port}`);
 });
 
-
 app.use("/target", targetRouter);
+app.use("/employee", EmployeeRouter);
 app.use("", processManagement);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
-app.use("/api",router);
-
-
+app.use("/api", router);
 
 /*const express = require("express");
 const mongoose = require("mongoose");

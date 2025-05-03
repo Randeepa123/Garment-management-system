@@ -1,6 +1,7 @@
 const Target = require("../models/target");
 const Employee = require("../models/employee");
 const { OpenAI } = require("openai");
+const TargetAchivement = require("../models/targetAchivements");
 
 const getAllOperators = (req, res, next) => {
   Employee.find({ post: "operator" })
@@ -230,7 +231,7 @@ const schedule = async (req, res) => {
 
   // Initialize OpenAI API
   const openai = new OpenAI({
-    // apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   // Construct the prompt for the assistant
@@ -279,6 +280,64 @@ Schedule these jobs with the following constraints:
   }
 };
 
+const addAchievement = async (req, res, next) => {
+  const { targetSheetNo, employeeId, count } = req.body;
+
+  try {
+    // Find if achievement already exists for this sheet
+    const existingAchievement = await TargetAchivement.findOne({
+      targetSheetNo,
+    });
+
+    if (existingAchievement) {
+      // Check if employee achievement exists
+      const employeeAchIndex = existingAchievement.achievements.findIndex(
+        (ach) => ach.employeeId.toString() === employeeId
+      );
+
+      if (employeeAchIndex > -1) {
+        // Update existing employee achievement
+        existingAchievement.achievements[employeeAchIndex].count = count;
+      } else {
+        // Add new employee achievement
+        existingAchievement.achievements.push({ employeeId, count });
+      }
+
+      const updatedAchievement = await existingAchievement.save();
+      res.json(updatedAchievement);
+    } else {
+      // Create new achievement document
+      const newAchievement = new TargetAchivement({
+        targetSheetNo,
+        achievements: [{ employeeId, count }],
+      });
+
+      const savedAchievement = await newAchievement.save();
+      res.json(savedAchievement);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to save achievement" });
+  }
+};
+
+const getAllAchievements = async (req, res, next) => {
+  try {
+    const achievements = await TargetAchivement.find()
+      .populate("achievements.employeeId")
+      .sort({ createdAt: -1 });
+
+    if (!achievements || achievements.length === 0) {
+      return res.status(404).json({ message: "No achievements found" });
+    }
+
+    res.json(achievements);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch achievements" });
+  }
+};
+
 exports.getTargetSheet = getTargetSheet;
 exports.getTargetsByEmployee = getTargetsByEmployee;
 exports.addTargetSheet = addTargetSheet;
@@ -290,3 +349,5 @@ exports.getAll = getAll;
 exports.updateDailyTarget = updateDailyTarget;
 exports.getTarget = getTarget;
 exports.schedule = schedule;
+exports.addAchievement = addAchievement;
+exports.getAllAchievements = getAllAchievements;
