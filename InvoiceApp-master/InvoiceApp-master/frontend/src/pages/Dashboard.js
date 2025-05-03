@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { InvoicePage } from "./InvoicePage";
 import { QuotePage } from "./QuotePage";
 import { SetTargets } from "./target/SetTargets";
-import  Order_Mainpage  from "./Order_Management/Order_Mainpage";
+import Order_Mainpage from "./Order_Management/Order_Mainpage";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
@@ -13,7 +13,6 @@ import { UpdateTargets } from "./target/UpdateTargets";
 import { TargetDashboard } from "./target/TargetDashboard";
 import AddOrder from "./Order_Management/AddOrder";
 import UpdateOrder from "./Order_Management/UpdateOrder";
-
 
 export const Dashboard = () => {
   return (
@@ -49,13 +48,17 @@ export const Dashboard = () => {
             <li className="d-flex gap-2 my-3 bg-light bg-opacity-10 p-2 rounded">
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
               <Link to="targets">Target Dashboard</Link>
-
             </li>
 
             <span className="fw-semibold">Orders</span>
             <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
               <PriceCheckIcon sx={{ fill: "#007EA4" }} />
               <Link to="orders">Orders</Link>
+            </li>
+
+            <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
+              <PriceCheckIcon sx={{ fill: "#007EA4" }} />
+              <a href="http://localhost:3000/analytics">Accounting</a>
             </li>
           </ul>
         </div>
@@ -70,10 +73,9 @@ export const Dashboard = () => {
               path="/update-targets/:sheetNo"
               element={<UpdateTargets />}
             />
-             <Route path="/orders" element={<Order_Mainpage />} />
-             <Route path="/addOrder" element={<AddOrder/>} />
-             <Route path="/updateorder" element={<UpdateOrder/>} />
-
+            <Route path="/orders" element={<Order_Mainpage />} />
+            <Route path="/addOrder" element={<AddOrder />} />
+            <Route path="/updateorder" element={<UpdateOrder />} />
           </Routes>
         </div>
       </div>
