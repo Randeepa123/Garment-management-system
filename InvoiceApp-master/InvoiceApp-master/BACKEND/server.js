@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 8070;
-const host = "localhost";
+const host = "0.0.0.0";  
 const mongoose = require("mongoose");
 require("dotenv").config();
 const targetRouter = require("./routes/target");
@@ -30,6 +30,7 @@ const connect = async () => {
 
 connect();
 
+// Listen on all network interfaces (0.0.0.0)
 const server = app.listen(port, host, () => {
   console.log(`Server is listening to http://${host}:${port}`);
 });
@@ -41,4 +42,3 @@ app.use("/invoice", invoiceRouter);
 app.use("/api", router);
 //ishan
 app.use("/api/stock", stockRouter);
-
