@@ -23,8 +23,8 @@ export const Employee = () => {
             <AchivementAccordion onSelectAchiver={setSelectedAchiver} />
           </div>
         </div>
-        <div className="row mt-3">
-          <div className="col-8">
+        <div className="row mt-3 d-flex justify-content-center gap-3">
+          <div className="col-8 ">
             <SalaryIncrementForm
               selectedEmployee={selectedEmployee}
               selectedAchiver={selectedAchiver}

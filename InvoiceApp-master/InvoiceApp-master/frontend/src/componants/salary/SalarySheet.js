@@ -39,7 +39,7 @@ export const SalarySheet = ({ employee }) => {
   if (!employee) return null;
 
   return (
-    <div ref={sheetRef} className="card mt-4">
+    <div ref={sheetRef} className="card mt-4 shadow-lg">
       <div className="card-header d-flex justify-content-between align-items-center">
         <h5 className="card-title mb-0">Salary Sheet Summary</h5>
         <button className="btn btn-primary" onClick={handleDownload}>

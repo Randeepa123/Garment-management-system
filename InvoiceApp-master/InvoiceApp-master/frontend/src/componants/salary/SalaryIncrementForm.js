@@ -110,16 +110,16 @@ export const SalaryIncrementForm = ({ selectedEmployee, selectedAchiver }) => {
             <input
               type="number"
               aria-label="Last name"
-              className="form-control"
+              className="form-control text-center"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
             />
+            <button type="submit" className="btn btn-primary">
+              Add Increment
+            </button>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Add Increment
-        </button>
       </form>
     </div>
   );

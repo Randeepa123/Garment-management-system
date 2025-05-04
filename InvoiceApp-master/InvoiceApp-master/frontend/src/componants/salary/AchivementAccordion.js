@@ -54,10 +54,13 @@ export const AchivementAccordion = ({ onSelectAchiver }) => {
                       key={achievement._id}
                       className="list-group-item d-flex justify-content-between align-items-center"
                     >
-                      {achievement.employeeId.name}
-                      <span className="badge text-bg-primary rounded-pill">
-                        {achievement.count}
-                      </span>
+                      <div className="d-flex gap-2">
+                        {achievement.employeeId.name}
+                        <span className="badge text-bg-primary rounded-pill">
+                          {achievement.count}
+                        </span>
+                      </div>
+
                       <button
                         className="btn btn-primary btn-sm"
                         onClick={() => handleViewDetails(target.targetSheetNo)}
