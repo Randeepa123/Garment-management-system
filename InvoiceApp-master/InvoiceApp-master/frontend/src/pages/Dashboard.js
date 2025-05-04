@@ -17,6 +17,7 @@ import { Employee } from "./target/Employee";
 
 export const Dashboard = () => {
   return (
+    <Router>
     <div className="d-flex dashboard">
       <div className="d-flex flex-column p-4 gap-5 sidebar vh-100">
         <img className="w-5" src={logo}></img>
@@ -58,7 +59,7 @@ export const Dashboard = () => {
           <span className="fw-semibold">Employee</span>
           <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
             <PriceCheckIcon sx={{ fill: "#007EA4" }} />
-            <Link to="Employees">Orders</Link>
+            <Link to="Employees">Employees</Link>
           </li>
         </ul>
       </div>
@@ -75,7 +76,9 @@ export const Dashboard = () => {
           <Route path="/updateorder" element={<UpdateOrder />} />
           <Route path="/Employees" element={<Employee />} />
         </Routes>
+        
       </div>
     </div>
+    </Router>
   );
 };
