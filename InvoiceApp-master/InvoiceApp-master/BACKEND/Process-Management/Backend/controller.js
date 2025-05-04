@@ -1,5 +1,6 @@
 const { request } = require("express");
 const orders = require("./model");
+const CostEstimation = require('../../models/costEstiModel');
 
 const getOrders = (req, res, next) => {
   orders
@@ -52,6 +53,7 @@ const getOrderById = async (req, res) => {
 
 const addOrder = (req, res, next) => {
   const order = new orders({
+    costEstimationId:req.body.costEstimationId,
     orderDate: req.body.orderDate,
     deliveryDate: req.body.deliveryDate,
     customer: req.body.customer,
@@ -156,8 +158,16 @@ const addOrder = (req, res, next) => {
   });
   order
     .save()
-    .then((result) => {
-      res.json(result);
+    .then(async (result) => {
+      res.json(result); // send response
+
+      // ✅ Optional: Link order to cost estimation if provided
+      const costEstimationId = req.body.costEstimationId;
+      if (costEstimationId) {
+        await CostEstimation.findByIdAndUpdate(costEstimationId, {
+          jobcardId: result.jobcardId
+        });
+      }
     })
     .catch((err) => {
       console.log(err);

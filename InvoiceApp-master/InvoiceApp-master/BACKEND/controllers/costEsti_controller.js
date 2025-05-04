@@ -54,7 +54,7 @@ const getEmailResponse = async (req, res) => {
 
 const getcostEstimationsApproved = async (req, res) => {
   try {
-    const approvedEstimates = await CostEstimation.find({ isApproved: true, jobcardCreated: false });
+    const approvedEstimates = await CostEstimation.find({ isApproved: true, jobcardId: null })
     res.json(approvedEstimates);
   } catch (err) {
     res.status(500).json({ error: 'Server Error' });
