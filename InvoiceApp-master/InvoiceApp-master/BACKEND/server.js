@@ -14,6 +14,7 @@ const router = require("./routes/costEsti_Router");
 const EmployeeRouter = require("./routes/employee");
 const authRouter = require("./routes/auth");
 
+
 app.use(cors());
 app.use(express.json());
 
@@ -39,6 +40,7 @@ app.use("/employee", EmployeeRouter);
 app.use("", processManagement);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
+app.use ("/api",router)
 
 app.use("/auth", authRouter);
 
