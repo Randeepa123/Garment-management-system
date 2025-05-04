@@ -16,7 +16,7 @@ export const OutAnalysisGraph = () => {
       const response = await axios.get(`http://localhost:8070/target/getAll`);
 
       console.log(response.data);
-      setTargetSheets(response.data.slice(-6));
+      setTargetSheets(response.data);
     } catch (error) {
       console.error("Error fetching targets:", error);
     }
