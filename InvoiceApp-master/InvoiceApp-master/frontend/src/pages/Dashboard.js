@@ -14,6 +14,7 @@ import { TargetDashboard } from "./target/TargetDashboard";
 import AddOrder from "./Order_Management/AddOrder";
 import UpdateOrder from "./Order_Management/UpdateOrder";
 import { Employee } from "./target/Employee";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 
 export const Dashboard = () => {
@@ -61,6 +62,12 @@ export const Dashboard = () => {
           <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
             <PriceCheckIcon sx={{ fill: "#007EA4" }} />
             <Link to="Employees">Employees</Link>
+          </li>
+
+          <span className="fw-semibold">Accounting</span>
+          <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
+            <AccountBalanceIcon sx={{ fill: "#007EA4" }} />
+            <a href="http://localhost:3001/analytics">Accounting</a>
           </li>
         </ul>
       </div>
