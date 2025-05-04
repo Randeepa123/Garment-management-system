@@ -5,6 +5,7 @@ import logo from '../../../asserts/img/logo.png'
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import html2pdf from 'html2pdf.js'
+import emailjs from '@emailjs/browser';
 
 
 
@@ -841,41 +842,6 @@ function UpdateJobCard({
             </div>
             
             <div class="card-body border-bottom">
-                <h2 class="border-bottom fs-5 mb-3 pb-2">T-Shirt Design</h2>
-                <div class="g-4 row">
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <h5 class="card-header text-center fs-6">Front View</h5>
-                            <div class="card-body">
-                                <div class="image-value mb-3">
-                                    <img src="/api/value/400/320" alt="T-shirt Front Design"/>
-                                </div>
-                                <div class="detail-box">
-                                    <label>Front Design Notes</label>
-                                    <div class="value">Centered graphic with company logo, 25cm x 20cm print area</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <h5 class="card-header text-center fs-6">Back View</h5>
-                            <div class="card-body">
-                                <div class="image-value mb-3">
-                                    <img src="/api/value/400/320" alt="T-shirt Back Design"/>
-                                </div>
-                                <div class="detail-box">
-                                    <label>Back Design Notes</label>
-                                    <div class="value">Small logo at upper back, 10cm x 5cm print area</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card-body border-bottom">
                 <h2 class="border-bottom fs-5 mb-3 pb-2">Production Tracking</h2>
                 <div class="table-responsive">
                     <table className='table' class="table table-bordered table-hover">
@@ -1340,25 +1306,52 @@ function UpdateJobCard({
                         };
                     
                     updateorder(data);
+
                     const stat=updated;
                     if (stat) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Success",
-                            text: "Job Card Updated",
-                            
-                          });
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Something went wrong!",
-                        
-                          });
-                    }
-      
-                    
-                }}}>Update</button>
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "Job Card Updated",
+                });
+
+                // Send email to the customer
+                const emailParams = {
+                    customer_name: customer1,
+                    customer_email: customer1 + "@example.com", // Replace with actual email field if available
+                    overall_status: status1,
+                    progress_percentage: progress1.toFixed(2),
+                };
+
+                emailjs.send(
+                    'service_i2v3i9i', // Replace with your EmailJS Service ID
+                    'template_7p3n735', // Replace with your EmailJS Template ID
+                    emailParams,
+                    'qyUkudv6sfdzHVF-Y' // Replace with your EmailJS Public Key
+                ).then((response) => {
+                    console.log('Email sent successfully!', response.status, response.text);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Email Sent",
+                        text: "An email has been sent to the customer with the overall status.",
+                    });
+                }).catch((error) => {
+                    console.error('Failed to send email:', error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Email Failed",
+                        text: "Failed to send email to the customer.",
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
+            }
+        }
+    }}>         Update</button>
                 <button type="button" class="btn btn-danger"
                 onClick={() => cancell()} 
                   

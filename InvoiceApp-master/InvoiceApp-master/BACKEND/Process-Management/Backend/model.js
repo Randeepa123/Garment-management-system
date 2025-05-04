@@ -3,6 +3,12 @@ const Schema=mongoose.Schema;
 const autoIncrement = require('mongoose-sequence')(mongoose);
 
 const orderSchema=new Schema({
+  costEstimationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CostEstimation',
+    required: true
+  },
+
   orderDate: { type: Date, required: true },
   deliveryDate: { type: Date, required: true },
   customer: { type: String, required: true },

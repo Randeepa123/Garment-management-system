@@ -2,6 +2,66 @@ const {response} = require('../app/app_Costestimation');
 const CostEstimation = require("../models/costEstiModel");
 const mongoose = require("mongoose");
 
+// Fix for getEmailResponse function in costEsti_controller.js
+const getEmailResponse = async (req, res) => {
+  const { id, action } = req.query;
+
+  if (!id || !["approve", "decline"].includes(action)) {
+    return res.status(400).json({ error: "Invalid request parameters" });
+  }
+
+  try {
+    // This line seems incorrect - we should be finding the document, not updating it
+    const costEstimation = await CostEstimation.findOne({ costSheetID: id });
+    
+    if (!costEstimation) {
+      return res.status(404).json({ error: "Cost estimation not found" });
+    }
+    
+    const isApproved = action === "approve";
+    costEstimation.isApproved = isApproved;
+    costEstimation.responseDate = new Date();
+    
+    await costEstimation.save();
+
+    // Fixed HTML response - properly wrapped in template string
+    res.send(`
+      <html>
+        <head>
+          <title>Cost Estimation Response</title>
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+            h2 { color: #333; }
+            .success { color: green; }
+            .decline { color: red; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h2>Thank you!</h2>
+            <p>You have <span class="${isApproved ? 'success' : 'decline'}">${isApproved ? "approved ✅" : "declined ❌"}</span> the cost estimation.</p>
+            <p>Reference ID: ${id}</p>
+          </div>
+        </body>
+      </html>
+    `);
+  } catch (err) {
+    console.error("Error updating cost estimation approval status:", err);
+    res.status(500).json({ error: "Server error while processing your response" });
+  }
+};
+
+const getcostEstimationsApproved = async (req, res) => {
+  try {
+    const approvedEstimates = await CostEstimation.find({ isApproved: true, jobcardId: null })
+    res.json(approvedEstimates);
+  } catch (err) {
+    res.status(500).json({ error: 'Server Error' });
+  }
+};
+
+
 const getAllCostEstimationSheets = (req, res, next) => {
   CostEstimation.find()
     .then((response) => {
@@ -44,6 +104,7 @@ const addCostEstimation = (req, res, next) => {
     productName,
     estimatedStartDate,
     estimatedEndDate,
+    Email,
     costBreakdown,
   } = req.body;
 
@@ -66,6 +127,7 @@ const addCostEstimation = (req, res, next) => {
     estimatedStartDate,
     estimatedEndDate,
     costBreakdown,
+    Email
   });
 
   // Save the new cost estimation
@@ -133,6 +195,7 @@ const updateCostEstimation = (req, res, next) => {
     estimatedStartDate,
     estimatedEndDate,
     costBreakdown,
+    isApproved
   } = req.body;
 
   const updatedCostBreakdown = costBreakdown.map((item) => {
@@ -154,6 +217,8 @@ const updateCostEstimation = (req, res, next) => {
       estimatedEndDate,
       costBreakdown: updatedCostBreakdown,
       totalCostSum,
+      isApproved
+
     },
     { new: true }
   )
@@ -297,3 +362,5 @@ exports.updateCostEstimation = updateCostEstimation;
 exports.deleteCostEstimation = deleteCostEstimation;
 exports.deleteCostBreakdown = deleteCostBreakdown;
 exports.updateCostBreakdown = updateCostBreakdown;
+exports.getEmailResponse=getEmailResponse;
+exports.getcostEstimationsApproved=getcostEstimationsApproved;

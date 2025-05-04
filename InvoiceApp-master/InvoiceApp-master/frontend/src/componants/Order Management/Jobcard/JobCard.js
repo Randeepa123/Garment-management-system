@@ -4,6 +4,7 @@ import './JobCard.css'
 import logo from '../../../../src/asserts/img/logo.png'
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -11,6 +12,9 @@ import { useNavigate } from 'react-router-dom';
 
 function JobCard({
     addOrder,submitted}) {
+
+        const location = useLocation();
+        const costEstimationId = location.state?.costEstimationId;
 
         const [orderdate1, setOrderdate] = useState();
         const [deliverydate1, setDeliverydate] = useState();
@@ -265,6 +269,8 @@ function JobCard({
             qualityControlStatus1,
             packagingStatus1
         ]);
+
+        console.log("CostEstiID:",costEstimationId);
 
 
   return (
@@ -602,40 +608,6 @@ function JobCard({
                 </div>
             </div>
             
-            <div class="card-body border-bottom">
-                <h2 class="border-bottom fs-5 mb-3 pb-2">T-Shirt Design</h2>
-                <div class="g-4 row">
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <h5 class="card-header text-center fs-6">Front View</h5>
-                            <div class="card-body">
-                                <div class="image-value mb-3">
-                                    <img src="/api/value/400/320" alt="T-shirt Front Design"/>
-                                </div>
-                                <div class="detail-box">
-                                    <label>Front Design Notes</label>
-                                    <div class="value">Centered graphic with company logo, 25cm x 20cm print area</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <h5 class="card-header text-center fs-6">Back View</h5>
-                            <div class="card-body">
-                                <div class="image-value mb-3">
-                                    <img src="/api/value/400/320" alt="T-shirt Back Design"/>
-                                </div>
-                                <div class="detail-box">
-                                    <label>Back Design Notes</label>
-                                    <div class="value">Small logo at upper back, 10cm x 5cm print area</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             
             <div class="card-body border-bottom">
                 <h2 class="border-bottom fs-5 mb-3 pb-2">Production Tracking</h2>
@@ -985,6 +957,7 @@ function JobCard({
                         console.log(orderdate1)
                         console.log(deliverydate1)
                         const data = {
+                            costEstimationId:costEstimationId,
                             orderDate: orderdate1,
                             deliveryDate: deliverydate1,
                             customer: customer1,
