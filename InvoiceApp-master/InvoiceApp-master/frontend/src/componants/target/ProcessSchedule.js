@@ -41,41 +41,48 @@ export const ProcessSchedule = () => {
 
   useEffect(() => {
     console.log("Orders:", orders);
-    const result = orders.map((order) => {
-      console.log("Order:", order);
-      const matchingTarget = targets.find(
-        (target) => String(target.jobcardId) === String(order.jobcardId)
-      );
-      const totalQty = Object.values(order.sizeDistribution).reduce(
-        (sum, val) => sum + (Number(val) || 0),
-        0
-      );
+    const result = orders
+      .map((order) => {
+        console.log("Order:", order);
+        const matchingTarget = targets.find(
+          (target) => String(target.jobcardId) === String(order.jobcardId)
+        );
 
-      let formattedstartDate = null;
-      if (order?.productionTracking?.sewing?.startDate) {
-        const startDate = new Date(order.productionTracking.sewing.startDate);
-        if (!isNaN(startDate)) {
-          formattedstartDate = startDate.toISOString().slice(0, 10);
+        // Skip if no matching target found or if DailyTarget is null/0
+        if (!matchingTarget || !matchingTarget.DailyTarget) return null;
+
+        const totalQty = Object.values(order.sizeDistribution).reduce(
+          (sum, val) => sum + (Number(val) || 0),
+          0
+        );
+
+        let formattedstartDate = null;
+        if (order?.productionTracking?.sewing?.startDate) {
+          const startDate = new Date(order.productionTracking.sewing.startDate);
+          if (!isNaN(startDate)) {
+            formattedstartDate = startDate.toISOString().slice(0, 10);
+          }
         }
-      }
 
-      let formatteddueDate = null;
-      if (order?.deliveryDate) {
-        const dueDate = new Date(order.deliveryDate);
-        if (!isNaN(dueDate)) {
-          formatteddueDate = dueDate.toISOString().slice(0, 10);
+        let formatteddueDate = null;
+        if (order?.deliveryDate) {
+          const dueDate = new Date(order.deliveryDate);
+          if (!isNaN(dueDate)) {
+            formatteddueDate = dueDate.toISOString().slice(0, 10);
+          }
         }
-      }
 
-      return {
-        jobcardID: order.jobcardId,
-        start_date: formattedstartDate,
-        duration: matchingTarget
-          ? Math.ceil(totalQty / matchingTarget.DailyTarget)
-          : null,
-        due_date: formatteddueDate,
-      };
-    });
+        // Skip if either start date or due date is null
+        if (!formattedstartDate || !formatteddueDate) return null;
+
+        return {
+          jobcardID: order.jobcardId,
+          start_date: formattedstartDate,
+          duration: Math.ceil(totalQty / matchingTarget.DailyTarget),
+          due_date: formatteddueDate,
+        };
+      })
+      .filter((item) => item !== null); // Filter out null entries
     console.log("result:", result);
     setJobData(result);
   }, [orders, targets]);

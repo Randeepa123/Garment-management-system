@@ -2113,6 +2113,21 @@ kbd {
     height: 100%;
     overflow: hidden;
   }
+  body * {
+    visibility: hidden;
+  }
+  .target-update,
+  .target-update * {
+    visibility: visible;
+  }
+  .target-update {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .top-button-row {
+    display: none !important;
+  }
 }
 
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/

@@ -222,6 +222,8 @@ const updateDailyTarget = (req, res) => {
 const schedule = async (req, res) => {
   const { orders } = req.body;
 
+  console.log("Received orders:", orders);
+
   // Validate input
   if (!orders || !Array.isArray(orders)) {
     return res
@@ -236,22 +238,17 @@ const schedule = async (req, res) => {
 
   // Construct the prompt for the assistant
   const constructPrompt = (orders) => {
-    return `
-You are a scheduling assistant.
-
-Given the following job orders:
-
+    return `You are a scheduling assistant. Given these job orders, schedule them with no overlaps:
 ${JSON.stringify(orders, null, 2)}
 
-Schedule these jobs with the following constraints:
-- No overlaps or gaps between jobs.
-- Prioritize jobs based on urgency, where urgency = (due_date - start_date).
-- Output the schedule as a JSON array in the format:
+Respond ONLY with a JSON array in this exact format, with no additional text:
 [
-  { "jobcardID": number, "start_date": "YYYY-MM-DD", "end_date": "YYYY-MM-DD" },
-  ...
-]
-`;
+  {
+    "jobcardID": number,
+    "start_date": "YYYY-MM-DD",
+    "end_date": "YYYY-MM-DD"
+  }
+]`;
   };
 
   try {
@@ -261,22 +258,43 @@ Schedule these jobs with the following constraints:
       model: "gpt-4o-mini",
       max_tokens: 2048,
       messages: [{ role: "user", content: prompt }],
-      temperature: 1,
+      temperature: 0.7, // Lower temperature for more consistent JSON output
     });
 
     const aiText = completion.choices[0].message.content.trim();
 
-    // Attempt to extract the JSON part from the AI response
-    const jsonStart = aiText.indexOf("[");
-    const jsonEnd = aiText.lastIndexOf("]") + 1;
-    const jsonString = aiText.substring(jsonStart, jsonEnd);
+    let scheduledJobs;
+    try {
+      // Try to parse the entire response first
+      scheduledJobs = JSON.parse(aiText);
+    } catch (parseError) {
+      // If that fails, try to extract JSON array
+      const jsonMatch = aiText.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) {
+        throw new Error("Could not find valid JSON array in response");
+      }
+      scheduledJobs = JSON.parse(jsonMatch[0]);
+    }
 
-    const scheduledJobs = JSON.parse(jsonString);
+    // Validate the structure of the parsed jobs
+    if (!Array.isArray(scheduledJobs)) {
+      throw new Error("Parsed result is not an array");
+    }
+
+    // Validate each job has the required fields
+    scheduledJobs.forEach((job) => {
+      if (!job.jobcardID || !job.start_date || !job.end_date) {
+        throw new Error("Invalid job structure in response");
+      }
+    });
 
     res.json({ scheduled_jobs: scheduledJobs });
   } catch (error) {
-    console.error("Error scheduling jobs:", error.message);
-    res.status(500).json({ error: "Failed to schedule jobs." });
+    console.error("Error scheduling jobs:", error);
+    res.status(500).json({
+      error: "Failed to schedule jobs.",
+      details: error.message,
+    });
   }
 };
 

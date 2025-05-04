@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { SalaryContex } from "../../contex/SalaryContex";
 
 export const SalaryTable = ({ onSelectEmployee }) => {
   const [salaryData, setSalaryData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { refresh } = useContext(SalaryContex);
   const getMonthName = (date) => {
     return date.toLocaleString("default", { month: "long" });
   };
@@ -34,7 +35,7 @@ export const SalaryTable = ({ onSelectEmployee }) => {
     };
 
     fetchSalaryData();
-  }, []);
+  }, [refresh]);
 
   if (loading) {
     return <div>Loading...</div>;

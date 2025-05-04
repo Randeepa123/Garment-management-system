@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { SalaryContex } from "../../contex/SalaryContex";
 
 export const SalaryIncrementForm = ({ selectedEmployee, selectedAchiver }) => {
   const [topic, setTopic] = useState("Salary Increment");
   const [amount, setAmount] = useState(0);
+  const { refresh, setRefresh } = useContext(SalaryContex);
 
   const year = 2025;
   const month = "May";
@@ -35,6 +37,7 @@ export const SalaryIncrementForm = ({ selectedEmployee, selectedAchiver }) => {
       console.error("Error adding increment:", error);
       alert("Failed to add increment");
     }
+    setRefresh((prev) => prev + 1); // Refresh the context to update the salary sheet
   };
 
   useEffect(() => {
