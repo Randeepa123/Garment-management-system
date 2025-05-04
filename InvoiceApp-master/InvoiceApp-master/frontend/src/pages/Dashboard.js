@@ -15,6 +15,7 @@ import AddOrder from "./Order_Management/AddOrder";
 import UpdateOrder from "./Order_Management/UpdateOrder";
 import { Employee } from "./target/Employee";
 
+
 export const Dashboard = () => {
   return (
     <Router>
@@ -77,6 +78,7 @@ export const Dashboard = () => {
           <Route path="/Employees" element={<Employee />} />
         </Routes>
         
+
       </div>
     </div>
     </Router>
