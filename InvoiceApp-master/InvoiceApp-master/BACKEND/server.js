@@ -11,19 +11,13 @@ const invoiceRouter = require("./routes/invoiceRoute");
 const router = require("./routes/costEsti_Router");
 const EmployeeRouter = require("./routes/employee");
 const authRouter = require("./routes/auth");
+const stockRouter = require("./StockmanagementBACKEND/routes/StockRoute");
 
 
 const app = express();
 const port = 8070;
+const host = "localhost"
 
-// Import routers
-const targetRouter = require("./routes/target");
-const processManagement = require("./Process-Management/Backend/router");
-const customerRouter = require("./routes/customerRouter");
-const invoiceRouter = require("./routes/invoiceRoute");
-const router = require("./routes/costEsti_Router");
-const employeeRouter = require("./routes/employee");
-const stockRouter = require("./StockmanagementBACKEND/routes/StockRoute");
 
 // Middleware
 app.use(cors());
@@ -34,7 +28,7 @@ const dbUrl = process.env.MONGODB_URL;
 const connect = async () => {
   try {
 
-    await mongoose.connect(DbUrl);
+    await mongoose.connect(dbUrl);
     console.log("Connected to DB");
   } catch (err) {
     console.error("DB Connection Error:", err);

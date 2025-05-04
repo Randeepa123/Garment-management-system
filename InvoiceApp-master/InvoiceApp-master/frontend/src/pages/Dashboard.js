@@ -76,6 +76,13 @@ export const Dashboard = () => {
             <AccountBalanceIcon sx={{ fill: "#007EA4" }} />
             <a href="http://localhost:3001/analytics">Accounting</a>
           </li>
+
+
+          <span className="fw-semibold">Stock</span>
+          <li className="d-flex bg-light bg-opacity-10 p-2 rounded gap-2 my-3">
+            <AccountBalanceIcon sx={{ fill: "#007EA4" }} />
+            <Link to="stock">Stocks</Link>
+          </li>
         </ul>
       </div>
       <div className="m-3 content-section pl-5">
@@ -102,7 +109,6 @@ export const Dashboard = () => {
         </div>
 
       </div>
-    </div>
     </Router>
   );
 };
