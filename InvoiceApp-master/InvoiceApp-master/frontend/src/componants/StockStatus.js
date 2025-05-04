@@ -33,7 +33,7 @@ const StockStatus = () => {
   return (
     <div className="stock-status-container">
       <div className="search-bar-container">
-        <h2>Stock status</h2>
+        <h2 className="h2_ishan">Stock status</h2>
         <input
           type="text"
           placeholder="Search by item name"

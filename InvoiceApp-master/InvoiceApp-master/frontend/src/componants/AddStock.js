@@ -120,7 +120,7 @@ const AddStock = () => {
           <input type="text" name="supplierCountry" placeholder="Supplier country" onChange={handleStockChange} value={formData.supplierCountry} />
         </div>
 
-        <button type="submit">Add Stock</button>
+        <button className="button_ishan" type="submit">Add Stock</button>
       </form>
 
       <hr />
@@ -138,7 +138,7 @@ const AddStock = () => {
         <input type="text" placeholder="Enter Item Name" value={newItem} onChange={(e) => setNewItem(e.target.value)} disabled={!newCategory} />
       </div>
 
-      <button onClick={handleAddMaterial}>Add New Material</button>
+      <button className ="button_ishan" onClick={handleAddMaterial}>Add New Material</button>
     </div>
   );
 };
