@@ -1,9 +1,21 @@
 import { React, useContext, useEffect, useState, useRef } from "react";
-import newImage from "../img/newImage.png";
+import logo from "../../asserts/img/logo.png";
 import { InvoiceContex } from "../../contex/InvoiceContex";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import {
+  Box,
+  Typography,
+  Grid,
+  Button,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+} from "@mui/material";
 
 export const Invoice = ({ setEditingItem }) => {
   const { InvoiceNumber, refresh } = useContext(InvoiceContex);
@@ -79,104 +91,116 @@ export const Invoice = ({ setEditingItem }) => {
   };
 
   return (
-    <div ref={invoiceRef} className="invoice-container m-4">
-      <div className="header">
-        <div className="logo">
-          <img src={newImage} alt="newImage" />
-        </div>
-        <div className="details">
-          <div className="type1">
-            <span className="name">Invoice#</span>
-            <span className="value">
-              {InvoiceNumber ? `T${InvoiceNumber}` : ""}
-            </span>
-          </div>
-          <div className="type2">
-            <span className="name">DATE</span>
-            <span className="value">{formatDate(new Date())}</span>
-          </div>
-        </div>
-      </div>... <div className="invoiceInfo d-flex mt-5 gap-5">
-        <div className="from d-flex flex-column">
-          <h4>From</h4>
-          <span className="company-name">Taycantech</span>
-          <span>info@taycantech.com</span>
-          <span>+94 77 122 5553</span>
-        </div>
-        <div className="to d-flex flex-column">
-          <h4>To</h4>
-          <span className="company-name">
-            {customerDetails ? customerDetails.name : "Customer Name"}
-          </span>
-          <span>
-            {customerDetails ? customerDetails.email : "Customer email"}
-          </span>
-          <span>
-            {customerDetails ? customerDetails.phone : "Customer phone"}
-          </span>
-        </div>
-      </div>
-
-      <div className="item-table mt-5">
-        <table>
-          <thead>
-            <tr>
-              <th>Service</th>
-              <th>Cost</th>
-              <th>QTY</th>
-              <th>Discount</th>
-              <th>Total</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.length > 0 ? (
-              items.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.product}</td>
-                  <td>LKR {item.price}</td>
-                  <td>{item.quantity}</td>
-                  <td>LKR{item.Discount}</td>
-                  <td>LKR {item.total}</td>
-                  <td>
-                    <button
-                      className="btn btn-warning"
-                      onClick={() => setEditingItem(item)}
-                      sx={{color:"white"}}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger ms-2"
-                      onClick={() => handleDeleteItem(item._id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
-                  No items found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="d-flex gap-3 width justify-content-end pe-5 pt-4 totalSection">
-        <span className="title">Total</span>
-        <span className="value">LKR {total}</span>
-      </div>
-
-      <div className="mt-5 d-flex flex-column tac">
-        <span className="title">TERMS & CONDITIONS</span>
-        <button type="button" className="btn btn-primary" onClick={handleDownload}>
-          Download
-        </button>
-      </div>
-    </div>
-  );
+    
+      <Box ref={invoiceRef} 
+      sx={{
+        p: 4,
+        border: "1px solid black", 
+        borderRadius: 2,           
+      }}
+      >
+        {/* Header Section */}
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <img src={logo} alt="Logo" style={{ maxWidth: 150 }} />
+          </Grid>
+          <Grid item>
+            <Box>
+              <Typography variant="h6">
+                Invoice#: <strong>{InvoiceNumber ? `T${InvoiceNumber}` : ""}</strong>
+              </Typography>
+              <Typography variant="h6">
+                DATE: <strong>{formatDate(new Date())}</strong>
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+  
+        {/* From / To Section */}
+        <Grid container spacing={5} mt={5}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h6">From</Typography>
+            <Typography>Taycantech</Typography>
+            <Typography>info@taycantech.com</Typography>
+            <Typography>+94 77 122 5553</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h6">To</Typography>
+            <Typography>{customerDetails?.name || "Customer Name"}</Typography>
+            <Typography>{customerDetails?.email || "Customer email"}</Typography>
+            <Typography>{customerDetails?.phone || "Customer phone"}</Typography>
+          </Grid>
+        </Grid>
+  
+        {/* Table Section */}
+        <Paper elevation={2} sx={{ mt: 5 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Service</TableCell>
+                <TableCell>Cost</TableCell>
+                <TableCell>QTY</TableCell>
+                <TableCell>Discount</TableCell>
+                <TableCell>Total</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {items.length > 0 ? (
+                items.map((item) => (
+                  <TableRow key={item._id}>
+                    <TableCell>{item.product}</TableCell>
+                    <TableCell>LKR {item.price}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>LKR {item.Discount}</TableCell>
+                    <TableCell>LKR {item.total}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="warning"
+                        onClick={() => setEditingItem(item)}
+                        sx={{ mr: 1 }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleDeleteItem(item._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">
+                    No items found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
+  
+        {/* Total Section */}
+        <Box display="flex" justifyContent="flex-end" mt={4} pr={5}>
+          <Typography variant="h6" sx={{ mr: 2 }}>
+            Total:
+          </Typography>
+          <Typography variant="h6">LKR {total}</Typography>
+        </Box>
+  
+        {/* Terms & Download Button */}
+        <Box mt={5} textAlign="center">
+          <Typography variant="subtitle1" gutterBottom>
+            TERMS & CONDITIONS
+          </Typography>
+          <Button variant="contained" color="primary" onClick={handleDownload}>
+            Download
+          </Button>
+        </Box>
+      </Box>
+    );
 };
