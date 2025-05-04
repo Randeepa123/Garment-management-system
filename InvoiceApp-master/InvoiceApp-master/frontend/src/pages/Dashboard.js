@@ -16,6 +16,13 @@ import UpdateOrder from "./Order_Management/UpdateOrder";
 import { Employee } from "./target/Employee";
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
+//ishan
+import MainPage from "../componants/mainpage";
+import AddStock from "../componants/AddStock";
+import UseMaterial from "../componants/UseMaterial";
+import PurchaseHistory from "../componants/PurchaseHistory";
+import StockPredictionPage from "../componants/StockPredictionPage";
+
 
 export const Dashboard = () => {
   return (
@@ -76,6 +83,7 @@ export const Dashboard = () => {
           <Route path="/invoice" element={<InvoicePage />} />
           <Route path="/quote" element={<QuotePage />} />
 
+
           <Route path="/set-targets/:sheetNo" element={<SetTargets />} />
           <Route path="/targets" element={<TargetDashboard />} />
           <Route path="/update-targets/:sheetNo" element={<UpdateTargets />} />
@@ -83,8 +91,15 @@ export const Dashboard = () => {
           <Route path="/addOrder" element={<AddOrder />} />
           <Route path="/updateorder" element={<UpdateOrder />} />
           <Route path="/Employees" element={<Employee />} />
-        </Routes>
-        
+             {/*ishan*/}
+               <Route path="/stock" element={<MainPage />} />
+                <Route path="/add-stock" element={<AddStock />} />
+                <Route path="/use-material" element={<UseMaterial />} />
+                <Route path="/purchase-history" element={<PurchaseHistory />} />
+                <Route path="/stock-prediction" element={<StockPredictionPage />} />
+
+          </Routes>
+        </div>
 
       </div>
     </div>

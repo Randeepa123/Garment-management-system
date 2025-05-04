@@ -1,0 +1,110 @@
+.report-section {
+    padding: 20px;
+    width: 300px;
+}
+
+/* Container for date pickers and button */
+.date-button-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap; /* Prevent wrapping onto a new line */
+}
+
+/* Each date selector styling */
+.date-selection {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Ensure inputs take up available space */
+}
+
+/* Date input labels styling */
+.date-selection label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Date input styling */
+.date-selection input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Rounded input */
+    outline: none;
+    font-size: 16px;
+    min-width: 20px;
+}
+
+/* Wrapper for the button, ensuring it aligns in the same row */
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Report generation button styling */
+.report-button {
+    padding: 10px 20px;
+    background-color: #1bbe85; /* Button background color */
+    color: white;              /* Button text color */
+    border: none;
+    border-radius: 10px; /* Rounded button */
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+/* Button hover effect */
+.report-button:hover {
+    background-color: #0f4253; /* Darker button color on hover */
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Popup window for displaying the report */
+.report-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Rounded popup */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 80%;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+/* Buttons inside the popup */
+.popup-buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popup-buttons button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    background-color: #007bff; /* Blue button color */
+    color: white;
+    border: none;
+    border-radius: 10px; /* Rounded popup buttons */
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Popup buttons hover */
+.popup-buttons button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

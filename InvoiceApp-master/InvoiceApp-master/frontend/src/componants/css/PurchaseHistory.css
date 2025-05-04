@@ -1,0 +1,135 @@
+/* Purchase History Container */
+.purchase-history-container { 
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    height: 100%;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+
+/* Title */
+.purchase-history-container h2 {
+    font-size: 25px;
+    margin-bottom: 15px;
+    margin-top: -15px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* Filter Section */
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.filter-container input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+
+
+
+/* Purchase List */
+.purchase-list {
+    max-height: 500px; /* Increased height by 40px */
+    overflow-y: auto;
+    padding-right: 8px;
+    border-radius: 10px;
+    min-height: 333px; /* Fixed minimum height to maintain structure */
+}
+
+/* Purchase Card */
+.purchase-card {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-left: 20px;
+}
+
+/* Adjust text spacing inside cards */
+.purchase-card p {
+    margin: 2px 10px;
+    font-size: 14px;
+    color: #444;
+}
+
+/* Date and Remove Button in One Line */
+.date-remove-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 3px;
+}
+
+/* Date Added */
+.date-remove-container p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* Remove Button Positioned Right */
+.remove-button {
+    background-color: #d9534f;
+    width: 100px;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.remove-button:hover {
+    background-color: #c9302c;
+}
+
+/* Custom Scrollbar with Arrowheads */
+.purchase-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.purchase-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.purchase-list::-webkit-scrollbar-thumb {
+    background: #afafaf;
+    border-radius: 10px;
+}
+
+.purchase-list::-webkit-scrollbar-thumb:hover {
+    background: #818181;
+}
+
+/* Scrollbar Arrowheads */
+.purchase-list::-webkit-scrollbar-button:single-button {
+    display: block;
+    height: 12px;
+    background: #878787;
+    border-radius: 50%;
+}
+
+
