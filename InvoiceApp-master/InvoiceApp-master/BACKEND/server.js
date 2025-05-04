@@ -3,6 +3,16 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const targetRouter = require("./routes/target");
+
+const processManagement = require("./Process-Management/Backend/router");
+const customerRouter = require("./routes/customerRouter");
+const invoiceRouter = require("./routes/invoiceRoute");
+const router = require("./routes/costEsti_Router");
+const EmployeeRouter = require("./routes/employee");
+const authRouter = require("./routes/auth");
+
+
 const app = express();
 const port = 8070;
 
@@ -23,7 +33,8 @@ app.use(express.json());
 const dbUrl = process.env.MONGODB_URL;
 const connect = async () => {
   try {
-    await mongoose.connect(dbUrl);
+
+    await mongoose.connect(DbUrl);
     console.log("Connected to DB");
   } catch (err) {
     console.error("DB Connection Error:", err);
@@ -31,16 +42,23 @@ const connect = async () => {
 };
 connect();
 
-// Register routes
+
+const server = app.listen(port, host, () => {
+  console.log(`Server is listening to http://${host}:${port}`);
+});
+
 app.use("/target", targetRouter);
-app.use("/employee", employeeRouter);
+app.use("/employee", EmployeeRouter);
 app.use("", processManagement);
 app.use("/customer", customerRouter);
 app.use("/invoice", invoiceRouter);
-app.use("/api", router);
+app.use ("/api",router)
 app.use("/api/stock", stockRouter);
 
-// Start server (bind to all interfaces, not just localhost)
+app.use("/auth", authRouter);
+
+
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is listening on http://0.0.0.0:${port}`);
 });

@@ -11,5 +11,9 @@ router.put('/updateCostEstimation', controllers.updateCostEstimation);
 router.put('/cost-estimations/:costId/cost-breakdown/:breakdownId', controllers.updateCostBreakdown);
 router.delete('/deleteCostEstimation', controllers.deleteCostEstimation);
 router.delete('/cost-estimations/:costId/cost-breakdown/:breakdownId', controllers.deleteCostBreakdown);
+router.get('/response', controllers.getEmailResponse);
+router.get('/costEstApprovedandnoJobcard', controllers.getcostEstimationsApproved);
+
+
 
 module.exports = router;

@@ -75,6 +75,22 @@ export const LineTargetEstimation = ({ sheetNum }) => {
     }
   };
 
+  const updateSewingEndDate = async (jobcardId, newEndDate) => {
+    console.log("New date", newEndDate);
+    try {
+      const response = await axios.put(
+        `http://localhost:8070/updateSewingEnd`,
+        {
+          jobcardId: jobcardId,
+          endDate: newEndDate,
+        }
+      );
+      console.log("Update response:", response.data);
+    } catch (error) {
+      console.error("Failed to update sewing end date:", error);
+    }
+  };
+
   const handleSetDaily = async (e) => {
     e.preventDefault();
     try {
@@ -88,6 +104,7 @@ export const LineTargetEstimation = ({ sheetNum }) => {
       console.error("Error updating daily target:", error);
       alert("Failed to update target.");
     }
+    updateSewingEndDate(sheetNum.slice(1), estimatedDelivery);
   };
 
   return (

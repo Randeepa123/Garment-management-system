@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import CostEstiPrimaryData from "../ChildComponent/CostEstiPrimaryData";
 import { CostContext } from "../../../contex/CostContex";
+import emailjs from '@emailjs/browser';
 
 
 
@@ -35,6 +36,7 @@ const OperationSheet = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteError, setDeleteError] = useState("");
+  
 
   useEffect(() => {
     const fetchCostSheet = async () => {
@@ -136,10 +138,67 @@ const OperationSheet = ({
     setDeleteError("");
   };
 
-  const handleSubmit = () => {
-    alert("Cost Estimation Sheet Submitted!");
+  // Modified handleSubmit function
+const handleSubmit = () => {
+  // Add console logs to debug the values
+  console.log("Customer Email:", costSheet?.customerEmail);
+  console.log("Cost Sheet Number:", CostSheetNumber);
+  
+  if (!costSheet?.Email) {
+    console.error("Missing customer email in costSheet:", costSheet);
+    alert("Missing customer email. Please check customer details.");
+    return;
+  }
+  
+  if (!CostSheetNumber) {
+    console.error("Missing CostSheetNumber from context");
+    alert("Missing estimation ID. Please ensure a cost sheet is selected.");
+    return;
+  }
+
+  // Proceed with sending email
+  sendEstimationEmail(costSheet.Email, costSheet,CostSheetNumber);
+};
+
+// Modified email sending function
+const sendEstimationEmail = async (customerEmail, estimationData, CostSheetNumber) => {
+  console.log("Sending email with:", { customerEmail, CostSheetNumber });
+  
+  // Make sure we have valid data
+  if (!customerEmail || !CostSheetNumber) {
+    console.error("Missing required email parameters:", { customerEmail, CostSheetNumber });
+    alert("Cannot send email: missing customer email or estimation ID");
+    return;
+  }
+  
+  const templateParams = {
+    to_email: customerEmail,
+    estimation_id: CostSheetNumber,
+    estimation_data: JSON.stringify({
+      productName: estimationData.productName,
+      costSheetID: estimationData.costSheetID,
+      totalCost: totalCost.toFixed(2),
+      // Don't send the entire object as it might be too large
+    }, null, 2),
+    approve_link: `http://localhost:8070/api/response?id=${CostSheetNumber}&action=approve`,
+    decline_link: `http://localhost:8070/api/response?id=${CostSheetNumber}&action=decline`,
   };
 
+  try {
+    console.log("Email template params:", templateParams);
+    const result = await emailjs.send(
+      'service_i2v3i9i',
+      'template_8y76bqs',
+      templateParams,
+      'qyUkudv6sfdzHVF-Y'
+    );
+    console.log("Email sent successfully:", result);
+    alert("Estimation email sent to customer!");
+  } catch (error) {
+    console.error("Email sending failed:", error);
+    alert(`Failed to send email: ${error.message}`);
+  }
+};
   return (
     <Box
       sx={{
@@ -261,7 +320,9 @@ const OperationSheet = ({
       {/* Submit Button */}
       {showSubmit && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button variant="contained" color="primary" onClick={handleSubmit }
+
+          >
             Submit
           </Button>
         </Box>

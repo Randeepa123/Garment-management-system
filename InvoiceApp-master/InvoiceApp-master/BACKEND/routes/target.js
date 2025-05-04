@@ -12,5 +12,8 @@ router.delete("/deleteTarget", controller.deleteTarget);
 router.get("/getAllOperators", controller.getAllOperators);
 router.get("/getAll", controller.getAll);
 router.put("/setDaily", controller.updateDailyTarget);
+router.post("/schedule", controller.schedule);
+router.post("/setAchivement", controller.addAchievement);
+router.get("/getAchivements", controller.getAllAchievements);
 
 module.exports = router;

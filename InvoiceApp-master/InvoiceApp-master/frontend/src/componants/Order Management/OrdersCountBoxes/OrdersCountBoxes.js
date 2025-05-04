@@ -73,27 +73,6 @@ function OrdersCountBoxes({rows}) {
               </IconButton>
             </Box>
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Button 
-                size="small" 
-                variant="text" 
-                sx={{ 
-                  color: '#0288d1', 
-                  textTransform: 'none',
-                  p: 0,
-                  '&:hover': {
-                    bgcolor: 'transparent',
-                    textDecoration: 'underline',
-                  }
-                }}
-              >
-                See Statistics
-              </Button>
-              <IconButton 
-                size="small" 
-                sx={{ color: '#0288d1' }}
-              >
-                <ArrowForwardIcon />
-              </IconButton>
             </Box>
           </StatCard>
         </Grid>
