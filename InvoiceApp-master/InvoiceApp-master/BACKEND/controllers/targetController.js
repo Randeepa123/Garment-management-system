@@ -1,5 +1,7 @@
 const Target = require("../models/target");
 const Employee = require("../models/employee");
+const { OpenAI } = require("openai");
+const TargetAchivement = require("../models/targetAchivements");
 
 const getAllOperators = (req, res, next) => {
   Employee.find({ post: "operator" })
@@ -217,6 +219,143 @@ const updateDailyTarget = (req, res) => {
     });
 };
 
+const schedule = async (req, res) => {
+  const { orders } = req.body;
+
+  console.log("Received orders:", orders);
+
+  // Validate input
+  if (!orders || !Array.isArray(orders)) {
+    return res
+      .status(400)
+      .json({ error: 'Invalid or missing "orders" array.' });
+  }
+
+  // Initialize OpenAI API
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  // Construct the prompt for the assistant
+  const constructPrompt = (orders) => {
+    return `You are a scheduling assistant. Given these job orders, schedule them with no overlaps:
+${JSON.stringify(orders, null, 2)}
+
+Respond ONLY with a JSON array in this exact format, with no additional text:
+[
+  {
+    "jobcardID": number,
+    "start_date": "YYYY-MM-DD",
+    "end_date": "YYYY-MM-DD"
+  }
+]`;
+  };
+
+  try {
+    const prompt = constructPrompt(orders);
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      max_tokens: 2048,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7, // Lower temperature for more consistent JSON output
+    });
+
+    const aiText = completion.choices[0].message.content.trim();
+
+    let scheduledJobs;
+    try {
+      // Try to parse the entire response first
+      scheduledJobs = JSON.parse(aiText);
+    } catch (parseError) {
+      // If that fails, try to extract JSON array
+      const jsonMatch = aiText.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) {
+        throw new Error("Could not find valid JSON array in response");
+      }
+      scheduledJobs = JSON.parse(jsonMatch[0]);
+    }
+
+    // Validate the structure of the parsed jobs
+    if (!Array.isArray(scheduledJobs)) {
+      throw new Error("Parsed result is not an array");
+    }
+
+    // Validate each job has the required fields
+    scheduledJobs.forEach((job) => {
+      if (!job.jobcardID || !job.start_date || !job.end_date) {
+        throw new Error("Invalid job structure in response");
+      }
+    });
+
+    res.json({ scheduled_jobs: scheduledJobs });
+  } catch (error) {
+    console.error("Error scheduling jobs:", error);
+    res.status(500).json({
+      error: "Failed to schedule jobs.",
+      details: error.message,
+    });
+  }
+};
+
+const addAchievement = async (req, res, next) => {
+  const { targetSheetNo, employeeId, count } = req.body;
+
+  try {
+    // Find if achievement already exists for this sheet
+    const existingAchievement = await TargetAchivement.findOne({
+      targetSheetNo,
+    });
+
+    if (existingAchievement) {
+      // Check if employee achievement exists
+      const employeeAchIndex = existingAchievement.achievements.findIndex(
+        (ach) => ach.employeeId.toString() === employeeId
+      );
+
+      if (employeeAchIndex > -1) {
+        // Update existing employee achievement
+        existingAchievement.achievements[employeeAchIndex].count = count;
+      } else {
+        // Add new employee achievement
+        existingAchievement.achievements.push({ employeeId, count });
+      }
+
+      const updatedAchievement = await existingAchievement.save();
+      res.json(updatedAchievement);
+    } else {
+      // Create new achievement document
+      const newAchievement = new TargetAchivement({
+        targetSheetNo,
+        achievements: [{ employeeId, count }],
+      });
+
+      const savedAchievement = await newAchievement.save();
+      res.json(savedAchievement);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to save achievement" });
+  }
+};
+
+const getAllAchievements = async (req, res, next) => {
+  try {
+    const achievements = await TargetAchivement.find()
+      .populate("achievements.employeeId")
+      .sort({ createdAt: -1 });
+
+    if (!achievements || achievements.length === 0) {
+      return res.status(404).json({ message: "No achievements found" });
+    }
+
+    res.json(achievements);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch achievements" });
+  }
+};
+
 exports.getTargetSheet = getTargetSheet;
 exports.getTargetsByEmployee = getTargetsByEmployee;
 exports.addTargetSheet = addTargetSheet;
@@ -227,3 +366,6 @@ exports.getAllOperators = getAllOperators;
 exports.getAll = getAll;
 exports.updateDailyTarget = updateDailyTarget;
 exports.getTarget = getTarget;
+exports.schedule = schedule;
+exports.addAchievement = addAchievement;
+exports.getAllAchievements = getAllAchievements;

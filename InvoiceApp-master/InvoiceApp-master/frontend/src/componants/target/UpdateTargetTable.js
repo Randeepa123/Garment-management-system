@@ -3,7 +3,10 @@ import axios from "axios";
 import { UpdateTargetContex } from "../../contex/UpdateTargetContex";
 import ArrowOutwardOutlinedIcon from "@mui/icons-material/ArrowOutwardOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import PrintIcon from "@mui/icons-material/Print";
 import { useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export const UpdateTargetTable = (props) => {
   const { refresh, setRefresh, totalIots, settotalIots } =
@@ -79,6 +82,65 @@ export const UpdateTargetTable = (props) => {
     navigate(`/set-targets/${SheetNo}`);
   };
 
+  const handlePrint = () => {
+    const content = document.querySelector(".target-update");
+    const buttons = document.querySelectorAll("button");
+    const searchInputs = document.querySelectorAll(".top-button-row");
+
+    // Temporarily hide buttons and search inputs during PDF generation
+    buttons.forEach((btn) => (btn.style.display = "none"));
+    searchInputs.forEach((input) => (input.style.display = "none"));
+
+    // Create a wrapper div to include title and date
+    const wrapper = document.createElement("div");
+    wrapper.style.padding = "20px";
+
+    // Add title
+    const title = document.createElement("h2");
+    title.textContent = "Target Sheet" + ` ${SheetNo}`;
+    title.style.textAlign = "center";
+    title.style.marginBottom = "10px";
+    wrapper.appendChild(title);
+
+    // Add date
+    const dateDiv = document.createElement("div");
+    dateDiv.textContent = `Date: ${new Date().toLocaleDateString()}`;
+    dateDiv.style.textAlign = "right";
+    dateDiv.style.marginBottom = "20px";
+    wrapper.appendChild(dateDiv);
+
+    // Add the original content
+    wrapper.appendChild(content.cloneNode(true));
+    document.body.appendChild(wrapper);
+
+    html2canvas(wrapper, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("l", "px", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+
+      pdf.addImage(
+        imgData,
+        "PNG",
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio
+      );
+      pdf.save(`target_update_sheet_${SheetNo}.pdf`);
+
+      // Clean up - remove wrapper and restore buttons and search inputs
+      document.body.removeChild(wrapper);
+      buttons.forEach((btn) => (btn.style.display = "block"));
+      searchInputs.forEach((input) => (input.style.display = "flex"));
+    });
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between top-button-row py-3 px-5">
@@ -120,9 +182,17 @@ export const UpdateTargetTable = (props) => {
             <ArrowOutwardOutlinedIcon />
             Set Target
           </button>
+          <button
+            type="button"
+            className="btn btn-secondary btn-md"
+            onClick={handlePrint}
+          >
+            <PrintIcon />
+            Print Table
+          </button>
         </div>
       </div>
-      <div className=" target-update table-striped p-4">
+      <div className="target-update table-striped p-4">
         <table className="table rounded">
           <thead>
             <tr>
