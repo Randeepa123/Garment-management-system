@@ -47,7 +47,7 @@ function Order_Mainpage() {
           <OrderProgress className='OrderProgress'
           rows={orders} />
         </Container>
-        <Container className='EstimationTableOrder'>
+        <Container className='EstimationTableOrder'style={{ marginTop: '2rem' }}>
           <CostEstimationsTable/>
         </Container>
         
