@@ -1,13 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 //icons
 import SettingsIcon from "@mui/icons-material/Settings";
 import Person4Icon from "@mui/icons-material/Person4";
+import LogoutIcon from "@mui/icons-material/Logout";
 //ui componants
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-function CircleIconBox({ icon, color = "white" }) {
+
+function CircleIconBox({ icon, color = "white", onClick }) {
   return (
     <Box
       sx={{
@@ -18,7 +21,9 @@ function CircleIconBox({ icon, color = "white" }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        cursor: onClick ? "pointer" : "default",
       }}
+      onClick={onClick}
     >
       {icon}
     </Box>
@@ -26,6 +31,13 @@ function CircleIconBox({ icon, color = "white" }) {
 }
 
 export const TopicBar = (props) => {
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login"; // Use location.href instead of navigate + reload
+  };
+
   return (
     <div className="d-flex justify-content-between m-4 top-heading">
       <h2>{props.text}</h2>
@@ -35,6 +47,10 @@ export const TopicBar = (props) => {
         <Divider orientation="vertical" flexItem sx={{ height: 40 }} />
         <CircleIconBox icon={<Person4Icon sx={{ color: "white" }} />} />
         <span className="align-self-center">{props.userName}</span>
+        <CircleIconBox
+          icon={<LogoutIcon sx={{ color: "white" }} />}
+          onClick={handleSignOut}
+        />
       </div>
     </div>
   );

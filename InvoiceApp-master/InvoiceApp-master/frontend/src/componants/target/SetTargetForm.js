@@ -13,6 +13,8 @@ export const SetTargetForm = (props) => {
   const [employeeID, setEmployeeID] = useState(" ");
   const [timeForOperation, setTimeForOperation] = useState();
   const [noOpForHr, setNoOpForHr] = useState();
+  const [qualityTime, setQualityTime] = useState();
+  const [totalTime, setSetTotalTime] = useState();
 
   const { refresh, setRefresh } = useContext(TargetContex);
 
@@ -77,8 +79,17 @@ export const SetTargetForm = (props) => {
       setTimeForOperation(0);
       return alert("Do not enter minus numbers!!");
     }
-    const pcs = (60 / timeForOperation) * (70 / 100);
-    setNoOpForHr(pcs);
+
+    let totalTime = 0;
+
+    if (qualityTime) {
+      totalTime = timeForOperation + qualityTime;
+    } else {
+      totalTime = timeForOperation;
+    }
+
+    const pcs = (60 / totalTime) * (70 / 100);
+    setNoOpForHr(pcs.toFixed(2));
   };
 
   return (
@@ -123,6 +134,16 @@ export const SetTargetForm = (props) => {
             />
           </div>
           <div className="d-flex gap-3 align-items-center m-3">
+            <label htmlFor="">Quality Time</label>
+            <input
+              className="form-control"
+              type="number"
+              aria-label="default input example"
+              value={qualityTime}
+              onChange={(e) => setQualityTime(e.target.value)}
+            />
+          </div>
+          <div className="d-flex gap-3 align-items-center m-3">
             <label htmlFor="">Time for 1 operation</label>
             <div className="input-group">
               <input
@@ -152,6 +173,7 @@ export const SetTargetForm = (props) => {
               onChange={(e) => setNoOpForHr(e.target.value)}
             />
           </div>
+
           <button
             type="button"
             className="btn btn-primary btn-md"

@@ -13,6 +13,16 @@ export const SalaryIncrementForm = ({ selectedEmployee, selectedAchiver }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!selectedEmployee) {
+      alert("Please select an employee first.");
+      return;
+    }
+
+    if (amount <= 0) {
+      alert("Please enter a valid increment amount.");
+      return;
+    }
+
     const inc = {
       employeeId: selectedEmployee.employee._id,
       topic: topic,
